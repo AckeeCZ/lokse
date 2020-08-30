@@ -1,6 +1,7 @@
 import Line from "./line";
 import * as GoogleSpreadsheet from "google-spreadsheet";
 import * as Q from "q";
+import logger from '../logger';
 
 interface LineReader {
   select: (sheets, keyCol, valCol, cb) => Promise<any> | void;
@@ -39,8 +40,8 @@ export class GSReader implements LineReader {
 
         this._sheet.getInfo((err, data) => {
           if (err) {
-            console.error("Error while fetching the Spreadsheet (" + err + ")");
-            console.warn(
+            logger.error("Error while fetching the Spreadsheet (" + err + ")");
+            logger.warn(
               'WARNING! Check that your spreadsheet is "Published" in "File > Publish to the web..."'
             );
             this._fetchDeferred.reject(err);
@@ -73,7 +74,7 @@ export class GSReader implements LineReader {
       );
       deferred.resolve(extractedLines);
     }).fail(function (error) {
-      // console.error('Cannot fetch data');
+      // logger.error('Cannot fetch data');
     });
 
     return deferred.promise;

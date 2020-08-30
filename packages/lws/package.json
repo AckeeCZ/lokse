@@ -11,10 +11,11 @@
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
-    "tslib": "^1",
     "google-spreadsheet": "2.0.3",
     "mkpath": "0.1.0",
-    "q": "0.9.2"
+    "ora": "^5.0.0",
+    "q": "0.9.2",
+    "tslib": "^1"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",

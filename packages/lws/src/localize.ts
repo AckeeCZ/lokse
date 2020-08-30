@@ -1,6 +1,7 @@
 import { GSReader } from "./core/line-reader";
 import { FileWriter } from "./core/writer";
 import Transformer from "./core/transformer";
+import * as ora from "ora";
 
 class Gs2File {
   public _reader: any;
@@ -38,7 +39,10 @@ class Gs2File {
   }
 
   save(outputPath, opts, cb) {
-    console.log("saving " + outputPath);
+    const spinner = ora({
+      text: `Saving ${outputPath}`,
+      spinner: "dots",
+    }).start();
 
     opts = opts || {};
 
@@ -71,10 +75,10 @@ class Gs2File {
         const transformer = Transformer[format || "android"];
         this._writer.write(outputPath, encoding, lines, transformer, opts);
       }
-
       if (typeof cb === "function") {
         cb();
       }
+      spinner.succeed();
     });
   }
 }
