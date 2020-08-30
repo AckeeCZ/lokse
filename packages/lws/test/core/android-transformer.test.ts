@@ -1,11 +1,11 @@
 import { EOL } from "os";
 import * as assert from "assert";
 import Transformer from "../../src/core/transformer";
-const transformer = Transformer["android"];
+const transformer = Transformer.android;
 
 describe("AndroidTransformer.transformComment", () => {
   it("transforms comment", () => {
-    var result = transformer.transformComment("un commentaire");
+    const result = transformer.transformComment("un commentaire");
 
     assert.equal("    <!-- un commentaire -->", result);
   });
@@ -41,7 +41,7 @@ describe("AndroidTransformer.transformKeyValue", () => {
   });
 
   it("replaces three point in the middle with ellipsis character", () => {
-    var line = transformer.transformKeyValue(
+    const line = transformer.transformKeyValue(
       "ma_cle",
       "Ma valeur...à remplacer"
     );
@@ -52,7 +52,7 @@ describe("AndroidTransformer.transformKeyValue", () => {
   });
 
   it("should not replaces four point with ellipsis character", () => {
-    var line = transformer.transformKeyValue("ma_cle", "Ma valeur....");
+    const line = transformer.transformKeyValue("ma_cle", "Ma valeur....");
     assert.equal('    <string name="ma_cle">Ma valeur....</string>', line);
   });
 });
@@ -76,7 +76,7 @@ describe("AndroidTransformer.insert", () => {
   });
 
   it("should insert before end tag when has resource tag", () => {
-    var result = transformer.insert(
+    const result = transformer.insert(
       "<resources>" + EOL + "aa" + EOL + "</resources>",
       "à insérer"
     );
@@ -95,7 +95,7 @@ describe("AndroidTransformer.insert", () => {
   });
 
   it("should replace auto generated tag when available", () => {
-    var result = transformer.insert(
+    const result = transformer.insert(
       "<resources>" +
         EOL +
         "aa" +

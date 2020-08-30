@@ -19,16 +19,16 @@ class Line {
     }
     key = key.toString();
 
-    var isComment = Line.checkIsComment(key);
+    const isComment = Line.checkIsComment(key);
 
     if (isComment) {
       key = Line.normalizeComment(key);
     }
 
-    var isPlural = Line.checkIsPlural(key);
+    const isPlural = Line.checkIsPlural(key);
 
     if (isPlural) {
-      var keys = Line.parseKeysFromPlural(key);
+      const keys = Line.parseKeysFromPlural(key);
       this._key = keys[0];
       this._pluralKey = keys[1];
     } else {
@@ -42,8 +42,8 @@ class Line {
   }
 
   static checkIsComment(val: any): boolean {
-    for (var i = 0; i < COMMENT_STARTERS.length; i++) {
-      var commentStarter = COMMENT_STARTERS[i];
+    for (let i = 0; i < COMMENT_STARTERS.length; i++) {
+      const commentStarter = COMMENT_STARTERS[i];
       if (val.indexOf(commentStarter) == 0) {
         return true;
       }
@@ -59,7 +59,7 @@ class Line {
   };
 
   static parseKeysFromPlural = function (val) {
-    var match = val.match(PLURAL_POSTFIX_RE);
+    const match = val.match(PLURAL_POSTFIX_RE);
     if (match) {
       return [val.replace(match[0], ""), match[1]];
     }
@@ -67,11 +67,11 @@ class Line {
   };
 
   static normalizeComment(val) {
-    for (var i = 0; i < COMMENT_STARTERS.length; i++) {
-      var commentStarter = COMMENT_STARTERS[i];
-      var index = val.indexOf(commentStarter);
+    for (let i = 0; i < COMMENT_STARTERS.length; i++) {
+      const commentStarter = COMMENT_STARTERS[i];
+      const index = val.indexOf(commentStarter);
       if (index == 0) {
-        var normalized = val.substr(
+        let normalized = val.substr(
           commentStarter.length,
           val.length - commentStarter.length
         );

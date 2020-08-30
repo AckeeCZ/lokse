@@ -1,7 +1,7 @@
 import { EOL } from "os";
 import * as assert from "assert";
 import Transformer from "../../src/core/transformer";
-const transformer = Transformer["ios"];
+const transformer = Transformer.ios;
 
 describe("iOSTransformer.transformComment", () => {
   it("transforms comment", () => {
@@ -13,12 +13,12 @@ describe("iOSTransformer.transformComment", () => {
 
 describe("iOSTransformer.transformKeyValue", () => {
   it("transforms key value", () => {
-    var line = transformer.transformKeyValue("ma_cle", "La valeur");
+    const line = transformer.transformKeyValue("ma_cle", "La valeur");
     assert.equal('"ma_cle" = "La valeur";', line);
   });
 
   it("escapes quote", () => {
-    var line = transformer.transformKeyValue("ma_cle", 'La "valeur"');
+    const line = transformer.transformKeyValue("ma_cle", 'La "valeur"');
     assert.equal('"ma_cle" = "La \\"valeur\\"";', line);
   });
 });

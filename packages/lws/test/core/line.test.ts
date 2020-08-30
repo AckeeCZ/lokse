@@ -32,7 +32,7 @@ describe("Line.isEmpty", () => {
   assert.equal(true, line1.isEmpty());
   assert.equal(false, line1.isComment());
 });
-//exports.test_isEmptyWhenEmpty = function (test) {
+// exports.test_isEmptyWhenEmpty = function (test) {
 
 describe("Line", () => {
   it("getting fields", () => {

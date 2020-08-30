@@ -33,7 +33,7 @@ export class GSReader implements LineReader {
   }
 
   fetchAllCells() {
-    var self = this;
+    const self = this;
 
     if (self._fetchedWorksheets == null) {
       if (!self._isFetching) {
@@ -47,7 +47,7 @@ export class GSReader implements LineReader {
             );
             self._fetchDeferred.reject(err);
           } else {
-            var worksheetReader = new WorksheetReader(
+            const worksheetReader = new WorksheetReader(
               self._sheetsFilter,
               data.worksheets
             );
@@ -60,29 +60,32 @@ export class GSReader implements LineReader {
       }
 
       return this._fetchDeferred.promise;
-    } else {
-      return self._fetchedWorksheets;
     }
+    return self._fetchedWorksheets;
   }
 
   select(keyCol, valCol) {
-    var deferred = Q.defer();
-    var self = this;
+    const deferred = Q.defer();
+    const self = this;
 
     Q.when(self.fetchAllCells(), function (worksheets) {
-      var extractedLines = self.extractFromRawData(worksheets, keyCol, valCol);
+      const extractedLines = self.extractFromRawData(
+        worksheets,
+        keyCol,
+        valCol
+      );
       deferred.resolve(extractedLines);
     }).fail(function (error) {
-      //console.error('Cannot fetch data');
+      // console.error('Cannot fetch data');
     });
 
     return deferred.promise;
   }
 
   extractFromRawData(rawWorksheets, keyCol, valCol) {
-    var extractedLines = [];
-    for (var i = 0; i < rawWorksheets.length; i++) {
-      var extracted = this.extractFromWorksheet(
+    const extractedLines = [];
+    for (let i = 0; i < rawWorksheets.length; i++) {
+      const extracted = this.extractFromWorksheet(
         rawWorksheets[i],
         keyCol,
         valCol
@@ -94,16 +97,16 @@ export class GSReader implements LineReader {
   }
 
   extractFromWorksheet(rawWorksheet, keyCol, valCol) {
-    var results = [];
+    const results = [];
 
-    var rows = this.flatenWorksheet(rawWorksheet);
+    const rows = this.flatenWorksheet(rawWorksheet);
 
-    var headers = rows[0];
+    const headers = rows[0];
     if (headers) {
-      var keyIndex = -1,
-        valIndex = -1;
+      let keyIndex = -1;
+      let valIndex = -1;
       for (var i = 0; i < headers.length; i++) {
-        var value = headers[i];
+        const value = headers[i];
         if (value == keyCol) {
           keyIndex = i;
         }
@@ -112,10 +115,10 @@ export class GSReader implements LineReader {
         }
       }
       for (var i = 1; i < rows.length; i++) {
-        var row = rows[i];
+        const row = rows[i];
         if (row) {
-          var keyValue = row[keyIndex];
-          var valValue = row[valIndex];
+          const keyValue = row[keyIndex];
+          const valValue = row[valIndex];
 
           results.push(new Line(keyValue, valValue));
         }
@@ -126,23 +129,23 @@ export class GSReader implements LineReader {
   }
 
   flatenWorksheet(rawWorksheet) {
-    var rows = [];
-    var lastRowIndex = 1;
-    for (var i = 0; i < rawWorksheet.length; i++) {
-      var cell = rawWorksheet[i];
+    const rows = [];
+    let lastRowIndex = 1;
+    for (let i = 0; i < rawWorksheet.length; i++) {
+      const cell = rawWorksheet[i];
 
-      //detect empty line
-      var rowIndex = cell.row;
-      var diffWithLastRow = rowIndex - lastRowIndex;
+      // detect empty line
+      const rowIndex = cell.row;
+      const diffWithLastRow = rowIndex - lastRowIndex;
       if (diffWithLastRow > 1) {
-        for (var j = 0; j < diffWithLastRow - 1; j++) {
-          var newRow = (rows[lastRowIndex + j] = []);
+        for (let j = 0; j < diffWithLastRow - 1; j++) {
+          const newRow = (rows[lastRowIndex + j] = []);
           newRow[cell.col - 1] = "";
         }
       }
       lastRowIndex = rowIndex;
 
-      var row = rows[cell.row - 1];
+      let row = rows[cell.row - 1];
       if (!row) {
         row = rows[cell.row - 1] = [];
       }
@@ -161,26 +164,29 @@ export class GSReader implements LineReader {
   static shouldUseWorksheet(selectedSheets, title, index) {
     if (GSReader.isAllSheets(selectedSheets)) {
       return true;
-    } else {
-      var selectedArray = forceArray(selectedSheets);
-      for (var i = 0; i < selectedArray.length; i++) {
-        var a = selectedArray[i];
-
-        if (typeof a == "number" && index == a) {
-          return true;
-        } else if (typeof a == "string" && title == a) {
-          return true;
-        }
-      }
-      return false;
     }
+    const selectedArray = forceArray(selectedSheets);
+    for (let i = 0; i < selectedArray.length; i++) {
+      const a = selectedArray[i];
+
+      if (typeof a === "number" && index == a) {
+        return true;
+      }
+      if (typeof a === "string" && title == a) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 
 class WorksheetReader {
   public _filterSheets;
+
   public _worksheets;
+
   public _index: number;
+
   public _data;
 
   constructor(filterSheets, worksheets) {
@@ -196,10 +202,10 @@ class WorksheetReader {
   }
 
   next(cb) {
-    var self = this;
+    const self = this;
     if (this._index < this._worksheets.length) {
-      var index = this._index++;
-      var currentWorksheet = this._worksheets[index];
+      const index = this._index++;
+      const currentWorksheet = this._worksheets[index];
       if (
         GSReader.shouldUseWorksheet(
           this._filterSheets,
@@ -233,11 +239,11 @@ export class FakeReader implements LineReader {
   }
 
   select(sheets, keyCol, keyVal, cb) {
-    var self = this;
-    var target = [];
+    const self = this;
+    const target = [];
 
     this._array.forEach(function (key) {
-      var v = self._array[key];
+      const v = self._array[key];
 
       target.push(new Line(v[keyCol], v[keyVal]));
     });
