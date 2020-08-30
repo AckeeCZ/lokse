@@ -33,27 +33,25 @@ export class GSReader implements LineReader {
   }
 
   fetchAllCells() {
-    const self = this;
+    if (this._fetchedWorksheets === null) {
+      if (!this._isFetching) {
+        this._isFetching = true;
 
-    if (self._fetchedWorksheets === null) {
-      if (!self._isFetching) {
-        self._isFetching = true;
-
-        self._sheet.getInfo(function (err, data) {
+        this._sheet.getInfo((err, data) => {
           if (err) {
             console.error("Error while fetching the Spreadsheet (" + err + ")");
             console.warn(
               'WARNING! Check that your spreadsheet is "Published" in "File > Publish to the web..."'
             );
-            self._fetchDeferred.reject(err);
+            this._fetchDeferred.reject(err);
           } else {
             const worksheetReader = new WorksheetReader(
-              self._sheetsFilter,
+              this._sheetsFilter,
               data.worksheets
             );
-            worksheetReader.read(function (fetchedWorksheets) {
-              self._fetchedWorksheets = fetchedWorksheets;
-              self._fetchDeferred.resolve(self._fetchedWorksheets);
+            worksheetReader.read((fetchedWorksheets) => {
+              this._fetchedWorksheets = fetchedWorksheets;
+              this._fetchDeferred.resolve(this._fetchedWorksheets);
             });
           }
         });
@@ -61,15 +59,14 @@ export class GSReader implements LineReader {
 
       return this._fetchDeferred.promise;
     }
-    return self._fetchedWorksheets;
+    return this._fetchedWorksheets;
   }
 
   select(keyCol, valCol) {
     const deferred = Q.defer();
-    const self = this;
 
-    Q.when(self.fetchAllCells(), function (worksheets) {
-      const extractedLines = self.extractFromRawData(
+    Q.when(this.fetchAllCells(), (worksheets) => {
+      const extractedLines = this.extractFromRawData(
         worksheets,
         keyCol,
         valCol
@@ -202,7 +199,6 @@ class WorksheetReader {
   }
 
   next(cb) {
-    const self = this;
     if (this._index < this._worksheets.length) {
       const index = this._index++;
       const currentWorksheet = this._worksheets[index];
@@ -213,11 +209,11 @@ class WorksheetReader {
           index
         )
       ) {
-        currentWorksheet.getCells(currentWorksheet.id, function (err, cells) {
+        currentWorksheet.getCells(currentWorksheet.id, (err, cells) => {
           if (!err) {
-            self._data.push(cells);
+            this._data.push(cells);
           }
-          self.next(cb);
+          this.next(cb);
         });
       } else {
         this.next(cb);
@@ -239,11 +235,10 @@ export class FakeReader implements LineReader {
   }
 
   select(sheets, keyCol, keyVal, cb) {
-    const self = this;
     const target = [];
 
-    this._array.forEach(function (key) {
-      const v = self._array[key];
+    this._array.forEach((key) => {
+      const v = this._array[key];
 
       target.push(new Line(v[keyCol], v[keyVal]));
     });

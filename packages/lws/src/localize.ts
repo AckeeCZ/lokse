@@ -39,7 +39,6 @@ class Gs2File {
 
   save(outputPath, opts, cb) {
     console.log("saving " + outputPath);
-    const self = this;
 
     opts = opts || {};
 
@@ -67,10 +66,10 @@ class Gs2File {
       }
     }
 
-    this._reader.select(keyCol, valueCol).then(function (lines) {
+    this._reader.select(keyCol, valueCol).then((lines) => {
       if (lines) {
         const transformer = Transformer[format || "android"];
-        self._writer.write(outputPath, encoding, lines, transformer, opts);
+        this._writer.write(outputPath, encoding, lines, transformer, opts);
       }
 
       if (typeof cb === "function") {
