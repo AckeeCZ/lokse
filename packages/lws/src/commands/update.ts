@@ -48,7 +48,7 @@ export default class Update extends Base {
     // Web
     if (type === "key_web") {
       const translations = cols.split(",");
-      translations.map((item) => {
+      translations.forEach((item) => {
         const filePath = path.join(
           process.cwd(),
           dir,
@@ -64,7 +64,7 @@ export default class Update extends Base {
     // ANDROID
     if (type === "key_android") {
       const translations = cols.split(",");
-      translations.map((item) => {
+      translations.forEach((item) => {
         const filePath = path.join(
           process.cwd(),
           dir,
@@ -82,7 +82,7 @@ export default class Update extends Base {
     // iOS
     if (type === "key_ios") {
       const translations = cols.split(",");
-      translations.map((item) => {
+      translations.forEach((item) => {
         const filePath = path.join(
           process.cwd(),
           dir,

@@ -16,11 +16,11 @@ const writeFileAndCreateDirectoriesSync = function (
   fs.writeFileSync(filepath, content, encoding);
 };
 
-interface IWriter {
+interface Writer {
   write(filePath, encoding, lines, transformer, options?): void;
 }
 
-export class FileWriter implements IWriter {
+export class FileWriter implements Writer {
   write(filePath, encoding, lines, transformer, options) {
     let fileContent = "";
     if (fs.existsSync(filePath)) {
@@ -36,7 +36,7 @@ export class FileWriter implements IWriter {
 
   getTransformedLines(lines, transformer) {
     let valueToInsert = "";
-    const plurals = [];
+    const plurals = {};
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       if (!line.isEmpty()) {
@@ -55,21 +55,21 @@ export class FileWriter implements IWriter {
         }
       }
       if (
-        line.getKey() != "" &&
+        line.getKey() !== "" &&
         !line.isPlural() &&
-        (i != lines.length - 1 || Object.keys(plurals).length)
+        (i !== lines.length - 1 || Object.keys(plurals).length > 0)
       ) {
         valueToInsert += EOL;
       }
     }
 
     let j = 0;
-    for (const plural in plurals) {
+    for (const [key, plural] of Object.entries(plurals)) {
       valueToInsert += transformer.transformPluralsValues(
+        key,
         plural,
-        plurals[plural]
       );
-      if (j != Object.keys(plurals).length - 1) {
+      if (j !== Object.keys(plurals).length - 1) {
         valueToInsert += EOL;
       }
       j++;
@@ -79,6 +79,7 @@ export class FileWriter implements IWriter {
   }
 }
 
-export class FakeWriter implements IWriter {
+/* export class FakeWriter implements Writer {
   write(filePath, encoding, lines, transformer) {}
 }
+ */

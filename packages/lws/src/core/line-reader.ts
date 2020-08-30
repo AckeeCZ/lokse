@@ -13,6 +13,56 @@ const forceArray = function (val) {
   return [val];
 };
 
+class WorksheetReader {
+  public _filterSheets;
+
+  public _worksheets;
+
+  public _index: number;
+
+  public _data;
+
+  constructor(filterSheets, worksheets) {
+    this._filterSheets = filterSheets;
+    this._worksheets = worksheets;
+    this._index = 0;
+
+    this._data = [];
+  }
+
+  read(cb) {
+    this.next(cb);
+  }
+
+  next(cb) {
+    if (this._index < this._worksheets.length) {
+      const index = this._index++;
+      const currentWorksheet = this._worksheets[index];
+      if (
+        // TODO - solve the dependency cycle GSReader -> WorksheetReader -> GSReader
+        // and remove the eslint disable comment  
+        // eslint-disable-next-line no-use-before-define, @typescript-eslint/no-use-before-define
+        GSReader.shouldUseWorksheet(
+          this._filterSheets,
+          currentWorksheet.title,
+          index
+        )
+      ) {
+        currentWorksheet.getCells(currentWorksheet.id, (err, cells) => {
+          if (!err) {
+            this._data.push(cells);
+          }
+          this.next(cb);
+        });
+      } else {
+        this.next(cb);
+      }
+    } else {
+      cb(this._data);
+    }
+  }
+}
+
 export class GSReader implements LineReader {
   public _sheet;
 
@@ -74,7 +124,7 @@ export class GSReader implements LineReader {
       );
       deferred.resolve(extractedLines);
     }).fail(function (error) {
-      // logger.error('Cannot fetch data');
+      logger.error('Cannot fetch data', error);
     });
 
     return deferred.promise;
@@ -137,7 +187,8 @@ export class GSReader implements LineReader {
       const diffWithLastRow = rowIndex - lastRowIndex;
       if (diffWithLastRow > 1) {
         for (let j = 0; j < diffWithLastRow - 1; j++) {
-          const newRow = (rows[lastRowIndex + j] = []);
+          rows[lastRowIndex + j] = [];
+          const newRow = rows[lastRowIndex + j];
           newRow[cell.col - 1] = "";
         }
       }
@@ -145,7 +196,8 @@ export class GSReader implements LineReader {
 
       let row = rows[cell.row - 1];
       if (!row) {
-        row = rows[cell.row - 1] = [];
+        rows[cell.row - 1] = [];
+        row = rows[cell.row - 1];
       }
       row[cell.col - 1] = cell.value;
     }
@@ -175,53 +227,6 @@ export class GSReader implements LineReader {
       }
     }
     return false;
-  }
-}
-
-class WorksheetReader {
-  public _filterSheets;
-
-  public _worksheets;
-
-  public _index: number;
-
-  public _data;
-
-  constructor(filterSheets, worksheets) {
-    this._filterSheets = filterSheets;
-    this._worksheets = worksheets;
-    this._index = 0;
-
-    this._data = [];
-  }
-
-  read(cb) {
-    this.next(cb);
-  }
-
-  next(cb) {
-    if (this._index < this._worksheets.length) {
-      const index = this._index++;
-      const currentWorksheet = this._worksheets[index];
-      if (
-        GSReader.shouldUseWorksheet(
-          this._filterSheets,
-          currentWorksheet.title,
-          index
-        )
-      ) {
-        currentWorksheet.getCells(currentWorksheet.id, (err, cells) => {
-          if (!err) {
-            this._data.push(cells);
-          }
-          this.next(cb);
-        });
-      } else {
-        this.next(cb);
-      }
-    } else {
-      cb(this._data);
-    }
   }
 }
 
