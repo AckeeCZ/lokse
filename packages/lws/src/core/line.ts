@@ -44,7 +44,7 @@ class Line {
   static checkIsComment(val: any): boolean {
     for (let i = 0; i < COMMENT_STARTERS.length; i++) {
       const commentStarter = COMMENT_STARTERS[i];
-      if (val.indexOf(commentStarter) == 0) {
+      if (val.indexOf(commentStarter) === 0) {
         return true;
       }
     }
@@ -70,7 +70,7 @@ class Line {
     for (let i = 0; i < COMMENT_STARTERS.length; i++) {
       const commentStarter = COMMENT_STARTERS[i];
       const index = val.indexOf(commentStarter);
-      if (index == 0) {
+      if (index === 0) {
         let normalized = val.substr(
           commentStarter.length,
           val.length - commentStarter.length

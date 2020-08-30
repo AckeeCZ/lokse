@@ -35,7 +35,7 @@ export class GSReader implements LineReader {
   fetchAllCells() {
     const self = this;
 
-    if (self._fetchedWorksheets == null) {
+    if (self._fetchedWorksheets === null) {
       if (!self._isFetching) {
         self._isFetching = true;
 
@@ -90,7 +90,7 @@ export class GSReader implements LineReader {
         keyCol,
         valCol
       );
-      extractedLines.push.apply(extractedLines, extracted);
+      extractedLines.push(...extracted);
     }
 
     return extractedLines;
@@ -105,16 +105,16 @@ export class GSReader implements LineReader {
     if (headers) {
       let keyIndex = -1;
       let valIndex = -1;
-      for (var i = 0; i < headers.length; i++) {
+      for (let i = 0; i < headers.length; i++) {
         const value = headers[i];
-        if (value == keyCol) {
+        if (value === keyCol) {
           keyIndex = i;
         }
-        if (value == valCol) {
+        if (value === valCol) {
           valIndex = i;
         }
       }
-      for (var i = 1; i < rows.length; i++) {
+      for (let i = 1; i < rows.length; i++) {
         const row = rows[i];
         if (row) {
           const keyValue = row[keyIndex];
@@ -155,7 +155,7 @@ export class GSReader implements LineReader {
   }
 
   static isAllSheets(sheet) {
-    if (!sheet || sheet == "*") {
+    if (!sheet || sheet === "*") {
       return true;
     }
     return false;
@@ -169,10 +169,10 @@ export class GSReader implements LineReader {
     for (let i = 0; i < selectedArray.length; i++) {
       const a = selectedArray[i];
 
-      if (typeof a === "number" && index == a) {
+      if (typeof a === "number" && index === a) {
         return true;
       }
-      if (typeof a === "string" && title == a) {
+      if (typeof a === "string" && title === a) {
         return true;
       }
     }
