@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import Line from "../../src/core/Line";
+import Line from "../../src/core/linee";
 
 describe("Line.isComment", () => {
   it("is false when not comment", () => {

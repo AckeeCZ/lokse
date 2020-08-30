@@ -1,6 +1,6 @@
-import {GSReader} from './core/LineReader';
-import {FileWriter} from './core/Writer';
-import Transformer from './core/Transformer';
+import {GSReader} from './core/line-reader';
+import {FileWriter} from './core/writerr';
+import Transformer from './core/transformerr';
 
 class Gs2File { 
   public _reader: any;

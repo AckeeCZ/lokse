@@ -1,10 +1,10 @@
 import * as assert from "assert";
 import {EOL} from 'os'
-import {FileWriter} from '../../src/core/Writer';
-import Transformer from '../../src/core/Transformer';
+import {FileWriter} from '../../src/core/writerr';
+import Transformer from '../../src/core/transformerr';
 const androidTransformer = Transformer.android;
 const iosTransformer = Transformer.ios;
-import Line from '../../src/core/Line';
+import Line from '../../src/core/linee';
 
 describe('Writer.getTransformedLines', () => {
     it('with android transformer should return xml', () => {
