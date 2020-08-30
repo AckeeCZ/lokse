@@ -4,9 +4,9 @@ import Transformer from "../../src/core/transformer";
 const transformer = Transformer["ios"];
 
 describe("iOSTransformer.transformComment", () => {
-  it('transforms comment', () => {
+  it("transforms comment", () => {
     const result = transformer.transformComment("un commentaire");
-  
+
     assert.equal("// un commentaire", result);
   });
 });

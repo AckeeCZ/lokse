@@ -1,6 +1,6 @@
-import {expect, test} from '@oclif/test'
+import { expect, test } from "@oclif/test";
 
-describe('update', () => {
+describe("update", () => {
   /* test
   .stdout()
   .command(['hello'])
@@ -14,4 +14,4 @@ describe('update', () => {
   .it('runs hello --name jeff', ctx => {
     expect(ctx.stdout).to.contain('hello jeff')
   }) */
-})
+});

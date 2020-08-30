@@ -1,6 +1,7 @@
 {
   "extends": [
     "oclif",
-    "oclif-typescript"
+    "oclif-typescript",
+    "prettier"
   ]
 }

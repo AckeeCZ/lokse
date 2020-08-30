@@ -20,7 +20,9 @@
   "devDependencies": {
     "eslint": "^5.13",
     "eslint-config-oclif": "^3.1",
-    "eslint-config-oclif-typescript": "^0.1"
+    "eslint-config-oclif-typescript": "^0.1",
+    "eslint-config-prettier": "^6.11.0",
+    "prettier": "^2.1.1"
   },
   "scripts": {
     "translate": "node index.js"
