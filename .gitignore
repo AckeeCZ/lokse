@@ -1,1 +1,6 @@
 .idea/
+doc/
+locales/*
+!locales/locales.txt
+node_modules/
+samples/

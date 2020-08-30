@@ -39,18 +39,35 @@ var writeFileAndCreateDirectoriesSync = function (filepath, content, encoding) {
 
 FileWriter.prototype.getTransformedLines = function (lines, transformer) {
     var valueToInsert = '';
+    var plurals = [];
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i];
         if (!line.isEmpty()) {
             if (line.isComment()) {
                 valueToInsert += transformer.transformComment(line.getComment());
             } else {
-                valueToInsert += transformer.transformKeyValue(line.getKey(), line.getValue());
+                if (line.isPlural()) {
+                    if (!plurals[line.getKey()]) {
+                        plurals[line.getKey()] = [];
+                    }
+                    plurals[line.getKey()].push(line);
+                } else {
+                    valueToInsert += transformer.transformKeyValue(line.getKey(), line.getValue());
+                }
             }
         }
-        if (i != lines.length - 1) {
+        if (line.getKey() != '' && !line.isPlural() && (i != lines.length - 1 || Object.keys(plurals).length)) {
             valueToInsert += EOL;
         }
+    }
+
+    var j = 0;
+    for (var plural in plurals) {
+        valueToInsert += transformer.transformPluralsValues(plural, plurals[plural]);
+        if (j != Object.keys(plurals).length - 1) {
+            valueToInsert += EOL;
+        }
+        j++;
     }
 
     return valueToInsert;

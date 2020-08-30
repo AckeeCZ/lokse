@@ -2,41 +2,31 @@
 
 
 ## Installation
-	npm install localize-with-spreadsheet
+	npm install ackee-localize-spreadsheet-sdk -g
+
+## Usage
+
+ackee-localize-spreadsheet-sdk [options]
+
+| Shortcut   |      Option      |  Description |
+|----------|:-------------:|------:|
+| -i | --id [value] | Spreadsheet ID |
+| -d | --dir [value] | Output folder |
+| -c | --cols [value] | Translation collumns |
+| -t | --type [value] | Type (key_web, key_android, key_ios) |
+| -h | --help | Output usage information |
 
 ## Example
-Given a Google Spreadsheet like this:  
-![Spreadsheet example](https://github.com/xavierha/localize-with-spreadsheet/raw/master/doc/spreadsheet-example.png)
+### Use configuration file '.ackeeconfig.json' and run
+    ackee-localize-spreadsheet-sdk
 
-The tool fetch the spreadsheet and write the result to a file in the Android or iOS format:
-
-![Result android](https://github.com/xavierha/localize-with-spreadsheet/raw/master/doc/result-android.png) ![Result iOS](https://github.com/xavierha/localize-with-spreadsheet/raw/master/doc/result-ios.png)
-
-Create a file update-localization.js
-
-	var Localize = require("localize-with-spreadsheet");
-    var transformer = Localize.fromGoogleSpreadsheet("0Aq6WlQdq71FydDZlaWdmMEUtc2tUb1k2cHRBS2hzd2c", '*');
-    transformer.setKeyCol('KEY');
-
-    transformer.save("values/strings.xml", { valueCol: "NL", format: "android" });
-    transformer.save("values-fr/strings.xml", { valueCol: "FR", format: "android" });
-
-    transformer.save("nl.lproj/Localizable.strings", { valueCol: "NL", format: "ios" });
-    transformer.save("fr.lproj/Localizable.strings", { valueCol: "FR", format: "ios" });
-
-Run it with
-
-    node update-localization.js
-
-## Advanced
-You can filter the worksheets to include with the second parameter of 'fromGoogleSpreadsheet'
-Ex:
-
-    Localize.fromGoogleSpreadsheet("<Key>", '*');
-    Localize.fromGoogleSpreadsheet("<Key>", ['HomeScreen, 'ContactScreen']);
-    Localize.fromGoogleSpreadsheet("<Key>", [0, 2]);
+### or use flags 
+    ackee-localize-spreadsheet-sdk -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales/ -c cz,en,fr -t key_web
 
 ## Notes
-- The script will preserve everything that is above the tags: < !-- AUTO-GENERATED --> or // AUTO-GENERATED
 - Your spreadsheet should be "Published" for this to work
 - You need to have git installed for the installation
+
+Jakub Baierl & Jiří Šmolík & Lukáš Kočí
+
+Fork of <a href="https://github.com/xavierha/localize-with-spreadsheet" target="_blank">https://github.com/xavierha/localize-with-spreadsheet</a>
