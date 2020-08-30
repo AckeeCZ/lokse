@@ -3,9 +3,19 @@ const PLURAL_KEY_RE = /.+##\{(zero|one|two|few|many|other)\}/;
 const PLURAL_POSTFIX_RE = /##\{(zero|one|two|few|many|other)\}/;
 
 class Line {
-    constructor(key, value) {
+    public _key: string;
+
+    public _pluralKey: string;
+
+    public _isComment: boolean;
+
+    public _isPlural: boolean;
+
+    public _value: string;
+
+    constructor(key: string|null = '', value: string|null = '') {
         if (!key) {
-            key = '';
+            key = ''
         }
         key = key.toString();
 
@@ -31,7 +41,7 @@ class Line {
         this._value = value || '';
     }
 
-    static checkIsComment(val) {
+    static checkIsComment(val: any): boolean {
         for (var i = 0; i < COMMENT_STARTERS.length; i++) {
             var commentStarter = COMMENT_STARTERS[i];
             if (val.indexOf(commentStarter) == 0) {
@@ -41,7 +51,7 @@ class Line {
         return false;
     }
 
-    static checkIsPlural = function(val) {
+    static checkIsPlural = function(val: any): boolean {
         if (val.match(PLURAL_KEY_RE)) {
             return true;
         }

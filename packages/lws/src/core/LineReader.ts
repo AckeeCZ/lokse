@@ -14,6 +14,16 @@ const forceArray = function (val) {
   
 
 export class GSReader {    
+    public _sheet;
+
+    public _sheetsFilter;
+
+    public _fetchDeferred;
+
+    public _isFetching;
+
+    public _fetchedWorksheets;
+
     constructor(spreadsheetKey, sheetsFilter) {
         this._sheet = new GoogleSpreadsheet(spreadsheetKey);
         this._sheetsFilter = sheetsFilter;
@@ -165,6 +175,11 @@ export class GSReader {
 }
 
 class WorksheetReader{ 
+    public _filterSheets;
+    public _worksheets;
+    public _index: number;
+    public _data;
+
     constructor(filterSheets, worksheets) {
         this._filterSheets = filterSheets;
         this._worksheets = worksheets;
@@ -204,7 +219,11 @@ class WorksheetReader{
     }
 }
 
-export export class FakeReader{ 
+export class FakeReader{ 
+    public _array;
+
+    public _index: number;
+    
     constructor(array) {
         this._array = array;
         this._index = 0;

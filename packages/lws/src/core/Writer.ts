@@ -17,14 +17,14 @@ const writeFileAndCreateDirectoriesSync = function (
 };
 
 interface IWriter {
-  write(filePath, lines, transformer): void;
+  write(filePath, encoding, lines, transformer, options?): void;
 }
 
 export class FileWriter implements IWriter {
   write(filePath, encoding, lines, transformer, options) {
     var fileContent = "";
     if (fs.existsSync(filePath)) {
-      fileContent = fs.readFileSync(filePath, encoding);
+      fileContent = fs.readFileSync(filePath, encoding).toString();
     }
 
     var valueToInsert = this.getTransformedLines(lines, transformer);
@@ -82,5 +82,5 @@ export class FileWriter implements IWriter {
 }
 
 export class FakeWriter implements IWriter {
-  write(filePath, lines, transformer) {}
+  write(filePath, encoding, lines, transformer) {}
 }
