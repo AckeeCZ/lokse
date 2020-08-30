@@ -28,5 +28,10 @@
   "scripts": {
     "translate": "node index.js"
   },
-  "readmeFilename": "README.md"
+  "readmeFilename": "README.md",
+  "private": true,
+  "workspaces": [
+    "example",
+    "packages/*"
+  ]
 }
