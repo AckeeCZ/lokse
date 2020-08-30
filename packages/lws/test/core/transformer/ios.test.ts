@@ -1,7 +1,6 @@
 import { EOL } from "os";
 import * as assert from "assert";
-import Transformer from "../../src/core/transformer";
-const transformer = Transformer.ios;
+import transformer from "../../../src/core/transformer/ios";
 
 describe("iOSTransformer.transformComment", () => {
   it("transforms comment", () => {

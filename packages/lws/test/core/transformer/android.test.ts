@@ -1,7 +1,6 @@
 import { EOL } from "os";
 import * as assert from "assert";
-import Transformer from "../../src/core/transformer";
-const transformer = Transformer.android;
+import transformer from "../../../src/core/transformer/android";
 
 describe("AndroidTransformer.transformComment", () => {
   it("transforms comment", () => {
