@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { GSReader } from "../../src/core/LineReader";
+import { GSReader } from "../../src/core/line-reader";
 
 describe("GSReader.shouldUseWorksheet", () => {
   it("should use worksheet when empty or null or start", () => {

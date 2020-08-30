@@ -1,9 +1,9 @@
-import Line from "./linee";
+import Line from "./line";
 import * as GoogleSpreadsheet from "google-spreadsheet";
 import * as Q from "q";
 
 interface LineReader {
-  select:(sheets, keyCol, valCol, cb) => Promise<any>|undefined;
+  select:(sheets, keyCol, valCol, cb) => Promise<any>|void;
 }
 
 const forceArray = function (val) {
