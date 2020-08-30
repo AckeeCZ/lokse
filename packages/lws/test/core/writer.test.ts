@@ -18,7 +18,7 @@ describe("Writer.getTransformedLines", () => {
       androidTransformer
     );
 
-    assert.equal(
+    assert.strictEqual(
       '    <string name="key">value</string>' +
         EOL +
         "    <!-- commentaire -->" +
@@ -39,7 +39,7 @@ describe("Writer.getTransformedLines", () => {
       iosTransformer
     );
 
-    assert.equal(
+    assert.strictEqual(
       '"key" = "value";' + EOL + "// commentaire" + EOL + '"key2" = "value2";',
       result
     );

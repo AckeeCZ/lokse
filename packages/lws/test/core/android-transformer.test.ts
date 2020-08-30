@@ -7,19 +7,19 @@ describe("AndroidTransformer.transformComment", () => {
   it("transforms comment", () => {
     const result = transformer.transformComment("un commentaire");
 
-    assert.equal("    <!-- un commentaire -->", result);
+    assert.strictEqual("    <!-- un commentaire -->", result);
   });
 });
 
 describe("AndroidTransformer.transformKeyValue", () => {
   it("transforms key value", () => {
     const line = transformer.transformKeyValue("ma_cle", "La valeur");
-    assert.equal('    <string name="ma_cle">La valeur</string>', line);
+    assert.strictEqual('    <string name="ma_cle">La valeur</string>', line);
   });
 
   it("transforms multiple format", () => {
     const line = transformer.transformKeyValue("ma_cle", "La valeur %s et %s");
-    assert.equal(
+    assert.strictEqual(
       '    <string name="ma_cle">La valeur %1$s et %2$s</string>',
       line
     );
@@ -27,17 +27,17 @@ describe("AndroidTransformer.transformKeyValue", () => {
 
   it("transforms single format", () => {
     const line = transformer.transformKeyValue("ma_cle", "La valeur %s");
-    assert.equal('    <string name="ma_cle">La valeur %1$s</string>', line);
+    assert.strictEqual('    <string name="ma_cle">La valeur %1$s</string>', line);
   });
 
   it("escapes amp", () => {
     const line = transformer.transformKeyValue("ma_cle", "Ma & valeur");
-    assert.equal('    <string name="ma_cle">Ma &amp; valeur</string>', line);
+    assert.strictEqual('    <string name="ma_cle">Ma &amp; valeur</string>', line);
   });
 
   it("replaces three point with ellipsis character", () => {
     const line = transformer.transformKeyValue("ma_cle", "Ma valeur...");
-    assert.equal('    <string name="ma_cle">Ma valeur&#8230;</string>', line);
+    assert.strictEqual('    <string name="ma_cle">Ma valeur&#8230;</string>', line);
   });
 
   it("replaces three point in the middle with ellipsis character", () => {
@@ -45,7 +45,7 @@ describe("AndroidTransformer.transformKeyValue", () => {
       "ma_cle",
       "Ma valeur...à remplacer"
     );
-    assert.equal(
+    assert.strictEqual(
       '    <string name="ma_cle">Ma valeur&#8230;à remplacer</string>',
       line
     );
@@ -53,7 +53,7 @@ describe("AndroidTransformer.transformKeyValue", () => {
 
   it("should not replaces four point with ellipsis character", () => {
     const line = transformer.transformKeyValue("ma_cle", "Ma valeur....");
-    assert.equal('    <string name="ma_cle">Ma valeur....</string>', line);
+    assert.strictEqual('    <string name="ma_cle">Ma valeur....</string>', line);
   });
 });
 
@@ -61,7 +61,7 @@ describe("AndroidTransformer.insert", () => {
   it("should create resources tag when empty", () => {
     const xmlHeader = '<?xml version="1.0" encoding="utf-8"?>';
     const result = transformer.insert("", "à insérer");
-    assert.equal(
+    assert.strictEqual(
       xmlHeader +
         EOL +
         "<resources>" +
@@ -80,7 +80,7 @@ describe("AndroidTransformer.insert", () => {
       "<resources>" + EOL + "aa" + EOL + "</resources>",
       "à insérer"
     );
-    assert.equal(
+    assert.strictEqual(
       "<resources>" +
         EOL +
         "aa" +
@@ -107,7 +107,7 @@ describe("AndroidTransformer.insert", () => {
         "</resources>",
       "à insérer"
     );
-    assert.equal(
+    assert.strictEqual(
       "<resources>" +
         EOL +
         "aa" +
@@ -133,6 +133,6 @@ describe("AndroidTransformer.insert", () => {
       EOL +
       "</resources>";
     const result = transformer.insert(before, "before");
-    assert.equal(before, result);
+    assert.strictEqual(before, result);
   });
 });

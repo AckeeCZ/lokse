@@ -3,23 +3,23 @@ import { GSReader } from "../../src/core/line-reader";
 
 describe("GSReader.shouldUseWorksheet", () => {
   it("should use worksheet when empty or null or start", () => {
-    assert.equal(true, GSReader.shouldUseWorksheet("", "LeTitre", 1));
-    assert.equal(true, GSReader.shouldUseWorksheet(null, "LeTitre", 1));
-    assert.equal(true, GSReader.shouldUseWorksheet("*", "LeTitre", 1));
-    assert.equal(false, GSReader.shouldUseWorksheet("a", "LeTitre", 1));
+    assert.strictEqual(true, GSReader.shouldUseWorksheet("", "LeTitre", 1));
+    assert.strictEqual(true, GSReader.shouldUseWorksheet(null, "LeTitre", 1));
+    assert.strictEqual(true, GSReader.shouldUseWorksheet("*", "LeTitre", 1));
+    assert.strictEqual(false, GSReader.shouldUseWorksheet("a", "LeTitre", 1));
   });
 
   it("should not use worksheet when title not specified", () => {
-    assert.equal(false, GSReader.shouldUseWorksheet(["a", "b"], "LeTitre", 1));
-    assert.equal(false, GSReader.shouldUseWorksheet(["a", 2], "LeTitre", 1));
+    assert.strictEqual(false, GSReader.shouldUseWorksheet(["a", "b"], "LeTitre", 1));
+    assert.strictEqual(false, GSReader.shouldUseWorksheet(["a", 2], "LeTitre", 1));
   });
 
   it("should use worksheet when title or index specified", () => {
-    assert.equal(
+    assert.strictEqual(
       true,
       GSReader.shouldUseWorksheet(["a", "LeTitre"], "LeTitre", 1)
     );
-    assert.equal(true, GSReader.shouldUseWorksheet(["a", 1], "LeTitre", 1));
+    assert.strictEqual(true, GSReader.shouldUseWorksheet(["a", 1], "LeTitre", 1));
   });
 });
 
@@ -44,12 +44,12 @@ describe("GSReader.extractFromWorksheet", () => {
 
     const result = reader.extractFromWorksheet(rawWorksheet, "Key", "Value_fr");
 
-    assert.equal(6, result.length);
-    assert.equal("MaClé1", result[0].getKey());
-    assert.equal("La valeur 1", result[0].getValue());
+    assert.strictEqual(6, result.length);
+    assert.strictEqual("MaClé1", result[0].getKey());
+    assert.strictEqual("La valeur 1", result[0].getValue());
 
-    assert.equal(true, result[2].isComment());
-    assert.equal(true, result[4].isEmpty());
+    assert.strictEqual(true, result[2].isComment());
+    assert.strictEqual(true, result[4].isEmpty());
   });
 
   it("should still work when val column doesnt exist ", () => {
@@ -66,11 +66,11 @@ describe("GSReader.extractFromWorksheet", () => {
 
     const result = reader.extractFromWorksheet(rawWorksheet, "Key", "NotExist");
 
-    assert.equal(1, result.length);
-    assert.equal("MaClé1", result[0].getKey());
-    assert.equal("", result[0].getValue());
+    assert.strictEqual(1, result.length);
+    assert.strictEqual("MaClé1", result[0].getKey());
+    assert.strictEqual("", result[0].getValue());
 
-    assert.equal(false, result[0].isComment());
+    assert.strictEqual(false, result[0].isComment());
   });
 
   it("should keep empty lines", () => {
@@ -87,8 +87,8 @@ describe("GSReader.extractFromWorksheet", () => {
 
     const result = reader.extractFromWorksheet(rawWorksheet, "Key", "Value_fr");
 
-    assert.equal(2, result.length);
-    assert.equal(true, result[0].isEmpty());
-    assert.equal(false, result[1].isEmpty());
+    assert.strictEqual(2, result.length);
+    assert.strictEqual(true, result[0].isEmpty());
+    assert.strictEqual(false, result[1].isEmpty());
   });
 });
