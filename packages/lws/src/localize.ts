@@ -38,7 +38,7 @@ class Gs2File {
     this._defaultEncoding = encoding;
   }
 
-  save(outputPath, opts, cb) {
+  save(outputPath: string, opts, cb?: () => void) {
     const spinner = ora({
       text: `Saving ${outputPath}`,
       spinner: "dots",

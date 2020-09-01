@@ -1,19 +1,21 @@
 import { Command } from "@oclif/command";
+import { cosmiconfig } from "cosmiconfig";
+import { NAME } from './constants';
 
-const path = require("path");
-const Ackeefile = require(path.join(process.cwd(), ".ackeeconfig"));
+const explorer = cosmiconfig(NAME);
 
 type ConfigType = {
   sheet_id?: string;
   dir?: string;
-  cols?: string;
-  type?: string;
+  cols?: string[];
+  type?: "key_web" | "key_android" | "key_ios";
 };
 
 export default abstract class Base extends Command {
-  static config: null | ConfigType;
+  protected conf: undefined | null | ConfigType;
 
   async init() {
-    this.config = Ackeefile;
+    const result = await explorer.search();
+    this.conf = result?.config;
   }
 }

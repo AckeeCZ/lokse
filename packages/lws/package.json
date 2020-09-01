@@ -11,6 +11,7 @@
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
+    "cosmiconfig": "^7.0.0",
     "google-spreadsheet": "2.0.3",
     "mkpath": "0.1.0",
     "ora": "^5.0.0",

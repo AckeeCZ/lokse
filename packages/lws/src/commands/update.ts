@@ -1,14 +1,19 @@
 import * as path from "path";
 import { flags } from "@oclif/command";
 import Base from "../base";
-import { get } from "lodash";
 import Localize from "../localize";
+
+class IncorrectFlagValue extends Error {}
+
+class MissingFlagValue extends Error {}
+
+const types = ["key_web", "key_android", "key_ios"];
 
 export default class Update extends Base {
   static description = "updates localization files";
 
   static examples = [
-    "$ lws update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales/ -c cz,en,fr",
+    "$ lws update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -c cz,en,fr -t key_web",
   ];
 
   static flags = {
@@ -20,80 +25,79 @@ export default class Update extends Base {
       name: "cols",
       description: "Translation columns",
     }),
-    type: flags.string({
+    type: flags.enum({
       char: "t",
       name: "type",
-      description: "Type (key_web, key_android, key_ios)",
+      options: types,
+      description: `Type (${types.join(", ")})`,
     }),
-    // flag with no value (-f, --force)
-    // force: flags.boolean({char: 'f'}),
   };
-
-  static args = [{ name: "file" }];
 
   async run() {
     const { flags } = this.parse(Update);
 
-    const sheetID =
-      flags.id ?? get(this.config, "localization.sheet_id", false);
-    const dir = flags.dir ?? get(this.config, "localization.dir", false);
-    const cols = flags.cols ?? get(this.config, "localization.cols", false);
-    const type = flags.type ?? get(this.config, "localization.type", false);
+    const sheetId = flags.id ?? this.conf?.sheet_id;
+    const dir = flags.dir ?? this.conf?.dir;
+    const cols = flags.cols?.split(",") ?? this.conf?.cols;
+    const type = flags.type ?? this.conf?.type;
 
-    const transformer = Localize.fromGoogleSpreadsheet(sheetID, "*");
+    // TODO: polish error messages
+    if (!sheetId) {
+      throw new MissingFlagValue("Sheet id is required to update translations");
+    }
+
+    if (!dir) {
+      throw new MissingFlagValue("Output directory is required");
+    }
+
+    if (!Array.isArray(cols)) {
+      throw new IncorrectFlagValue(
+        `Translation columns have to be list of languages, but ${cols} given`
+      );
+    }
+
+    if (!types.includes(type)) {
+      throw new IncorrectFlagValue(
+        `Type has to be one of ${types.join(", ")}, but ${type} given`
+      );
+    }
+
+    const transformer = Localize.fromGoogleSpreadsheet(sheetId, "*");
 
     // Key for web
     transformer.setKeyCol(type);
 
-    // Web
-    if (type === "key_web") {
-      const translations = cols.split(",");
-      translations.forEach((item) => {
-        const filePath = path.join(
-          process.cwd(),
-          dir,
-          item.toLowerCase() + ".json"
-        );
-        transformer.save(filePath, {
-          valueCol: item.toUpperCase(),
-          format: "web",
-        });
-      });
+    let fileName: (item: string) => string;
+    let format: string;
+
+    switch (type) {
+      // Web
+      case "key_web": {
+        format = "web";
+        fileName = (item) => item.toLowerCase() + ".json";
+        break;
+      }
+      // ANDROID
+      case "key_android": {
+        format = "android";
+        fileName = (item) => `values-${item.toLowerCase()}strings.xml`;
+        break;
+      }
+      case "key_ios": {
+        format = "ios";
+        fileName = (item) => `${item.toLowerCase()}.lproj/Localizable.strings`;
+        break;
+      }
+      default:
+        break;
     }
 
-    // ANDROID
-    if (type === "key_android") {
-      const translations = cols.split(",");
-      translations.forEach((item) => {
-        const filePath = path.join(
-          process.cwd(),
-          dir,
-          "values-" + item.toLowerCase(),
-          "strings.xml"
-        );
-        // Android - support <plurals> tag
-        transformer.save(filePath, {
-          valueCol: item.toUpperCase(),
-          format: "android",
-        });
+    cols.forEach((item) => {
+      const filePath = path.join(process.cwd(), dir, fileName(item));
+      transformer.save(filePath, {
+        valueCol: item.toUpperCase(),
+        format,
       });
-    }
-
-    // iOS
-    if (type === "key_ios") {
-      const translations = cols.split(",");
-      translations.forEach((item) => {
-        const filePath = path.join(
-          process.cwd(),
-          dir,
-          item.toLowerCase() + ".lproj",
-          "Localizable.strings"
-        );
-        transformer.save(filePath, {
-          valueCol: item.toUpperCase(),
-          format: "ios",
-        });
-      });
-    }
+    });
   }
 }
