@@ -41,6 +41,7 @@ export const dartTransformer: Transformer = {
 
     return output;
   },
+  getFileName: () => /* TODO */ "",
 };
 
 export const dartTemplateTransformer: Transformer = {
@@ -99,4 +100,5 @@ export const dartTemplateTransformer: Transformer = {
 
     return output;
   },
+  getFileName: () => /* TODO */ "",
 };

@@ -28,6 +28,7 @@ const iOSTransformer: Transformer = {
 
     return output;
   },
+  getFileName: (item) => `${item.toLowerCase()}.lproj/Localizable.strings`,
 };
 
 export default iOSTransformer;

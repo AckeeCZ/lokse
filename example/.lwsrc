@@ -1,10 +1,10 @@
 {
   "sheet_id": "1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk",
-  "dir": "locales/",
-  "cols": [
+  "dir": "locales",
+  "languages": [
     "cz",
     "en",
     "fr"
   ],
-  "type": "key_web"
+  "column": "key_web"
 }

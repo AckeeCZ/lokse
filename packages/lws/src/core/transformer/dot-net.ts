@@ -90,6 +90,7 @@ const dotNetTransformer: Transformer = {
     // TODO: use auto-generated tag
     return dotNetHeader + EOL + newValues + "</root>";
   },
+  getFileName: () => /* TODO */ "",
 };
 
 export default dotNetTransformer;

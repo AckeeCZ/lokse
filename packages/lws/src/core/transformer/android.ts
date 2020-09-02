@@ -97,6 +97,7 @@ const androidTransformer: Transformer = {
 
     return output;
   },
+  getFileName: (item) => `values-${item.toLowerCase()}strings.xml`,
 };
 
 export default androidTransformer;

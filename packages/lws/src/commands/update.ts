@@ -1,35 +1,47 @@
 import * as path from "path";
 import { flags } from "@oclif/command";
+
 import Base from "../base";
 import Localize from "../localize";
+import { OutputFormat } from "../constants";
+import Transformer from "../core/transformer";
 
 class IncorrectFlagValue extends Error {}
 
 class MissingFlagValue extends Error {}
 
-const types = ["key_web", "key_android", "key_ios"];
+const outputFormats = Object.values(OutputFormat);
+const defaultFormat = OutputFormat.JSON;
 
 export default class Update extends Base {
   static description = "updates localization files";
 
   static examples = [
-    "$ lws update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -c cz,en,fr -t key_web",
+    "$ lws update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web",
   ];
 
   static flags = {
     help: flags.help({ char: "h" }),
     id: flags.string({ char: "i", name: "id", description: "Spreadsheet ID" }),
     dir: flags.string({ char: "d", name: "dir", description: "Output folder" }),
-    cols: flags.string({
-      char: "c",
-      name: "cols",
-      description: "Translation columns",
+    languages: flags.string({
+      char: "l",
+      name: "languages",
+      description:
+        "Translation columns languages. Multiple values are comma separated. For example cs,en,fr",
     }),
-    type: flags.enum({
-      char: "t",
-      name: "type",
-      options: types,
-      description: `Type (${types.join(", ")})`,
+    col: flags.string({
+      char: "c",
+      name: "col",
+      description: "Column containing translations keys. For example key_web.",
+    }),
+    format: flags.enum({
+      char: "f",
+      name: "format",
+      options: outputFormats,
+      description: `Output format. One of ${outputFormats.join(
+        ", "
+      )}. Default is ${defaultFormat}.`,
     }),
   };
 
@@ -38,8 +50,9 @@ export default class Update extends Base {
 
     const sheetId = flags.id ?? this.conf?.sheet_id;
     const dir = flags.dir ?? this.conf?.dir;
-    const cols = flags.cols?.split(",") ?? this.conf?.cols;
-    const type = flags.type ?? this.conf?.type;
+    const languages = flags.languages?.split(",") ?? this.conf?.languages;
+    const column = flags.col?.split(",") ?? this.conf?.column;
+    const format = flags.format ?? this.conf?.format ?? defaultFormat;
 
     // TODO: polish error messages
     if (!sheetId) {
@@ -50,52 +63,38 @@ export default class Update extends Base {
       throw new MissingFlagValue("Output directory is required");
     }
 
-    if (!Array.isArray(cols)) {
+    if (!column) {
+      throw new MissingFlagValue(`Keys column has to be defined!`);
+    }
+
+    if (!Array.isArray(languages)) {
       throw new IncorrectFlagValue(
-        `Translation columns have to be list of languages, but ${cols} given`
+        `Translation columns have to be list of languages, but ${languages} given`
       );
     }
 
-    if (!types.includes(type)) {
+    if (!outputFormats.includes(format)) {
       throw new IncorrectFlagValue(
-        `Type has to be one of ${types.join(", ")}, but ${type} given`
+        `Format has to be one of ${outputFormats.join(
+          ", "
+        )}, but ${format} given`
       );
     }
 
+    const outputTransformer = Transformer[format];
     const transformer = Localize.fromGoogleSpreadsheet(sheetId, "*");
 
     // Key for web
-    transformer.setKeyCol(type);
+    transformer.setKeyCol(column);
 
-    let fileName: (item: string) => string;
-    let format: string;
-
-    switch (type) {
-      // Web
-      case "key_web": {
-        format = "web";
-        fileName = (item) => item.toLowerCase() + ".json";
-        break;
-      }
-      // ANDROID
-      case "key_android": {
-        format = "android";
-        fileName = (item) => `values-${item.toLowerCase()}strings.xml`;
-        break;
-      }
-      case "key_ios": {
-        format = "ios";
-        fileName = (item) => `${item.toLowerCase()}.lproj/Localizable.strings`;
-        break;
-      }
-      default:
-        break;
-    }
-
-    cols.forEach((item) => {
-      const filePath = path.join(process.cwd(), dir, fileName(item));
+    languages.forEach((language) => {
+      const filePath = path.join(
+        process.cwd(),
+        dir,
+        outputTransformer.getFileName(language)
+      );
       transformer.save(filePath, {
-        valueCol: item.toUpperCase(),
+        valueCol: language.toUpperCase(),
         format,
       });
     });

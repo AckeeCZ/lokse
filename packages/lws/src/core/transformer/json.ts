@@ -20,6 +20,7 @@ const jsonTransformer: Transformer = {
 
     return output;
   },
+  getFileName: (item) => item.toLowerCase() + ".json",
 };
 
 export default jsonTransformer;

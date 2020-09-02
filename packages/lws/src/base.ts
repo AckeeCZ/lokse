@@ -1,14 +1,15 @@
 import { Command } from "@oclif/command";
 import { cosmiconfig } from "cosmiconfig";
-import { NAME } from './constants';
+import { NAME, OutputFormat } from './constants';
 
 const explorer = cosmiconfig(NAME);
 
 type ConfigType = {
   sheet_id?: string;
   dir?: string;
-  cols?: string[];
-  type?: "key_web" | "key_android" | "key_ios";
+  languages?: string[];
+  column?: string;
+  format?: typeof OutputFormat;
 };
 
 export default abstract class Base extends Command {
