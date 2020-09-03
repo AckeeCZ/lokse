@@ -13,7 +13,7 @@ describe("Writer.getTransformedLines", () => {
     const result = writer.getTransformedLines(
       [
         new Line("key", "value"),
-        new Line("// commentaire"),
+        new Line("// commentaire", null),
         new Line("key2", "value2"),
       ],
       androidTransformer
@@ -34,7 +34,7 @@ describe("Writer.getTransformedLines", () => {
     const result = writer.getTransformedLines(
       [
         new Line("key", "value"),
-        new Line("# commentaire"),
+        new Line("# commentaire", null),
         new Line("key2", "value2"),
       ],
       iosTransformer

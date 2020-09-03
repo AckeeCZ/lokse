@@ -1,49 +1,52 @@
+/* eslint-disable unicorn/filename-case */
 const COMMENT_STARTERS = ["//", "#"];
 const PLURAL_KEY_RE = /.+##\{(zero|one|two|few|many|other)\}/;
 const PLURAL_POSTFIX_RE = /##\{(zero|one|two|few|many|other)\}/;
 
+enum Type {
+  COMMENT,
+  PLURAL,
+  TEXT,
+}
+
 class Line {
-  public _key: string;
+  public key: string;
 
-  public _pluralKey: string;
+  private pluralKey: string;
 
-  public _isComment: boolean;
+  private type: Type;
 
-  public _isPlural: boolean;
+  public value: string;
 
-  public _value: string;
+  constructor(key: string | null, value: string | null) {
+    key = key?.toString() ?? "";
 
-  constructor(key: string | null = "", value: string | null = "") {
-    if (!key) {
-      key = "";
+    if (Line.checkIsComment(key)) {
+      this.type = Type.COMMENT;
+    } else if (Line.checkIsPlural(key)) {
+      this.type = Type.PLURAL;
+    } else {
+      this.type = Type.TEXT;
     }
-    key = key.toString();
 
-    const isComment = Line.checkIsComment(key);
-
-    if (isComment) {
+    if (this.isComment()) {
       key = Line.normalizeComment(key);
     }
 
-    const isPlural = Line.checkIsPlural(key);
-
-    if (isPlural) {
+    if (this.isPlural()) {
       const keys = Line.parseKeysFromPlural(key);
-      this._key = keys[0];
-      this._pluralKey = keys[1];
+      this.key = keys[0];
+      this.pluralKey = keys[1];
     } else {
-      this._key = key || "";
-      this._pluralKey = "";
+      this.key = key;
+      this.pluralKey = "";
     }
 
-    this._isComment = isComment;
-    this._isPlural = isPlural;
-    this._value = value || "";
+    this.value = value ?? "";
   }
 
   static checkIsComment(val: any): boolean {
-    for (let i = 0; i < COMMENT_STARTERS.length; i++) {
-      const commentStarter = COMMENT_STARTERS[i];
+    for (const commentStarter of COMMENT_STARTERS) {
       if (val.indexOf(commentStarter) === 0) {
         return true;
       }
@@ -58,7 +61,7 @@ class Line {
     return false;
   };
 
-  static parseKeysFromPlural = function (val) {
+  static parseKeysFromPlural = function (val: string) {
     const match = val.match(PLURAL_POSTFIX_RE);
     if (match) {
       return [val.replace(match[0], ""), match[1]];
@@ -66,48 +69,40 @@ class Line {
     return [val, ""];
   };
 
-  static normalizeComment(val) {
-    for (let i = 0; i < COMMENT_STARTERS.length; i++) {
-      const commentStarter = COMMENT_STARTERS[i];
+  static normalizeComment(val: string) {
+    for (const commentStarter of COMMENT_STARTERS) {
       const index = val.indexOf(commentStarter);
+
       if (index === 0) {
-        let normalized = val.substr(
+        const normalized = val.substr(
           commentStarter.length,
           val.length - commentStarter.length
         );
-        normalized = normalized.trim();
-        return normalized;
+
+        return normalized.trim();
       }
     }
     return val;
   }
 
   isEmpty() {
-    return !this._isComment && !this._key;
+    return !this.isComment() && !this.key;
   }
 
   isComment() {
-    return this._isComment;
+    return this.type === Type.COMMENT;
   }
 
   isPlural() {
-    return this._isPlural;
+    return this.type === Type.PLURAL;
   }
 
   getComment() {
-    return this._key;
-  }
-
-  getKey() {
-    return this._key;
+    return this.key;
   }
 
   getPluralKey() {
-    return this._pluralKey;
-  }
-
-  getValue() {
-    return this._value;
+    return this.pluralKey;
   }
 }
 

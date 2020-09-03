@@ -42,14 +42,14 @@ describe("GSReader.extractFromWorksheet", () => {
       { value: "# un autre commentaire", row: 7, col: 1 },
     ];
 
-    const result = reader.extractFromWorksheet(rawWorksheet, "Key", "Value_fr");
+    const lines = reader.extractFromWorksheet(rawWorksheet, "Key", "Value_fr");
 
-    assert.strictEqual(6, result.length);
-    assert.strictEqual("MaClé1", result[0].getKey());
-    assert.strictEqual("La valeur 1", result[0].getValue());
+    assert.strictEqual(6, lines.length);
+    assert.strictEqual("MaClé1", lines[0].key);
+    assert.strictEqual("La valeur 1", lines[0].value);
 
-    assert.strictEqual(true, result[2].isComment());
-    assert.strictEqual(true, result[4].isEmpty());
+    assert.strictEqual(true, lines[2].isComment());
+    assert.strictEqual(true, lines[4].isEmpty());
   });
 
   it("should still work when val column doesnt exist ", () => {
@@ -67,8 +67,8 @@ describe("GSReader.extractFromWorksheet", () => {
     const result = reader.extractFromWorksheet(rawWorksheet, "Key", "NotExist");
 
     assert.strictEqual(1, result.length);
-    assert.strictEqual("MaClé1", result[0].getKey());
-    assert.strictEqual("", result[0].getValue());
+    assert.strictEqual("MaClé1", result[0].key);
+    assert.strictEqual("", result[0].value);
 
     assert.strictEqual(false, result[0].isComment());
   });

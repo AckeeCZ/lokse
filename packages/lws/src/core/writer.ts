@@ -1,74 +1,70 @@
-import * as fs from "fs";
 import { EOL } from "os";
+import * as Promise from "bluebird";
+import * as path from "path";
 
 import Transformer from "./transformer";
+import Line from "./Line";
 
-// https://gist.github.com/jrajav/4140206
-const writeFileAndCreateDirectoriesSync = function (
-  filepath: string,
-  content: string,
-  encoding: string
-) {
-  const mkpath = require("mkpath");
-  const path = require("path");
-
-  const dirname = path.dirname(filepath);
-  mkpath.sync(dirname);
-
-  fs.writeFileSync(filepath, content, encoding);
-};
+const fs = Promise.promisifyAll(require("fs"));
+type MkpathAsync = (dirname: string) => Promise<void>;
+const mkpathAsync: MkpathAsync = Promise.promisify(require("mkpath"));
 
 export class FileWriter {
-  write(filePath: string, lines, transformer: Transformer, encoding = "utf8") {
+  async write(
+    filePath: string,
+    lines: Line[],
+    transformer: Transformer,
+    encoding = "utf8"
+  ) {
     let fileContent = "";
-    if (fs.existsSync(filePath)) {
-      fileContent = fs.readFileSync(filePath, encoding).toString();
+    const outputFileExists = await fs.accessAsync(filePath);
+
+    if (outputFileExists) {
+      fileContent = (await fs.readFileAsync(filePath, encoding)).toString();
     }
 
     const valueToInsert = this.getTransformedLines(lines, transformer);
-
     const output = transformer.insert(fileContent, valueToInsert);
 
-    writeFileAndCreateDirectoriesSync(filePath, output, "utf8");
+    const dirname = path.dirname(filePath);
+    await mkpathAsync(dirname);
+    await fs.writeFileAsync(filePath, output, encoding);
   }
 
-  getTransformedLines(lines, transformer: Transformer) {
+  getTransformedLines(lines: Line[], transformer: Transformer) {
     let valueToInsert = "";
-    const plurals = {};
+
+    const plurals: { [pluralKey: string]: Line[] } = {};
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
+      const isLastLine = i === lines.length - 1;
+
       if (!line.isEmpty()) {
         if (line.isComment()) {
           valueToInsert += transformer.transformComment(line.getComment());
         } else if (line.isPlural()) {
-          if (!plurals[line.getKey()]) {
-            plurals[line.getKey()] = [];
+          if (!plurals[line.key]) {
+            plurals[line.key] = [];
           }
-          plurals[line.getKey()].push(line);
+          plurals[line.key].push(line);
         } else {
-          valueToInsert += transformer.transformKeyValue(
-            line.getKey(),
-            line.getValue()
-          );
+          valueToInsert += transformer.transformKeyValue(line.key, line.value);
         }
       }
+
       if (
-        line.getKey() !== "" &&
+        line.key !== "" &&
         !line.isPlural() &&
-        (i !== lines.length - 1 || Object.keys(plurals).length > 0)
+        (!isLastLine || Object.keys(plurals).length > 0)
       ) {
         valueToInsert += EOL;
       }
     }
 
-    let j = 0;
-    for (const [key, plural] of Object.entries(plurals)) {
-      valueToInsert += transformer.transformPluralsValues(key, plural);
-      if (j !== Object.keys(plurals).length - 1) {
-        valueToInsert += EOL;
-      }
-      j++;
-    }
+    valueToInsert += Object.entries(plurals)
+      .map(([key, plural]) => transformer.transformPluralsValues(key, plural))
+      .join(EOL);
 
     return valueToInsert;
   }

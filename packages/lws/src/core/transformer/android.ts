@@ -39,7 +39,7 @@ const androidTransformer: Transformer = {
     let ouput = '    <plurals name="' + key + '">' + EOL;
 
     for (let i = 0; i < values.length; i++) {
-      let normalizedValue = values[i].getValue().replace(/%newline%/gi, "\\n");
+      let normalizedValue = values[i].value.replace(/%newline%/gi, "\\n");
       normalizedValue = normalizedValue.replace(/'/gi, "\\'");
       normalizedValue = normalizedValue.replace(/%([sdf])/gi, "%#$$$1");
       normalizedValue = normalizedValue.replace(/&/gi, "&amp;");
