@@ -1,11 +1,13 @@
 import * as fs from "fs";
 import { EOL } from "os";
 
+import Transformer from "./transformer";
+
 // https://gist.github.com/jrajav/4140206
 const writeFileAndCreateDirectoriesSync = function (
-  filepath,
-  content,
-  encoding
+  filepath: string,
+  content: string,
+  encoding: string
 ) {
   const mkpath = require("mkpath");
   const path = require("path");
@@ -16,12 +18,8 @@ const writeFileAndCreateDirectoriesSync = function (
   fs.writeFileSync(filepath, content, encoding);
 };
 
-interface Writer {
-  write(filePath, encoding, lines, transformer, options?): void;
-}
-
-export class FileWriter implements Writer {
-  write(filePath, encoding, lines, transformer, options) {
+export class FileWriter {
+  write(filePath: string, lines, transformer: Transformer, encoding = "utf8") {
     let fileContent = "";
     if (fs.existsSync(filePath)) {
       fileContent = fs.readFileSync(filePath, encoding).toString();
@@ -29,12 +27,12 @@ export class FileWriter implements Writer {
 
     const valueToInsert = this.getTransformedLines(lines, transformer);
 
-    const output = transformer.insert(fileContent, valueToInsert, options);
+    const output = transformer.insert(fileContent, valueToInsert);
 
     writeFileAndCreateDirectoriesSync(filePath, output, "utf8");
   }
 
-  getTransformedLines(lines, transformer) {
+  getTransformedLines(lines, transformer: Transformer) {
     let valueToInsert = "";
     const plurals = {};
     for (let i = 0; i < lines.length; i++) {
@@ -65,10 +63,7 @@ export class FileWriter implements Writer {
 
     let j = 0;
     for (const [key, plural] of Object.entries(plurals)) {
-      valueToInsert += transformer.transformPluralsValues(
-        key,
-        plural,
-      );
+      valueToInsert += transformer.transformPluralsValues(key, plural);
       if (j !== Object.keys(plurals).length - 1) {
         valueToInsert += EOL;
       }
@@ -79,7 +74,4 @@ export class FileWriter implements Writer {
   }
 }
 
-/* export class FakeWriter implements Writer {
-  write(filePath, encoding, lines, transformer) {}
-}
- */
+export default FileWriter;

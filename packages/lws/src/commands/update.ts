@@ -1,10 +1,12 @@
 import * as path from "path";
 import { flags } from "@oclif/command";
+import * as ora from "ora";
 
 import Base from "../base";
-import Localize from "../localize";
 import { OutputFormat } from "../constants";
-import Transformer from "../core/transformer";
+import Reader from "../core/reader";
+import { transformersByFormat } from "../core/transformer";
+import { FileWriter } from "../core/writer";
 
 class IncorrectFlagValue extends Error {}
 
@@ -51,7 +53,7 @@ export default class Update extends Base {
     const sheetId = flags.id ?? this.conf?.sheet_id;
     const dir = flags.dir ?? this.conf?.dir;
     const languages = flags.languages?.split(",") ?? this.conf?.languages;
-    const column = flags.col?.split(",") ?? this.conf?.column;
+    const column = flags.col ?? this.conf?.column;
     const format = flags.format ?? this.conf?.format ?? defaultFormat;
 
     // TODO: polish error messages
@@ -81,22 +83,29 @@ export default class Update extends Base {
       );
     }
 
-    const outputTransformer = Transformer[format];
-    const transformer = Localize.fromGoogleSpreadsheet(sheetId, "*");
+    const outputTransformer = transformersByFormat[format];
 
-    // Key for web
-    transformer.setKeyCol(column);
+    const reader = Reader.fromGoogleSpreadsheet(sheetId, "*");
+    const writer = new FileWriter();
 
-    languages.forEach((language) => {
-      const filePath = path.join(
+    languages.forEach(async (language) => {
+      const spinner = ora({ spinner: "dots" });
+      const outputPath = path.join(
         process.cwd(),
         dir,
         outputTransformer.getFileName(language)
       );
-      transformer.save(filePath, {
-        valueCol: language.toUpperCase(),
-        format,
-      });
+
+      spinner.start(`Saving ${outputPath}`);
+
+      const lines = await reader.read(column, language.toUpperCase());
+
+      if (lines.length === 0) {
+        spinner.warn(`Received empty lines set for language ${language}`);
+      } else {
+        writer.write(outputPath, lines, outputTransformer);
+        spinner.succeed();
+      }
     });
   }
 }

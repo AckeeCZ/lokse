@@ -1,17 +1,17 @@
-import Line from "./line";
+import Line from "../line";
 import * as GoogleSpreadsheet from "google-spreadsheet";
 import * as Q from "q";
-import logger from '../logger';
-
-interface LineReader {
-  select: (sheets, keyCol, valCol, cb) => Promise<any> | void;
-}
+import logger from "../../logger";
 
 const forceArray = function (val) {
   if (Array.isArray(val)) return val;
   if (!val) return [];
   return [val];
 };
+
+interface LineReader {
+  select: (sheets, keyCol, valCol, cb) => Promise<any> | void;
+}
 
 class WorksheetReader {
   public _filterSheets;
@@ -40,7 +40,7 @@ class WorksheetReader {
       const currentWorksheet = this._worksheets[index];
       if (
         // TODO - solve the dependency cycle GSReader -> WorksheetReader -> GSReader
-        // and remove the eslint disable comment  
+        // and remove the eslint disable comment
         // eslint-disable-next-line no-use-before-define, @typescript-eslint/no-use-before-define
         GSReader.shouldUseWorksheet(
           this._filterSheets,
@@ -124,13 +124,13 @@ export class GSReader implements LineReader {
       );
       deferred.resolve(extractedLines);
     }).fail(function (error) {
-      logger.error('Cannot fetch data', error);
+      logger.error("Cannot fetch data", error);
     });
 
     return deferred.promise;
   }
 
-  extractFromRawData(rawWorksheets, keyCol, valCol) {
+  extractFromRawData(rawWorksheets, keyCol: string, valCol: string): Line[] {
     const extractedLines = [];
     for (let i = 0; i < rawWorksheets.length; i++) {
       const extracted = this.extractFromWorksheet(
@@ -227,28 +227,5 @@ export class GSReader implements LineReader {
       }
     }
     return false;
-  }
-}
-
-export class FakeReader implements LineReader {
-  public _array;
-
-  public _index: number;
-
-  constructor(array) {
-    this._array = array;
-    this._index = 0;
-  }
-
-  select(sheets, keyCol, keyVal, cb) {
-    const target = [];
-
-    this._array.forEach((key) => {
-      const v = this._array[key];
-
-      target.push(new Line(v[keyCol], v[keyVal]));
-    });
-
-    cb(target);
   }
 }

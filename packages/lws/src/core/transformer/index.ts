@@ -1,11 +1,13 @@
+import { OutputFormat } from "../../constants";
+
+import { Transformer } from "./transformer";
 import iOSTransformer from "./ios";
 import androidTransformer from "./android";
 import jsonTransformer from "./json";
-import { dartTransformer/* , dartTemplateTransformer */ } from "./dart";
+import { dartTransformer /* , dartTemplateTransformer */ } from "./dart";
 import dotNetTransformer from "./dot-net";
-import { OutputFormat } from "../../constants";
 
-const transformers = {
+export const transformersByFormat = {
   [OutputFormat.IOS]: iOSTransformer,
   [OutputFormat.ANDROID]: androidTransformer,
   [OutputFormat.JSON]: jsonTransformer,
@@ -14,4 +16,4 @@ const transformers = {
   [OutputFormat.DOT_NET]: dotNetTransformer,
 };
 
-export default transformers;
+export default Transformer;
