@@ -2846,11 +2846,6 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-q@0.9.2:
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/q/-/q-0.9.2.tgz#23c06c46c81328616aae168d3ee23a56bd43daf6"
-  integrity sha1-I8BsRsgTKGFqrhaNPuI6Vr1D2vY=
-
 qqjs@^0.3.10:
   version "0.3.11"
   resolved "https://registry.yarnpkg.com/qqjs/-/qqjs-0.3.11.tgz#795b9f7d00807d75c391b1241b5be3077143d9ea"

@@ -10,7 +10,11 @@ import { FileWriter } from "../core/writer";
 
 class IncorrectFlagValue extends Error {}
 
-class MissingFlagValue extends Error {}
+class MissingFlagValue extends Error {
+  constructor(flagName: string) {
+    super(`${flagName} is required for updating translations`);
+  }
+}
 
 const outputFormats = Object.values(OutputFormat);
 const defaultFormat = OutputFormat.JSON;
@@ -58,15 +62,15 @@ export default class Update extends Base {
 
     // TODO: polish error messages
     if (!sheetId) {
-      throw new MissingFlagValue("Sheet id is required to update translations");
+      throw new MissingFlagValue("Sheet id");
     }
 
     if (!dir) {
-      throw new MissingFlagValue("Output directory is required");
+      throw new MissingFlagValue("Output directory");
     }
 
     if (!column) {
-      throw new MissingFlagValue(`Keys column has to be defined!`);
+      throw new MissingFlagValue(`Keys column`);
     }
 
     if (!Array.isArray(languages)) {
@@ -85,7 +89,7 @@ export default class Update extends Base {
 
     const outputTransformer = transformersByFormat[format];
 
-    const reader = Reader.fromGoogleSpreadsheet(sheetId, "*");
+    const reader = new Reader(sheetId, "*");
     const writer = new FileWriter();
 
     languages.forEach(async (language) => {

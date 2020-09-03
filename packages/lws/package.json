@@ -17,7 +17,6 @@
     "google-spreadsheet": "2.0.3",
     "mkpath": "0.1.0",
     "ora": "^5.0.0",
-    "q": "0.9.2",
     "tslib": "^1"
   },
   "devDependencies": {

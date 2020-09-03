@@ -1,1 +1,1 @@
-export { default } from "./reader";
+export { default } from "./spreadsheet-reader";

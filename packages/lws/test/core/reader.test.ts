@@ -1,31 +1,9 @@
 import * as assert from "assert";
-import { GSReader } from "../../src/core/reader/line-reader";
+import SpreadsheetReader from "../../src/core/reader";
 
-describe("GSReader.shouldUseWorksheet", () => {
-  it("should use worksheet when empty or null or start", () => {
-    assert.strictEqual(true, GSReader.shouldUseWorksheet("", "LeTitre", 1));
-    assert.strictEqual(true, GSReader.shouldUseWorksheet(null, "LeTitre", 1));
-    assert.strictEqual(true, GSReader.shouldUseWorksheet("*", "LeTitre", 1));
-    assert.strictEqual(false, GSReader.shouldUseWorksheet("a", "LeTitre", 1));
-  });
-
-  it("should not use worksheet when title not specified", () => {
-    assert.strictEqual(false, GSReader.shouldUseWorksheet(["a", "b"], "LeTitre", 1));
-    assert.strictEqual(false, GSReader.shouldUseWorksheet(["a", 2], "LeTitre", 1));
-  });
-
-  it("should use worksheet when title or index specified", () => {
-    assert.strictEqual(
-      true,
-      GSReader.shouldUseWorksheet(["a", "LeTitre"], "LeTitre", 1)
-    );
-    assert.strictEqual(true, GSReader.shouldUseWorksheet(["a", 1], "LeTitre", 1));
-  });
-});
-
-describe("GSReader.extractFromWorksheet", () => {
+describe("SpreadsheetReader.extractFromWorksheet", () => {
   it("should extra lines", () => {
-    const reader = new GSReader("api_key", "*");
+    const reader = new SpreadsheetReader("api_key", "*");
 
     const rawWorksheet = [
       { value: "Key", row: 1, col: 1 },
@@ -53,7 +31,7 @@ describe("GSReader.extractFromWorksheet", () => {
   });
 
   it("should still work when val column doesnt exist ", () => {
-    const reader = new GSReader("api_key", "*");
+    const reader = new SpreadsheetReader("api_key", "*");
 
     const rawWorksheet = [
       { value: "Key", row: 1, col: 1 },
@@ -74,7 +52,7 @@ describe("GSReader.extractFromWorksheet", () => {
   });
 
   it("should keep empty lines", () => {
-    const reader = new GSReader("api_key", "*");
+    const reader = new SpreadsheetReader("api_key", "*");
 
     const rawWorksheet = [
       { value: "Key", row: 1, col: 1 },
@@ -87,8 +65,8 @@ describe("GSReader.extractFromWorksheet", () => {
 
     const result = reader.extractFromWorksheet(rawWorksheet, "Key", "Value_fr");
 
-    assert.strictEqual(2, result.length);
-    assert.strictEqual(true, result[0].isEmpty());
-    assert.strictEqual(false, result[1].isEmpty());
+    assert.strictEqual(result.length, 2);
+    assert.strictEqual(result[0].isEmpty(), true);
+    assert.strictEqual(result[1].isEmpty(), false);
   });
 });
