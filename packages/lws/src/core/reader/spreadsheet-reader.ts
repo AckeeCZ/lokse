@@ -9,6 +9,7 @@ import WorksheetReader, {
   CellValue,
   RawWorksheet,
 } from "./worksheet-reader";
+import { isEqualCaseInsensitive } from '../../utils';
 
 class FetchSpreadsheetError extends Error {
   constructor(err: Error) {
@@ -112,10 +113,10 @@ export class SpreadsheetReader {
       for (let i = 0; i < headerRow.length; i++) {
         const value = headerRow[i];
 
-        if (value === keyCol) {
+        if (isEqualCaseInsensitive(value, keyCol)) {
           keyIndex = i;
         }
-        if (value === valCol) {
+        if (isEqualCaseInsensitive(value, valCol)) {
           valIndex = i;
         }
       }

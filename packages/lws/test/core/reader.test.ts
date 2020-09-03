@@ -22,12 +22,12 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
 
     const lines = reader.extractFromWorksheet(rawWorksheet, "Key", "Value_fr");
 
-    assert.strictEqual(6, lines.length);
-    assert.strictEqual("MaClé1", lines[0].key);
-    assert.strictEqual("La valeur 1", lines[0].value);
+    assert.strictEqual(lines.length, 6);
+    assert.strictEqual(lines[0].key, "MaClé1");
+    assert.strictEqual(lines[0].value, "La valeur 1");
 
-    assert.strictEqual(true, lines[2].isComment());
-    assert.strictEqual(true, lines[4].isEmpty());
+    assert.strictEqual(lines[2].isComment(), true);
+    assert.strictEqual(lines[4].isEmpty(), true);
   });
 
   it("should still work when val column doesnt exist ", () => {
@@ -44,11 +44,11 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
 
     const result = reader.extractFromWorksheet(rawWorksheet, "Key", "NotExist");
 
-    assert.strictEqual(1, result.length);
-    assert.strictEqual("MaClé1", result[0].key);
-    assert.strictEqual("", result[0].value);
+    assert.strictEqual(result.length, 1);
+    assert.strictEqual(result[0].key, "MaClé1");
+    assert.strictEqual(result[0].value, "");
 
-    assert.strictEqual(false, result[0].isComment());
+    assert.strictEqual(result[0].isComment(), false);
   });
 
   it("should keep empty lines", () => {
@@ -68,5 +68,35 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
     assert.strictEqual(result.length, 2);
     assert.strictEqual(result[0].isEmpty(), true);
     assert.strictEqual(result[1].isEmpty(), false);
+  });
+
+  it("should match column names case insensitively", () => {
+    const reader = new SpreadsheetReader("api_key", "*");
+
+    let rawWorksheet = [
+      { value: "Key", row: 1, col: 1 },
+      { value: "Value_FR", row: 1, col: 2 },
+      { value: "MaClé1", row: 2, col: 1 },
+      { value: "La valeur 1", row: 2, col: 2 },
+    ];
+
+    let result = reader.extractFromWorksheet(rawWorksheet, "key", "value_fr");
+
+    assert.strictEqual(result.length, 1);
+    assert.strictEqual(result[0].key, "MaClé1");
+    assert.strictEqual(result[0].value, "La valeur 1");
+    
+    rawWorksheet = [
+      { value: "key", row: 1, col: 1 },
+      { value: "value_fr", row: 1, col: 2 },
+      { value: "MaClé2", row: 2, col: 1 },
+      { value: "La valeur 2", row: 2, col: 2 },
+    ];
+
+    result = reader.extractFromWorksheet(rawWorksheet, "Key", "VALUE_FR");
+
+    assert.strictEqual(result.length, 1);
+    assert.strictEqual(result[0].key, "MaClé2");
+    assert.strictEqual(result[0].value, "La valeur 2");
   });
 });
