@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import SpreadsheetReader from "../../src/core/reader";
+import SpreadsheetReader from "../../../src/core/reader";
 
 describe("SpreadsheetReader.extractFromWorksheet", () => {
   it("should extra lines", () => {

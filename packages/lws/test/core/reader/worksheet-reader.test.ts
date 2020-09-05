@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import WorksheetReader from "../../src/core/reader/worksheet-reader";
+import WorksheetReader from "../../../src/core/reader/worksheet-reader";
 
 describe("WorksheetReader.shouldUseWorksheet", () => {
   const worksheet = {
