@@ -101,14 +101,17 @@ export default class Update extends Base {
       );
 
       spinner.start(`Saving ${outputPath}`);
+      try {
+        const lines = await reader.read(column, language.toUpperCase());
 
-      const lines = await reader.read(column, language.toUpperCase());
-
-      if (lines.length === 0) {
-        spinner.warn(`Received empty lines set for language ${language}`);
-      } else {
-        writer.write(outputPath, lines, outputTransformer);
-        spinner.succeed();
+        if (lines.length === 0) {
+          spinner.warn(`Received empty lines set for language ${language}`);
+        } else {
+          writer.write(outputPath, lines, outputTransformer);
+          spinner.succeed();
+        }
+      } catch (error) {
+        spinner.fail(error.toString());
       }
     });
   }

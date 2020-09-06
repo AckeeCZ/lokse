@@ -17,10 +17,14 @@ export class FileWriter {
     encoding = "utf8"
   ) {
     let fileContent = "";
-    const outputFileExists = await fs.accessAsync(filePath);
 
-    if (outputFileExists) {
-      fileContent = (await fs.readFileAsync(filePath, encoding)).toString();
+    try {
+      await fs.accessAsync(filePath, fs.F_OK);
+      fileContent = await fs.readFileAsync(filePath, encoding);
+
+      fileContent = fileContent.toString();
+    } catch {
+      // file doesnt exist
     }
 
     const valueToInsert = this.getTransformedLines(lines, transformer);

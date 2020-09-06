@@ -1,25 +1,18 @@
 import * as Promise from "bluebird";
-import logger from "../../logger";
+import {
+  GoogleSpreadsheet,
+  GoogleSpreadsheetWorksheet,
+  GoogleSpreadsheetRow,
+} from "google-spreadsheet";
 import { forceArray } from "../../utils";
 
 declare type SheetIndexOrTitle = number | string;
 
 declare type SheetsFilter = string | SheetIndexOrTitle[];
 
-export declare type CellValue = string;
-
-export interface Cell {
-  col: number;
-  row: number;
-  value: CellValue;
-}
-
-export declare type RawWorksheet = Cell[];
-
-declare type Worksheet = {
-  id: string;
-  title: string;
-  getCells: (id: string, cb: (err: Error, cells: Cell[]) => void) => any;
+export declare type Worksheet = {
+  header: string[];
+  rows: GoogleSpreadsheetRow[];
 };
 
 class WorksheetReader {
@@ -31,7 +24,7 @@ class WorksheetReader {
     this.filter = filter || WorksheetReader.ALL_SHEETS_FILTER;
   }
 
-  shouldUseWorksheet(worksheet: Worksheet, index: number) {
+  shouldUseWorksheet(worksheet: GoogleSpreadsheetWorksheet) {
     if (this.filter === WorksheetReader.ALL_SHEETS_FILTER) {
       return true;
     }
@@ -39,7 +32,7 @@ class WorksheetReader {
     const filtersList = forceArray<string | number>(this.filter);
 
     return filtersList.some((sheetFilter: string | number) => {
-      if (typeof sheetFilter === "number" && index === sheetFilter) {
+      if (typeof sheetFilter === "number" && worksheet.index === sheetFilter) {
         return true;
       }
       if (typeof sheetFilter === "string" && worksheet.title === sheetFilter) {
@@ -49,25 +42,20 @@ class WorksheetReader {
     });
   }
 
-  getRawWorksheet(worksheet: Worksheet): Promise<RawWorksheet> {
-    return new Promise((resolve) => {
-      worksheet.getCells(worksheet.id, (err, cells) => {
-        if (err) {
-          logger.warn(`Error when fetching data from sheet ${worksheet.title}`);
-          resolve([]);
-        } else {
-          resolve(cells);
-        }
-      });
-    });
+  async loadSheet(worksheet: GoogleSpreadsheetWorksheet) {
+    const rows = await worksheet.getRows();
+
+    return { header: worksheet.headerValues, rows };
   }
 
-  read(worksheets: Worksheet[]): Promise<RawWorksheet[]> {
-    return Promise.filter(worksheets, (worksheet, index) =>
-      this.shouldUseWorksheet(worksheet, index)
-    ).map((worksheet: Worksheet) => {
-      return this.getRawWorksheet(worksheet);
-    });
+  async read(spreadsheet: GoogleSpreadsheet) {
+    const worksheets = spreadsheet.sheetsByIndex.filter((worksheet) =>
+      this.shouldUseWorksheet(worksheet)
+    );
+
+    const sheets = await Promise.all(worksheets.map(this.loadSheet));
+
+    return sheets;
   }
 }
 
