@@ -7,14 +7,8 @@ import { OutputFormat } from "../constants";
 import Reader from "../core/reader";
 import { transformersByFormat } from "../core/transformer";
 import { FileWriter } from "../core/writer";
-
-class IncorrectFlagValue extends Error {}
-
-class MissingFlagValue extends Error {
-  constructor(flagName: string) {
-    super(`${flagName} is required for updating translations`);
-  }
-}
+import * as cliFlags from "../flags";
+import { MissingFlagValue, IncorrectFlagValue } from "../flags/errors";
 
 const outputFormats = Object.values(OutputFormat);
 const defaultFormat = OutputFormat.JSON;
@@ -28,7 +22,7 @@ export default class Update extends Base {
 
   static flags = {
     help: flags.help({ char: "h" }),
-    id: flags.string({ char: "i", name: "id", description: "Spreadsheet ID" }),
+    id: cliFlags.id(),
     dir: flags.string({ char: "d", name: "dir", description: "Output folder" }),
     languages: flags.string({
       char: "l",
@@ -54,17 +48,13 @@ export default class Update extends Base {
   async run() {
     const { flags } = this.parse(Update);
 
-    const sheetId = flags.id ?? this.conf?.sheet_id;
+    const sheetId = flags.id;
     const dir = flags.dir ?? this.conf?.dir;
     const languages = flags.languages?.split(",") ?? this.conf?.languages;
     const column = flags.col ?? this.conf?.column;
     const format = flags.format ?? this.conf?.format ?? defaultFormat;
 
     // TODO: polish error messages
-    if (!sheetId) {
-      throw new MissingFlagValue("Sheet id");
-    }
-
     if (!dir) {
       throw new MissingFlagValue("Output directory");
     }
