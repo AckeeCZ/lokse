@@ -1,13 +1,12 @@
 import { EOL } from "os";
 import * as Promise from "bluebird";
 import * as path from "path";
+import * as mkdirp from "mkdirp";
 
 import Transformer from "./transformer";
 import Line from "./Line";
 
 const fs = Promise.promisifyAll(require("fs"));
-type MkpathAsync = (dirname: string) => Promise<void>;
-const mkpathAsync: MkpathAsync = Promise.promisify(require("mkpath"));
 
 export class FileWriter {
   async write(
@@ -31,7 +30,7 @@ export class FileWriter {
     const output = transformer.insert(fileContent, valueToInsert);
 
     const dirname = path.dirname(filePath);
-    await mkpathAsync(dirname);
+    await mkdirp(dirname);
     await fs.writeFileAsync(filePath, output, encoding);
   }
 

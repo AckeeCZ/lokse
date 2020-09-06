@@ -13,10 +13,11 @@
     "@oclif/plugin-help": "^3",
     "@types/bluebird": "^3.5.32",
     "@types/google-spreadsheet": "^3.0.1",
+    "@types/mkdirp": "^1.0.1",
     "bluebird": "^3.7.2",
     "cosmiconfig": "^7.0.0",
     "google-spreadsheet": "^3.0.13",
-    "mkpath": "0.1.0",
+    "mkdirp": "^1.0.4",
     "ora": "^5.0.0",
     "tslib": "^1"
   },
