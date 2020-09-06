@@ -18,6 +18,7 @@
     "cosmiconfig": "^7.0.0",
     "google-spreadsheet": "^3.0.13",
     "mkdirp": "^1.0.4",
+    "open": "^7.2.1",
     "ora": "^5.0.0",
     "tslib": "^1"
   },
