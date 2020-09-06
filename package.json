@@ -1,36 +1,14 @@
 {
-  "author": "Jakub Baierl <jakub.baierl@ackee.cz> (http://ackee.cz)",
-  "contributors": [
-    {
-      "name": "Jiří Šmolík",
-      "email": "jiri.smolik@ackee.cz"
-    },
-    {
-      "name": "Lukáš Kočí",
-      "email": "lukas.koci@ackee.cz"
-    }
+  "private": true,
+  "workspaces": [
+    "example",
+    "packages/*"
   ],
-  "name": "ackee-localize-spreadsheet-sdk",
-  "description": "Create a localization file in Web (nodejs, react), in Android or iOS format from a Google Spreadsheet",
-  "version": "0.2.5",
-  "main": "index.js",
-  "bin": {
-    "ackee-localize-spreadsheet-sdk": "./bin/index.js"
-  },
   "devDependencies": {
     "eslint": "^5.13",
     "eslint-config-oclif": "^3.1",
     "eslint-config-oclif-typescript": "^0.1",
     "eslint-config-prettier": "^6.11.0",
     "prettier": "^2.1.1"
-  },
-  "scripts": {
-    "translate": "node index.js"
-  },
-  "readmeFilename": "README.md",
-  "private": true,
-  "workspaces": [
-    "example",
-    "packages/*"
-  ]
+  }
 }
