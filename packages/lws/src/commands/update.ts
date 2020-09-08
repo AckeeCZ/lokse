@@ -48,7 +48,7 @@ export default class Update extends Base {
   async run() {
     const { flags } = this.parse(Update);
 
-    const sheetId = flags.id;
+    const sheetId = flags.id ?? '';
     const dir = flags.dir ?? this.conf?.dir;
     const languages = flags.languages?.split(",") ?? this.conf?.languages;
     const column = flags.col ?? this.conf?.column;

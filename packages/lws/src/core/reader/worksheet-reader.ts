@@ -1,4 +1,4 @@
-import * as Promise from "bluebird";
+import { all } from "bluebird";
 import {
   GoogleSpreadsheet,
   GoogleSpreadsheetWorksheet,
@@ -53,7 +53,7 @@ class WorksheetReader {
       this.shouldUseWorksheet(worksheet)
     );
 
-    const sheets = await Promise.all(worksheets.map(this.loadSheet));
+    const sheets = await all(worksheets.map(this.loadSheet));
 
     return sheets;
   }

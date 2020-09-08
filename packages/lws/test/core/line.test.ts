@@ -1,18 +1,17 @@
-import * as assert from "assert";
 import Line from "../../src/core/line";
 
 describe("Line.isComment", () => {
   it("is false when not comment", () => {
     const line = new Line("pas un commentaire", "une valeur");
 
-    assert.strictEqual(false, line.isComment());
+    expect(line.isComment()).toEqual(false);
   });
   it("is true when comment", () => {
     const line1 = new Line("// un commentaire", null);
     const line2 = new Line("# un commentaire", null);
 
-    assert.strictEqual(true, line1.isComment());
-    assert.strictEqual(true, line2.isComment());
+    expect(line1.isComment()).toEqual(true);
+    expect(line2.isComment()).toEqual(true);
   });
 });
 
@@ -21,26 +20,25 @@ describe("Line.getComment", () => {
     const line1 = new Line("// un commentaire", null);
     const line2 = new Line("# un commentaire   ", null);
 
-    assert.strictEqual("un commentaire", line1.getComment());
-    assert.strictEqual("un commentaire", line2.getComment());
+    expect(line1.getComment()).toEqual("un commentaire");
+    expect(line2.getComment()).toEqual("un commentaire");
   });
 });
 
 describe("Line.isEmpty", () => {
   const line1 = new Line(null, null);
 
-  assert.strictEqual(true, line1.isEmpty());
-  assert.strictEqual(false, line1.isComment());
+  expect(line1.isEmpty()).toEqual(true);
+  expect(line1.isComment()).toEqual(false);
 });
-// exports.test_isEmptyWhenEmpty = function (test) {
 
 describe("Line", () => {
   it("getting fields", () => {
     const line1 = new Line("key", "value");
 
-    assert.strictEqual("key", line1.key);
-    assert.strictEqual("value", line1.value);
-    assert.strictEqual(false, line1.isEmpty());
-    assert.strictEqual(false, line1.isComment());
+    expect(line1.key).toEqual("key");
+    expect(line1.value).toEqual("value");
+    expect(line1.isEmpty()).toEqual(false);
+    expect(line1.isComment()).toEqual(false);
   });
 });

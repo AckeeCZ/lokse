@@ -1,9 +1,9 @@
-import * as assert from "assert";
 import { EOL } from "os";
 import { FileWriter } from "../../src/core/writer";
 import Line from "../../src/core/line";
 import { transformersByFormat } from "../../src/core/transformer";
 import { OutputFormat } from "../../src/constants";
+
 const androidTransformer = transformersByFormat[OutputFormat.ANDROID];
 const iosTransformer = transformersByFormat[OutputFormat.IOS];
 
@@ -19,13 +19,12 @@ describe("Writer.getTransformedLines", () => {
       androidTransformer
     );
 
-    assert.strictEqual(
+    expect(result).toEqual(
       '    <string name="key">value</string>' +
         EOL +
         "    <!-- commentaire -->" +
         EOL +
-        '    <string name="key2">value2</string>',
-      result
+        '    <string name="key2">value2</string>'
     );
   });
 
@@ -40,9 +39,8 @@ describe("Writer.getTransformedLines", () => {
       iosTransformer
     );
 
-    assert.strictEqual(
-      '"key" = "value";' + EOL + "// commentaire" + EOL + '"key2" = "value2";',
-      result
+    expect(result).toEqual(
+      '"key" = "value";' + EOL + "// commentaire" + EOL + '"key2" = "value2";'
     );
   });
 });

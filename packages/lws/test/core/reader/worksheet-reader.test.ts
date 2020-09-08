@@ -1,4 +1,3 @@
-import * as assert from "assert";
 import { GoogleSpreadsheetWorksheet } from "google-spreadsheet";
 import WorksheetReader from "../../../src/core/reader/worksheet-reader";
 
@@ -12,35 +11,35 @@ describe("WorksheetReader.shouldUseWorksheet", () => {
     const worksheet = createWorksheet("LeTitre") as GoogleSpreadsheetWorksheet;
 
     const reader1 = new WorksheetReader("");
-    assert.strictEqual(true, reader1.shouldUseWorksheet(worksheet));
+    expect(reader1.shouldUseWorksheet(worksheet)).toEqual(true);
     const reader2 = new WorksheetReader(null);
-    assert.strictEqual(true, reader2.shouldUseWorksheet(worksheet));
+    expect(reader2.shouldUseWorksheet(worksheet)).toEqual(true);
     const reader3 = new WorksheetReader("*");
-    assert.strictEqual(true, reader3.shouldUseWorksheet(worksheet));
+    expect(reader3.shouldUseWorksheet(worksheet)).toEqual(true);
   });
 
   it("should not use worksheet when title not specified", () => {
     const worksheet = createWorksheet("LeTitre") as GoogleSpreadsheetWorksheet;
 
     const reader1 = new WorksheetReader(["a", "b"]);
-    assert.strictEqual(false, reader1.shouldUseWorksheet(worksheet));
+    expect(reader1.shouldUseWorksheet(worksheet)).toEqual(false);
     const reader2 = new WorksheetReader(["a", 2]);
-    assert.strictEqual(false, reader2.shouldUseWorksheet(worksheet));
+    expect(reader2.shouldUseWorksheet(worksheet)).toEqual(false);
   });
 
   it("should use worksheet when title or index specified", () => {
     const worksheet = createWorksheet("LeTitre") as GoogleSpreadsheetWorksheet;
 
     const reader1 = new WorksheetReader(["a", "LeTitre"]);
-    assert.strictEqual(true, reader1.shouldUseWorksheet(worksheet));
+    expect(reader1.shouldUseWorksheet(worksheet)).toEqual(true);
     const reader2 = new WorksheetReader(["a", 1]);
-    assert.strictEqual(true, reader2.shouldUseWorksheet(worksheet));
+    expect(reader2.shouldUseWorksheet(worksheet)).toEqual(true);
   });
 
   it("should not use worksheet when filter doesnt pass", () => {
     const worksheet = createWorksheet("LeTitre") as GoogleSpreadsheetWorksheet;
 
     const reader1 = new WorksheetReader("a");
-    assert.strictEqual(false, reader1.shouldUseWorksheet(worksheet));
+    expect(reader1.shouldUseWorksheet(worksheet)).toEqual(false);
   });
 });

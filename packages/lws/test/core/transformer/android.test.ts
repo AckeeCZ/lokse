@@ -1,42 +1,40 @@
 import { EOL } from "os";
-import * as assert from "assert";
 import transformer from "../../../src/core/transformer/android";
 
 describe("AndroidTransformer.transformComment", () => {
   it("transforms comment", () => {
     const result = transformer.transformComment("un commentaire");
 
-    assert.strictEqual("    <!-- un commentaire -->", result);
+    expect(result).toEqual("    <!-- un commentaire -->");
   });
 });
 
 describe("AndroidTransformer.transformKeyValue", () => {
   it("transforms key value", () => {
     const line = transformer.transformKeyValue("ma_cle", "La valeur");
-    assert.strictEqual('    <string name="ma_cle">La valeur</string>', line);
+    expect(line).toEqual('    <string name="ma_cle">La valeur</string>');
   });
 
   it("transforms multiple format", () => {
     const line = transformer.transformKeyValue("ma_cle", "La valeur %s et %s");
-    assert.strictEqual(
-      '    <string name="ma_cle">La valeur %1$s et %2$s</string>',
-      line
+    expect(line).toEqual(
+      '    <string name="ma_cle">La valeur %1$s et %2$s</string>'
     );
   });
 
   it("transforms single format", () => {
     const line = transformer.transformKeyValue("ma_cle", "La valeur %s");
-    assert.strictEqual('    <string name="ma_cle">La valeur %1$s</string>', line);
+    expect(line).toEqual('    <string name="ma_cle">La valeur %1$s</string>');
   });
 
   it("escapes amp", () => {
     const line = transformer.transformKeyValue("ma_cle", "Ma & valeur");
-    assert.strictEqual('    <string name="ma_cle">Ma &amp; valeur</string>', line);
+    expect(line).toEqual('    <string name="ma_cle">Ma &amp; valeur</string>');
   });
 
   it("replaces three point with ellipsis character", () => {
     const line = transformer.transformKeyValue("ma_cle", "Ma valeur...");
-    assert.strictEqual('    <string name="ma_cle">Ma valeur&#8230;</string>', line);
+    expect(line).toEqual('    <string name="ma_cle">Ma valeur&#8230;</string>');
   });
 
   it("replaces three point in the middle with ellipsis character", () => {
@@ -44,15 +42,14 @@ describe("AndroidTransformer.transformKeyValue", () => {
       "ma_cle",
       "Ma valeur...à remplacer"
     );
-    assert.strictEqual(
-      '    <string name="ma_cle">Ma valeur&#8230;à remplacer</string>',
-      line
+    expect(line).toEqual(
+      '    <string name="ma_cle">Ma valeur&#8230;à remplacer</string>'
     );
   });
 
   it("should not replaces four point with ellipsis character", () => {
     const line = transformer.transformKeyValue("ma_cle", "Ma valeur....");
-    assert.strictEqual('    <string name="ma_cle">Ma valeur....</string>', line);
+    expect(line).toEqual('    <string name="ma_cle">Ma valeur....</string>');
   });
 });
 
@@ -60,7 +57,7 @@ describe("AndroidTransformer.insert", () => {
   it("should create resources tag when empty", () => {
     const xmlHeader = '<?xml version="1.0" encoding="utf-8"?>';
     const result = transformer.insert("", "à insérer");
-    assert.strictEqual(
+    expect(result).toEqual(
       xmlHeader +
         EOL +
         "<resources>" +
@@ -69,8 +66,7 @@ describe("AndroidTransformer.insert", () => {
         EOL +
         "à insérer" +
         EOL +
-        "</resources>",
-      result
+        "</resources>"
     );
   });
 
@@ -79,7 +75,7 @@ describe("AndroidTransformer.insert", () => {
       "<resources>" + EOL + "aa" + EOL + "</resources>",
       "à insérer"
     );
-    assert.strictEqual(
+    expect(result).toEqual(
       "<resources>" +
         EOL +
         "aa" +
@@ -88,8 +84,7 @@ describe("AndroidTransformer.insert", () => {
         EOL +
         "à insérer" +
         EOL +
-        "</resources>",
-      result
+        "</resources>"
     );
   });
 
@@ -106,7 +101,7 @@ describe("AndroidTransformer.insert", () => {
         "</resources>",
       "à insérer"
     );
-    assert.strictEqual(
+    expect(result).toEqual(
       "<resources>" +
         EOL +
         "aa" +
@@ -115,8 +110,7 @@ describe("AndroidTransformer.insert", () => {
         EOL +
         "à insérer" +
         EOL +
-        "</resources>",
-      result
+        "</resources>"
     );
   });
 
@@ -132,6 +126,6 @@ describe("AndroidTransformer.insert", () => {
       EOL +
       "</resources>";
     const result = transformer.insert(before, "before");
-    assert.strictEqual(before, result);
+    expect(result).toEqual(before);
   });
 });

@@ -1,12 +1,12 @@
 import { EOL } from "os";
-import * as Promise from "bluebird";
+import { promisifyAll } from "bluebird";
 import * as path from "path";
 import * as mkdirp from "mkdirp";
 
 import Transformer from "./transformer";
 import Line from "./Line";
 
-const fs = Promise.promisifyAll(require("fs"));
+const fs = promisifyAll(require("fs"));
 
 export class FileWriter {
   async write(

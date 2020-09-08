@@ -1,6 +1,9 @@
 // import { expect, test } from "@oclif/test";
 
 describe("update", () => {
+  it("placeholder test", () => {
+    expect(true).toBe(true);
+  });
   /* test
   .stdout()
   .command(['hello'])

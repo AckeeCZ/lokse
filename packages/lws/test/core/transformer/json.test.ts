@@ -1,4 +1,3 @@
-import * as assert from "assert";
 import transformer from "../../../src/core/transformer/json";
 
 describe("JSONTransformer.transformKeyValue", () => {
@@ -9,6 +8,6 @@ describe("JSONTransformer.transformKeyValue", () => {
 
     const line = transformer.transformKeyValue("ma_cle", multilineValue);
 
-    assert.strictEqual(line, '  "ma_cle" : "<ul>  <li>La valeur 1</li></ul>",');
+    expect(line).toEqual('  "ma_cle" : "<ul>  <li>La valeur 1</li></ul>",');
   });
 });

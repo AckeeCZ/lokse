@@ -1,4 +1,3 @@
-import * as assert from "assert";
 import SpreadsheetReader from "../../../src/core/reader";
 import { Worksheet } from "../../../src/core/reader/worksheet-reader";
 
@@ -35,12 +34,12 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
 
     const lines = reader.extractFromWorksheet(worksheet, "Key", "Value_fr");
 
-    assert.strictEqual(lines.length, 6);
-    assert.strictEqual(lines[0].key, "MaClé1");
-    assert.strictEqual(lines[0].value, "La valeur 1");
+    expect(lines.length).toEqual(6);
+    expect(lines[0].key).toEqual("MaClé1");
+    expect(lines[0].value).toEqual("La valeur 1");
 
-    assert.strictEqual(lines[2].isComment(), true);
-    assert.strictEqual(lines[4].isEmpty(), true);
+    expect(lines[2].isComment()).toEqual(true);
+    expect(lines[4].isEmpty()).toEqual(true);
   });
 
   it("should still work when val column doesnt exist ", () => {
@@ -59,11 +58,11 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
 
     const result = reader.extractFromWorksheet(worksheet, "Key", "NotExist");
 
-    assert.strictEqual(result.length, 1);
-    assert.strictEqual(result[0].key, "MaClé1");
-    assert.strictEqual(result[0].value, "");
+    expect(result.length).toEqual(1);
+    expect(result[0].key).toEqual("MaClé1");
+    expect(result[0].value).toEqual("");
 
-    assert.strictEqual(result[0].isComment(), false);
+    expect(result[0].isComment()).toEqual(false);
   });
 
   it("should keep empty lines", () => {
@@ -83,9 +82,9 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
 
     const result = reader.extractFromWorksheet(worksheet, "Key", "Value_fr");
 
-    assert.strictEqual(result.length, 2);
-    assert.strictEqual(result[0].isEmpty(), true);
-    assert.strictEqual(result[1].isEmpty(), false);
+    expect(result.length).toEqual(2);
+    expect(result[0].isEmpty()).toEqual(true);
+    expect(result[1].isEmpty()).toEqual(false);
   });
 
   it("should match column names case insensitively", () => {
@@ -98,9 +97,9 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
 
     let result = reader.extractFromWorksheet(worksheet, "key", "value_fr");
 
-    assert.strictEqual(result.length, 1);
-    assert.strictEqual(result[0].key, "MaClé1");
-    assert.strictEqual(result[0].value, "La valeur 1");
+    expect(result.length).toEqual(1);
+    expect(result[0].key).toEqual("MaClé1");
+    expect(result[0].value).toEqual("La valeur 1");
 
     worksheet = {
       header: ["key", "value_fr"],
@@ -109,8 +108,8 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
 
     result = reader.extractFromWorksheet(worksheet, "Key", "VALUE_FR");
 
-    assert.strictEqual(result.length, 1);
-    assert.strictEqual(result[0].key, "MaClé2");
-    assert.strictEqual(result[0].value, "La valeur 2");
+    expect(result.length).toEqual(1);
+    expect(result[0].key).toEqual("MaClé2");
+    expect(result[0].value).toEqual("La valeur 2");
   });
 });
