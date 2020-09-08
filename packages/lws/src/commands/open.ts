@@ -4,7 +4,7 @@ import * as open from "open";
 import Base from "../base";
 import * as cliFlags from "../flags";
 
-export default class Open extends Base {
+class Open extends Base {
   static description = "opens localization spreadsheet";
 
   static examples = [
@@ -24,3 +24,5 @@ export default class Open extends Base {
     await open(`https://docs.google.com/spreadsheets/d/${sheetId}`);
   }
 }
+
+export = Open;

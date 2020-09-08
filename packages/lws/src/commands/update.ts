@@ -13,7 +13,7 @@ import { MissingFlagValue, IncorrectFlagValue } from "../flags/errors";
 const outputFormats = Object.values(OutputFormat);
 const defaultFormat = OutputFormat.JSON;
 
-export default class Update extends Base {
+class Update extends Base {
   static description = "updates localization files";
 
   static examples = [
@@ -106,3 +106,5 @@ export default class Update extends Base {
     });
   }
 }
+
+export = Update;

@@ -66,7 +66,12 @@ export class FileWriter {
     }
 
     valueToInsert += Object.entries(plurals)
-      .map(([key, plural]) => transformer.transformPluralsValues(key, plural))
+      .map(([key, plural]) => {
+        if (typeof transformer.transformPluralsValues === "function") {
+          return transformer.transformPluralsValues(key, plural);
+        }
+        return "";
+      })
       .join(EOL);
 
     return valueToInsert;
