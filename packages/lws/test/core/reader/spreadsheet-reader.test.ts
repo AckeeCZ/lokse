@@ -10,7 +10,7 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
     delete: () => null,
   });
 
-  it("should extra lines", () => {
+  it("should extract lines", () => {
     const reader = new SpreadsheetReader("api_key", "*");
 
     const worksheet: Worksheet = {

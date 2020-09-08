@@ -6,17 +6,19 @@ const jsonTransformer: Transformer = {
     return "";
   },
   transformKeyValue(key, value) {
-    let normalizedValue = value.replace(/%newline%/gi, "\\n");
-    normalizedValue = normalizedValue.replace(/"/gi, '\\"');
-    normalizedValue = normalizedValue.replace(/%([@df])/gi, "%$1");
-    normalizedValue = normalizedValue.replace(/%s/gi, "%@");
+    const normalizedValue = value
+      .replace(/(\r\n|\n|\r)/gm, "") // Remove new lines inside string, https://www.textfixer.com/tutorials/javascript-line-breaks.php
+      .replace(/%newline%/gi, "\\n")
+      .replace(/"/gi, '\\"') // Escape double quotes
+      .replace(/%([@df])/gi, "%$1")
+      .replace(/%s/gi, "%@");
 
-    return '  "' + key + '" : "' + normalizedValue + '",';
+    return `  "${key}" : "${normalizedValue}",`;
   },
   insert(_, newValues) {
     newValues = newValues.substring(0, newValues.length - 1);
 
-    const output = EOL + "{" + EOL + newValues + EOL + "}";
+    const output = `${EOL}{${EOL}${newValues}${EOL}}`;
 
     return output;
   },
