@@ -22,24 +22,24 @@ class Update extends Base {
 
   static flags = {
     help: flags.help({ char: "h" }),
-    id: cliFlags.id(),
-    dir: flags.string({ char: "d", name: "dir", description: "Output folder" }),
+    id: cliFlags.id.flag(),
+    dir: flags.string({ char: "d", name: "dir", description: "output folder" }),
     languages: flags.string({
       char: "l",
       name: "languages",
       description:
-        "Translation columns languages. Multiple values are comma separated. For example cs,en,fr",
+        "translation columns languages. Multiple values are comma separated. For example cs,en,fr",
     }),
     col: flags.string({
       char: "c",
       name: "col",
-      description: "Column containing translations keys. For example key_web.",
+      description: "column containing translations keys. For example key_web.",
     }),
     format: flags.enum({
       char: "f",
       name: "format",
       options: outputFormats,
-      description: `Output format. One of ${outputFormats.join(
+      description: `output format. One of ${outputFormats.join(
         ", "
       )}. Default is ${defaultFormat}.`,
     }),
@@ -48,11 +48,13 @@ class Update extends Base {
   async run() {
     const { flags } = this.parse(Update);
 
-    const sheetId = flags.id ?? '';
+    const sheetId = flags.id ?? "";
     const dir = flags.dir ?? this.conf?.dir;
     const languages = flags.languages?.split(",") ?? this.conf?.languages;
     const column = flags.col ?? this.conf?.column;
     const format = flags.format ?? this.conf?.format ?? defaultFormat;
+
+    cliFlags.id.invariant(sheetId);
 
     // TODO: polish error messages
     if (!dir) {

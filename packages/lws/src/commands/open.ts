@@ -13,13 +13,15 @@ class Open extends Base {
 
   static flags = {
     help: flags.help({ char: "h" }),
-    id: cliFlags.id(),
+    id: cliFlags.id.flag(),
   };
 
   async run() {
     const { flags } = this.parse(Open);
 
     const sheetId = flags.id;
+
+    cliFlags.id.invariant(sheetId);
 
     await open(`https://docs.google.com/spreadsheets/d/${sheetId}`);
   }
