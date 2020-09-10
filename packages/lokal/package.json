@@ -1,12 +1,12 @@
 {
-  "name": "lokal",
+  "name": "lokse",
   "description": "Tool to efficient usage of translations stored in google spreadsheet",
   "version": "0.1.0",
   "author": "Lukas Horak",
   "bin": {
-    "lokal": "./bin/run"
+    "lokse": "./bin/run"
   },
-  "bugs": "https://github.com/AckeeCZ/lokal/issues",
+  "bugs": "https://github.com/AckeeCZ/lokse/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -38,7 +38,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/AckeeCZ/lokal",
+  "homepage": "https://github.com/AckeeCZ/lokse",
   "keywords": [
     "oclif"
   ],
@@ -46,12 +46,12 @@
   "main": "lib/index.js",
   "oclif": {
     "commands": "./lib/commands",
-    "bin": "lokal",
+    "bin": "lokse",
     "plugins": [
       "@oclif/plugin-help"
     ]
   },
-  "repository": "AckeeCZ/lokal",
+  "repository": "AckeeCZ/lokse",
   "scripts": {
     "lint": "eslint . --ext .ts --config ../../.eslintrc",
     "postpack": "rm -f oclif.manifest.json",

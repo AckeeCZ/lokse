@@ -1,12 +1,12 @@
-lokal
+lokse
 ===
 
 Tool to efficient usage of translations stored in google spreadsheet
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/lokal.svg)](https://npmjs.org/package/lokal)
-[![Downloads/week](https://img.shields.io/npm/dw/lokal.svg)](https://npmjs.org/package/lokal)
-[![License](https://img.shields.io/npm/l/lokal.svg)](https://github.com/AckeeCZ/localize-with-spreadsheet/blob/master/package.json)
+[![Version](https://img.shields.io/npm/v/lokse.svg)](https://npmjs.org/package/lokse)
+[![Downloads/week](https://img.shields.io/npm/dw/lokse.svg)](https://npmjs.org/package/lokse)
+[![License](https://img.shields.io/npm/l/lokse.svg)](https://github.com/AckeeCZ/localize-with-spreadsheet/blob/master/package.json)
 
 <!-- toc -->
 * [Usage](#usage)
@@ -15,30 +15,30 @@ Tool to efficient usage of translations stored in google spreadsheet
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g lokal
-$ lokal COMMAND
+$ npm install -g lokse
+$ lokse COMMAND
 running command...
-$ lokal (-v|--version|version)
-lokal/0.1.0 darwin-x64 node-v12.17.0
-$ lokal --help [COMMAND]
+$ lokse (-v|--version|version)
+lokse/0.1.0 darwin-x64 node-v12.17.0
+$ lokse --help [COMMAND]
 USAGE
-  $ lokal COMMAND
+  $ lokse COMMAND
 ...
 ```
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`lokal help [COMMAND]`](#lokal-help-command)
-* [`lokal open`](#lokal-open)
-* [`lokal update`](#lokal-update)
+* [`lokse help [COMMAND]`](#lokse-help-command)
+* [`lokse open`](#lokse-open)
+* [`lokse update`](#lokse-update)
 
-## `lokal help [COMMAND]`
+## `lokse help [COMMAND]`
 
-display help for lokal
+display help for lokse
 
 ```
 USAGE
-  $ lokal help [COMMAND]
+  $ lokse help [COMMAND]
 
 ARGUMENTS
   COMMAND  command to show help for
@@ -49,31 +49,31 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
 
-## `lokal open`
+## `lokse open`
 
 opens localization spreadsheet
 
 ```
 USAGE
-  $ lokal open
+  $ lokse open
 
 OPTIONS
   -h, --help   show CLI help
   -i, --id=id  spreadsheet id
 
 EXAMPLE
-  $ lokal open -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk
+  $ lokse open -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk
 ```
 
-_See code: [src/commands/open.ts](https://github.com/AckeeCZ/lokal/blob/v0.1.0/src/commands/open.ts)_
+_See code: [src/commands/open.ts](https://github.com/AckeeCZ/lokse/blob/v0.1.0/src/commands/open.ts)_
 
-## `lokal update`
+## `lokse update`
 
 updates localization files
 
 ```
 USAGE
-  $ lokal update
+  $ lokse update
 
 OPTIONS
   -c, --col=col                    column containing translations keys. For example key_web.
@@ -86,8 +86,8 @@ OPTIONS
                                    cs,en,fr
 
 EXAMPLE
-  $ lokal update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web
+  $ lokse update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web
 ```
 
-_See code: [src/commands/update.ts](https://github.com/AckeeCZ/lokal/blob/v0.1.0/src/commands/update.ts)_
+_See code: [src/commands/update.ts](https://github.com/AckeeCZ/lokse/blob/v0.1.0/src/commands/update.ts)_
 <!-- commandsstop -->
