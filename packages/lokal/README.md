@@ -76,18 +76,14 @@ USAGE
   $ lokal update
 
 OPTIONS
-  -c, --col=col                                 column containing translations keys. For example key_web.
-  -d, --dir=dir                                 output folder
+  -c, --col=col                    column containing translations keys. For example key_web.
+  -d, --dir=dir                    output folder
+  -f, --format=(json|android|ios)  output format. One of json, android, ios. Default is json.
+  -h, --help                       show CLI help
+  -i, --id=id                      spreadsheet id
 
-  -f, --format=(json|android|ios|dart|dot-net)  output format. One of json, android, ios, dart, dot-net. Default is
-                                                json.
-
-  -h, --help                                    show CLI help
-
-  -i, --id=id                                   spreadsheet id
-
-  -l, --languages=languages                     translation columns languages. Multiple values are comma separated. For
-                                                example cs,en,fr
+  -l, --languages=languages        translation columns languages. Multiple values are comma separated. For example
+                                   cs,en,fr
 
 EXAMPLE
   $ lokal update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web
