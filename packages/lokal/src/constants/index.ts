@@ -1,4 +1,4 @@
-export const NAME = "lws";
+export const NAME = "lokal";
 
 export enum OutputFormat {
   JSON = "json",

@@ -1,12 +1,12 @@
 {
-  "name": "lws",
+  "name": "lokal",
   "description": "Tool to efficient usage of translations stored in google spreadsheet",
   "version": "0.1.0",
   "author": "Lukas Horak",
   "bin": {
-    "lws": "./bin/run"
+    "lokal": "./bin/run"
   },
-  "bugs": "https://github.com/AckeeCZ/localize-with-spreadsheet/issues",
+  "bugs": "https://github.com/AckeeCZ/lokal/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -38,7 +38,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/AckeeCZ/localize-with-spreadsheet",
+  "homepage": "https://github.com/AckeeCZ/lokal",
   "keywords": [
     "oclif"
   ],
@@ -46,12 +46,12 @@
   "main": "lib/index.js",
   "oclif": {
     "commands": "./lib/commands",
-    "bin": "lws",
+    "bin": "lokal",
     "plugins": [
       "@oclif/plugin-help"
     ]
   },
-  "repository": "AckeeCZ/localize-with-spreadsheet",
+  "repository": "AckeeCZ/lokal",
   "scripts": {
     "lint": "eslint . --ext .ts --config ../../.eslintrc",
     "postpack": "rm -f oclif.manifest.json",
@@ -59,7 +59,8 @@
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "prettier": "prettier --write --config ../../.prettierrc \"(src|test)/**/*.ts\"",
     "test": "jest --config ../../jest.config.js",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif-dev readme readme && git add README.md",
+    "readme": "oclif-dev readme"
   },
   "types": "lib/index.d.ts"
 }

@@ -2,6 +2,7 @@ import * as path from "path";
 import { flags } from "@oclif/command";
 import * as ora from "ora";
 
+import { NAME } from "../constants";
 import Base from "../base";
 import { OutputFormat } from "../constants";
 import Reader from "../core/reader";
@@ -17,7 +18,7 @@ class Update extends Base {
   static description = "updates localization files";
 
   static examples = [
-    "$ lws update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web",
+    `$ ${NAME} update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web`,
   ];
 
   static flags = {
