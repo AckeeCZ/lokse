@@ -6,7 +6,7 @@ import Base from "../base";
 import * as cliFlags from "../flags";
 
 class Open extends Base {
-  static description = "opens localization spreadsheet";
+  static description = "open localization spreadsheet in default browser";
 
   static examples = [
     `$ ${NAME} open -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk`,

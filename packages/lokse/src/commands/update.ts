@@ -15,7 +15,7 @@ const outputFormats = Object.values(OutputFormat);
 const defaultFormat = OutputFormat.JSON;
 
 class Update extends Base {
-  static description = "updates localization files";
+  static description = "update translations from localization spreadsheet";
 
   static examples = [
     `$ ${NAME} update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web`,
