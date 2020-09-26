@@ -6,7 +6,7 @@ Tool to efficient usage of translations stored in google spreadsheet
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/lokse.svg)](https://npmjs.org/package/lokse)
 [![Downloads/week](https://img.shields.io/npm/dw/lokse.svg)](https://npmjs.org/package/lokse)
-[![License](https://img.shields.io/npm/l/lokse.svg)](https://github.com/AckeeCZ/localize-with-spreadsheet/blob/master/package.json)
+[![License](https://img.shields.io/npm/l/lokse.svg)](https://github.com/AckeeCZ/lokse/blob/master/package.json)
 
 <!-- toc -->
 * [Usage](#usage)
