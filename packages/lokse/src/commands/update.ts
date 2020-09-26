@@ -40,9 +40,7 @@ class Update extends Base {
       char: "f",
       name: "format",
       options: outputFormats,
-      description: `output format. One of ${outputFormats.join(
-        ", "
-      )}. Default is ${defaultFormat}.`,
+      description: `output format. Default is ${defaultFormat}.`,
     }),
   };
 
