@@ -60,7 +60,8 @@
     "prettier": "prettier --write --config ../../.prettierrc \"(src|test)/**/*.ts\"",
     "test": "jest --config ../../jest.config.js",
     "version": "oclif-dev readme readme && git add README.md",
-    "readme": "oclif-dev readme"
+    "readme": "oclif-dev readme",
+    "changelog": "gitmoji-changelog"
   },
   "types": "lib/index.d.ts"
 }
