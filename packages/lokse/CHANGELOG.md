@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="1.0.0-beta.1"></a>
+## 1.0.0-beta.1 (2020-09-30)
+
+### Changed
+
+- 💬 Fix name of variable in MissingApiKeyError msg [[dd4e03b](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/dd4e03b95d3b9891d1221ef1b9e9981dc9af6855)]
+
+
 <a name="1.0.0-beta.0"></a>
 ## 1.0.0-beta.0 (2020-09-30)
 
