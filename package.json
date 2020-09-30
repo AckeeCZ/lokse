@@ -4,6 +4,9 @@
     "example",
     "packages/*"
   ],
+  "scripts": {
+    "postinstall": "./scripts/fix-gitmoji-changelog-node-preset"
+  },
   "devDependencies": {
     "eslint": "^5.13",
     "eslint-config-oclif": "^3.1",
