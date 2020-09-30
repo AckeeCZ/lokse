@@ -11,7 +11,7 @@ Tool to efficient usage of translations stored in google spreadsheet
 
 * [Usage](#usage)
 * [Authentication](#authentication)
-* [Usage](#usage)
+* [Configuration](#configuration)
 * [Commands](#commands)
 
 # Usage
@@ -48,6 +48,36 @@ $ lokse update
 ```
 
 > For the sake of security reasons **Never check your API keys / secrets into version control** (git)
+
+# Configuration
+
+CLI uses [`Cosmiconfig`](https://www.npmjs.com/package/cosmiconfig) which means you can hold the configuration in [any format it supports](https://github.com/davidtheclark/cosmiconfig#cosmiconfig). 
+
+So just create `lokse.config.js`, `.lokserc`, `lokse.yml`, `lokse.json` or add `lokse` property into the `package.json` and there you can setup on of the options:
+
+## Options
+
+* **`sheetId`** - spreadsheet id. When you open your spreadsheet it's this string ![](https://github.com/AckeeCZ/lokse/doc/spreadsheet-id.png)
+* **`dir`** - output directory where generatd translation files will be written
+* **`languages`** - list of languages you want to generate translations for. Also names of columns in spreadsheet
+* **`column`** - name of spreadsheet columm containing translation ids
+* **`format`** - format of output translation file
+
+Example of `.lokserc`
+
+```json
+{
+  "sheetId": "1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk",
+  "dir": "locales",
+  "languages": [
+    "cs",
+    "en",
+    "fr"
+  ],
+  "column": "key_web",
+  "format": "json"
+}
+```
 
 # Commands
 <!-- commands -->
