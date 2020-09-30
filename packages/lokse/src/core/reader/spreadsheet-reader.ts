@@ -29,12 +29,12 @@ export class SpreadsheetReader {
   }
 
   async fetchSheets() {
-    if (!process.env.GOOGLE_API_KEY) {
+    if (!process.env.LOKSE_API_KEY) {
       throw new MissingApiKeyError();
     }
 
     if (!this.worksheets) {
-      this.spreadsheet.useApiKey(process.env.GOOGLE_API_KEY);
+      this.spreadsheet.useApiKey(process.env.LOKSE_API_KEY);
       await this.spreadsheet.loadInfo();
 
       this.worksheets = await this.sheetsReader.read(this.spreadsheet);
