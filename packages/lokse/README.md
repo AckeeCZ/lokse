@@ -8,10 +8,12 @@ Tool to efficient usage of translations stored in google spreadsheet
 [![Downloads/week](https://img.shields.io/npm/dw/lokse.svg)](https://npmjs.org/package/lokse)
 [![License](https://img.shields.io/npm/l/lokse.svg)](https://github.com/AckeeCZ/lokse/blob/master/package.json)
 
-<!-- toc -->
+
+* [Usage](#usage)
+* [Authentication](#authentication)
 * [Usage](#usage)
 * [Commands](#commands)
-<!-- tocstop -->
+
 # Usage
 <!-- usage -->
 ```sh-session
@@ -26,6 +28,27 @@ USAGE
 ...
 ```
 <!-- usagestop -->
+# Authentication
+
+Last version of Google Spreadsheets API requires us to be authenticated to allow fetching spreadsheet data.
+
+For read only access, we're good with usage of API key, if you don't have any, follow [the instructions here](https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication?id=api-key) to create one. 
+
+Once you have the key, you can use it with each command
+
+```sh-session
+$ LOKSE_API_KEY=put_here_you_own_api_key lokse update
+```
+
+or export it to be able using commands without the it
+
+```sh-session
+$ export LOKSE_API_KEY=put_here_you_own_api_key 
+$ lokse update
+```
+
+> For the sake of security reasons **Never check your API keys / secrets into version control** (git)
+
 # Commands
 <!-- commands -->
 * [`lokse help [COMMAND]`](#lokse-help-command)
@@ -51,7 +74,7 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0
 
 ## `lokse open`
 
-opens localization spreadsheet
+open localization spreadsheet in default browser
 
 ```
 USAGE
@@ -69,7 +92,7 @@ _See code: [src/commands/open.ts](https://github.com/AckeeCZ/lokse/blob/v0.1.0/s
 
 ## `lokse update`
 
-updates localization files
+update translations from localization spreadsheet
 
 ```
 USAGE
@@ -78,7 +101,7 @@ USAGE
 OPTIONS
   -c, --col=col                    column containing translations keys. For example key_web.
   -d, --dir=dir                    output folder
-  -f, --format=(json|android|ios)  output format. One of json, android, ios. Default is json.
+  -f, --format=(json|android|ios)  output format. Default is json.
   -h, --help                       show CLI help
   -i, --id=id                      spreadsheet id
 
