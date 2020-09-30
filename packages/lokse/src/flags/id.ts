@@ -9,7 +9,7 @@ export const flag = flags.build({
 
   default: ({ flags }) => {
     const conf = config.get();
-    const id = process.env.SPREADSHEET_ID ?? flags.id ?? conf?.sheet_id;
+    const id = process.env.SPREADSHEET_ID ?? flags.id ?? conf?.sheetId;
 
     return id;
   },

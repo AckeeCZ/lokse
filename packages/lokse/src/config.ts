@@ -4,7 +4,7 @@ import { NAME, OutputFormat } from "./constants";
 const explorerSync = cosmiconfigSync(NAME);
 
 export type ConfigType = {
-  sheet_id?: string;
+  sheetId?: string;
   dir?: string;
   languages?: string[];
   column?: string;
