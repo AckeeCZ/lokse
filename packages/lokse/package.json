@@ -59,9 +59,10 @@
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "prettier": "prettier --write --config ../../.prettierrc \"(src|test)/**/*.ts\"",
     "test": "jest --config ../../jest.config.js",
-    "version": "oclif-dev readme readme && git add README.md",
+    "version": "yarn readme && yarn changelog && code --wait CHANGELOG.md && git add README.md CHANGELOG.md",
     "readme": "oclif-dev readme",
-    "changelog": "gitmoji-changelog"
+    "changelog": "gitmoji-changelog",
+    "release": "yarn version"
   },
   "types": "lib/index.d.ts"
 }
