@@ -18,6 +18,7 @@ class Update extends Base {
   static description = "update translations from localization spreadsheet";
 
   static examples = [
+    `$ ${NAME} update`,
     `$ ${NAME} update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web`,
   ];
 

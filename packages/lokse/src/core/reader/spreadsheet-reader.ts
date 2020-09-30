@@ -1,15 +1,16 @@
-import Line from "../line";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { flatten } from "lodash";
+import { CLIError } from "@oclif/errors";
 
+import Line from "../line";
 import logger from "../../logger";
 import WorksheetReader, { Worksheet } from "./worksheet-reader";
 import { isEqualCaseInsensitive } from "../../utils";
 
-class MissingApiKeyError extends Error {
+class MissingApiKeyError extends CLIError {
   constructor() {
     super(
-      `Could not get api key. Use LOKSE_API_KEY env variable to provide it.`
+      `Could not get api key. Use LOKSE_API_KEY env variable to provide it 🔑`
     );
   }
 }
