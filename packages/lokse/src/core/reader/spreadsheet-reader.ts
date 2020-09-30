@@ -9,7 +9,7 @@ import { isEqualCaseInsensitive } from "../../utils";
 class MissingApiKeyError extends Error {
   constructor() {
     super(
-      `Could not get api key. Use GOOGLE_API_KEY env variable to provide it.`
+      `Could not get api key. Use LOKSE_API_KEY env variable to provide it.`
     );
   }
 }
