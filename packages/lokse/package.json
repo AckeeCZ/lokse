@@ -1,0 +1,68 @@
+{
+  "name": "lokse",
+  "description": "Tool to efficient usage of translations stored in google spreadsheet",
+  "version": "0.1.0",
+  "author": "Lukas Horak",
+  "bin": {
+    "lokse": "./bin/run"
+  },
+  "bugs": "https://github.com/AckeeCZ/lokse/issues",
+  "dependencies": {
+    "@oclif/command": "^1",
+    "@oclif/config": "^1",
+    "@oclif/plugin-help": "^3",
+    "@types/bluebird": "^3.5.32",
+    "@types/google-spreadsheet": "^3.0.1",
+    "@types/mkdirp": "^1.0.1",
+    "bluebird": "^3.7.2",
+    "cosmiconfig": "^7.0.0",
+    "google-spreadsheet": "^3.0.13",
+    "mkdirp": "^1.0.4",
+    "open": "^7.2.1",
+    "ora": "^5.0.0",
+    "ts-node": "^9.0.0",
+    "tslib": "^1"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1",
+    "@oclif/test": "^1",
+    "@types/node": "^10",
+    "typescript": "^3.3"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/AckeeCZ/lokse",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "lokse",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "AckeeCZ/lokse",
+  "scripts": {
+    "lint": "eslint . --ext .ts --config ../../.eslintrc",
+    "postpack": "rm -f oclif.manifest.json",
+    "posttest": "yarn lint",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "prettier": "prettier --write --config ../../.prettierrc \"(src|test)/**/*.ts\"",
+    "test": "jest --config ../../jest.config.js",
+    "version": "yarn readme && yarn changelog && code --wait CHANGELOG.md && git add README.md CHANGELOG.md",
+    "readme": "oclif-dev readme",
+    "changelog": "gitmoji-changelog",
+    "release": "yarn version"
+  },
+  "types": "lib/index.d.ts"
+}

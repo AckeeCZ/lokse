@@ -1,32 +1,26 @@
-# Convert a Google Spreadsheet to a localization file
+# lokse
 
+This is a multi package repository of the **lokse** project. The project's goal is to faciliate the work with translations held in Google spreadsheet. 
 
-## Installation
-	npm install ackee-localize-spreadsheet-sdk -g
+## Brief history
+* The original idea is from [`localize-with-spreadsheet`](https://github.com/xavierha/localize-with-spreadsheet) package 
+* We adopted it and made a package "fork" [`ackee-localize-spreadsheet-sdk`](https://www.npmjs.com/package/ackee-localize-spreadsheet-sdk) used by all 3 platforms (iOS, Android, Web)
+* As the time went, other platforms (iOS, Android) abandoned the package and the Web platform remained as the only one using it
+* Because of several reasons, the tool was reworked into the next generation version and first released in September 2020 (before Google [stopped support for unauthenticated access to its Sheets API](https://cloud.google.com/blog/products/g-suite/migrate-your-apps-use-latest-sheets-api), which was on of the resons) 🚀
 
-## Usage
+## The name meaning
+You're maybe curios what the name means. Some people can pronounce it as Lokše which is a name for [Slovak potato flatbread](https://www.google.com/search?q=lok%C5%A1e+recipe&oq=lok%C5%A1e+recipe&aqs=chrome..69i57j0l7.2201j0j7&sourceid=chrome&ie=UTF-8).  
+Maybe it was an inspiration. But the truth is, it's a little pun. The has evolved by abbreaviating the term localization sheet and transcripting Czech pronounciation:
 
-ackee-localize-spreadsheet-sdk [options]
+**Loc**alization **She**t ➡ **LocShe** ➡ **LokShe** ("c" is pronounced as "k" in Czech) ➡ **LokŠe** ("sh" is pronounced as "š") ➡ **Lokse** 🤓
 
-| Shortcut   |      Option      |  Description |
-|----------|:-------------:|------:|
-| -i | --id [value] | Spreadsheet ID |
-| -d | --dir [value] | Output folder |
-| -c | --cols [value] | Translation collumns |
-| -t | --type [value] | Type (key_web, key_android, key_ios) |
-| -h | --help | Output usage information |
+## Packages
 
-## Example
-### Use configuration file '.ackeeconfig.json' and run
-    ackee-localize-spreadsheet-sdk
+* [`lokse`](./packages/lokse) - Core package, CLI tool for updating project's translations from Google spreadsheet
+	
+## Credits
 
-### or use flags 
-    ackee-localize-spreadsheet-sdk -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales/ -c cz,en,fr -t key_web
-
-## Notes
-- Your spreadsheet should be "Published" for this to work
-- You need to have git installed for the installation
-
-Jakub Baierl & Jiří Šmolík & Lukáš Kočí
+* Author of `localize-with-spreadsheet` - [Xavier H.](https://github.com/xvrh)
+* Authors of `ackee-localize-spreadsheet-sdk` - [Jakub Baierl](https://github.com/baierjak), [Jiří Šmolík](https://github.com/smoliji), Lukáš Kočí
 
 Fork of <a href="https://github.com/xavierha/localize-with-spreadsheet" target="_blank">https://github.com/xavierha/localize-with-spreadsheet</a>
