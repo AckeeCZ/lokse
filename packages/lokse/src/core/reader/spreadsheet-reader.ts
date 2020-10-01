@@ -10,8 +10,9 @@ import { isEqualCaseInsensitive } from "../../utils";
 class MissingApiKeyError extends CLIError {
   constructor() {
     super(
-      `Could not get api key. Use LOKSE_API_KEY env variable to provide it 🔑`
+      `Could not get API key. Use LOKSE_API_KEY env variable to provide it 🔑`
     );
+    this.name = "MissingApiKeyError";
   }
 }
 
@@ -67,9 +68,9 @@ export class SpreadsheetReader {
   }
 
   async read(keyColumn: string, valueColumn: string) {
-    try {
-      const worksheets = await this.fetchSheets();
+    const worksheets = await this.fetchSheets();
 
+    try {
       const extractedLines: Line[][] = worksheets.map((worksheet) => {
         const worksheetLines = this.extractFromWorksheet(
           worksheet,
@@ -82,7 +83,7 @@ export class SpreadsheetReader {
 
       return flatten(extractedLines);
     } catch (error) {
-      logger.error("Error at fetching cells data", error);
+      logger.error(`Error at processing ${valueColumn} cells data`, error);
       return [];
     }
   }

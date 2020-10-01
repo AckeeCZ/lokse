@@ -84,28 +84,35 @@ class Update extends Base {
     const reader = new Reader(sheetId, "*");
     const writer = new FileWriter();
 
-    languages.forEach(async (language) => {
+    for (const language of languages) {
       const spinner = ora({ spinner: "dots" });
-      const outputPath = path.join(
-        process.cwd(),
-        dir,
-        outputTransformer.getFileName(language)
+
+      const outputFileName = outputTransformer.getFileName(language);
+      const outputPath = path.resolve(process.cwd(), dir, outputFileName);
+      const relativeOutputPath = path.relative(process.cwd(), outputPath);
+      const langName = `${language}`;
+
+      spinner.start(
+        `Saving ${langName} translations into ${relativeOutputPath}`
       );
 
-      spinner.start(`Saving ${outputPath}`);
       try {
-        const lines = await reader.read(column, language.toUpperCase());
+        // Reason: Process languages sequentially
+        // eslint-disable-next-line no-await-in-loop
+        const lines = await reader.read(column, language);
 
         if (lines.length === 0) {
-          spinner.warn(`Received empty lines set for language ${language}`);
+          spinner.warn(`Received empty lines set for language ${langName}`);
         } else {
           writer.write(outputPath, lines, outputTransformer);
-          spinner.succeed();
+          spinner.succeed(
+            `${langName} translations saved into ${relativeOutputPath}`
+          );
         }
       } catch (error) {
-        spinner.fail(error.toString());
+        spinner.fail(`Generating ${langName} translations failed. ${error}`);
       }
-    });
+    }
   }
 }
 
