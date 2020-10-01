@@ -46,7 +46,7 @@ or put this line into the `~/.bashrc` or `~/.profile` as described at [StackOver
 export LOKSE_API_KEY=put_here_you_own_api_key
 ```
 
-then restart the computer and then you'll be able to run
+then run `source ~/.bashrc` / `source ~/.profile` or restart the computer and then you'll be able to run
 
 ```sh-session 
 $ lokse update
