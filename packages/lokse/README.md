@@ -40,10 +40,15 @@ Once you have the key, you can use it with each command
 $ LOKSE_API_KEY=put_here_you_own_api_key lokse update
 ```
 
-or export it to be able using commands without the it
+or put this line into the `~/.bashrc` or `~/.profile` as described at [StackOverflow question](https://stackoverflow.com/a/31546962/7051731)
 
-```sh-session
-$ export LOKSE_API_KEY=put_here_you_own_api_key 
+```
+export LOKSE_API_KEY=put_here_you_own_api_key
+```
+
+then restart the computer and then you'll be able to run
+
+```sh-session 
 $ lokse update
 ```
 
