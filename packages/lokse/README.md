@@ -53,7 +53,7 @@ $ lokse update
 
 CLI uses [`Cosmiconfig`](https://www.npmjs.com/package/cosmiconfig) which means you can hold the configuration in [any format it supports](https://github.com/davidtheclark/cosmiconfig#cosmiconfig). 
 
-So just create `lokse.config.js`, `.lokserc`, `lokse.yml`, `lokse.json` or add `lokse` property into the `package.json` and there you can setup on of the options:
+So just create `lokse.config.js`, `.lokserc`, `.lokserc.yml`, `.lokserc.json` or add `lokse` property into the `package.json` and there you can setup on of the options:
 
 ## Options
 
