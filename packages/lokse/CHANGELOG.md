@@ -1,5 +1,18 @@
 # Changelog
 
+<a name="1.0.0-beta.2"></a>
+## 1.0.0-beta.2 (2020-10-01)
+
+### Changed
+
+- ✨ MissingApiKeyError extends CLIError [[cdb9b43](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/cdb9b439865600e71a9166725b5e21228f4b6a68)]
+- 💄 Beautify displaying &quot;not api key&quot; error message [[b599427](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/b59942752c66e6a3833abf7edfec4812a16ebd3e)]
+- 🔨 Extract tsc command into the &quot;build&quot; script [[b3faef4](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/b3faef4bde5b9e1d2a41fa766d587b5b1531e8e2)]
+
+### Fixed
+
+- 📝 Fix possible config names in readme [[a2d5f09](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/a2d5f0952058fda588b6b6029992b9b62761bc45)]
+
 <a name="1.0.0-beta.1"></a>
 ## 1.0.0-beta.1 (2020-09-30)
 
