@@ -40,19 +40,19 @@ Once you have the key, you can use it with each command
 $ LOKSE_API_KEY=put_here_you_own_api_key lokse update
 ```
 
-or put this line into the `~/.bashrc` or `~/.profile` as described at [StackOverflow question](https://stackoverflow.com/a/31546962/7051731)
+More handy way of using the key is to create an `.env.local` file and put this line inside
 
 ```
-export LOKSE_API_KEY=put_here_you_own_api_key
+LOKSE_API_KEY=put_here_you_own_api_key
 ```
 
-then run `source ~/.bashrc` / `source ~/.profile` or restart the computer and then you'll be able to run
+then you'll be able to run
 
 ```sh-session 
 $ lokse update
 ```
 
-> For the sake of security reasons **Never check your API keys / secrets into version control** (git)
+> For the sake of security reasons **Never check your API keys / secrets into version control**. That means you should **not forget to add `.env.local` into the `.gitignore`**.
 
 # Configuration
 
