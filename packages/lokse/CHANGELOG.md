@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="1.0.0-beta.4"></a>
+## 1.0.0-beta.4 (2020-10-02)
+
+### Added
+
+- ✨ Support loading API key from .env.local [[e4f91ae](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/e4f91ae53d2f2b1a07aa869c4e2e811ea143dafc)]
+
+
 <a name="1.0.0-beta.3"></a>
 ## 1.0.0-beta.3 (2020-10-02)
 
