@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="1.0.0-beta.6"></a>
+## 1.0.0-beta.6 (2020-10-02)
+
+### Fixed
+
+- 🐛 Fix throwing cli errors with exit code from update command [[c21a41f](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/c21a41ff25f25a3ee769b490c433be6195d5405f)]
+
+
 <a name="1.0.0-beta.5"></a>
 ## 1.0.0-beta.5 (2020-10-02)
 
