@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="1.0.0-beta.5"></a>
+## 1.0.0-beta.5 (2020-10-02)
+
+### Added
+
+- ✨ Set exit code 1 for missing api key error [[d851326](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/d851326a5d5986f69b65f108d8b04fa24b02ad96)]
+
+
 <a name="1.0.0-beta.4"></a>
 ## 1.0.0-beta.4 (2020-10-02)
 
