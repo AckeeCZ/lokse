@@ -5,3 +5,4 @@ node_modules/
 samples/
 
 *.log
+.env.local
