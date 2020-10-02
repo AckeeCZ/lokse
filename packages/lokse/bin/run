@@ -1,23 +1,6 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
-const path = require("path");
-const project = path.join(__dirname, "../tsconfig.json");
-const dev = fs.existsSync(project);
-
-const defaultCommand = "update";
-const recognizedCommands = ["open", "update"];
-
-if (dev) {
-  require("ts-node").register({ project });
-}
-
-if (process.argv.length > 2 && recognizedCommands.includes(process.argv[2])) {
-  require(`../${dev ? "src" : "lib"}`)
-    .run()
-    .catch(require("@oclif/errors/handle"));
-} else {
-  require(`../${dev ? "src" : "lib"}/commands/${defaultCommand}`)
-    .run()
-    .catch(require("@oclif/errors/handle"));
-}
+require("@oclif/command")
+  .run()
+  .then(require("@oclif/command/flush"))
+  .catch(require("@oclif/errors/handle"));
