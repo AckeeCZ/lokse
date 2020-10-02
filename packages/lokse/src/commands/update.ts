@@ -1,5 +1,6 @@
 import * as path from "path";
 import { flags } from "@oclif/command";
+import { CLIError } from "@oclif/errors";
 import * as ora from "ora";
 
 import { NAME } from "../constants";
@@ -110,7 +111,11 @@ class Update extends Base {
           );
         }
       } catch (error) {
-        spinner.fail(`Generating ${langName} translations failed. ${error}`);
+        spinner.fail(`Generating ${langName} translations failed.`);
+
+        if (error instanceof CLIError) {
+          throw error;
+        }
       }
     }
   }

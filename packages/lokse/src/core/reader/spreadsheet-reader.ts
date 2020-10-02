@@ -10,10 +10,7 @@ import { isEqualCaseInsensitive } from "../../utils";
 class MissingApiKeyError extends CLIError {
   constructor() {
     super(
-      `Could not get API key. Use LOKSE_API_KEY env variable to provide it 🔑`,
-      {
-        exit: 1,
-      }
+      `Could not get API key. Use LOKSE_API_KEY env variable to provide it 🔑`
     );
     this.name = "MissingApiKeyError";
   }
