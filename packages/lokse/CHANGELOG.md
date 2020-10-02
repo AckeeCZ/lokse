@@ -1,5 +1,18 @@
 # Changelog
 
+<a name="1.0.0-beta.3"></a>
+## 1.0.0-beta.3 (2020-10-02)
+
+### Changed
+
+- ⏪ Revert handling update as a default command [[bd51c87](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/bd51c87a26edea534a9d801260d26524f738a11b)]
+- 📝 Describe exporting API key better [[973847d](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/973847d843b17c8a5766036cff1a78ebe825fcff)]
+
+### Fixed
+
+- ✏️ Fix typo in readme [[548cb30](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/548cb300359e10acfa67e79fd1bfaf34eb8d2a52)]
+
+
 <a name="1.0.0-beta.2"></a>
 ## 1.0.0-beta.2 (2020-10-01)
 
