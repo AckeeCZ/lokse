@@ -27,7 +27,7 @@ export class FileWriter {
     }
 
     const valueToInsert = this.getTransformedLines(lines, transformer);
-    const output = transformer.insert(fileContent, valueToInsert);
+    const output = await transformer.insert(fileContent, valueToInsert);
 
     const dirname = path.dirname(filePath);
     await mkdirp(dirname);

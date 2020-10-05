@@ -1,5 +1,29 @@
 import { EOL } from "os";
 import { Transformer } from "./transformer";
+import * as prettier from "prettier";
+
+import logger from "../../logger";
+
+async function format(output: string) {
+  const prettierConfig = await prettier.resolveConfigFile();
+
+  if (!prettierConfig) {
+    return output;
+  }
+
+  const options = await prettier.resolveConfig(prettierConfig);
+
+  if (options === null) {
+    return output;
+  }
+
+  try {
+    return prettier.format(output, { parser: "json", ...options });
+  } catch (error) {
+    logger.log("Error when formatting the output", error);
+    return output;
+  }
+}
 
 const jsonTransformer: Transformer = {
   transformComment() {
@@ -15,13 +39,15 @@ const jsonTransformer: Transformer = {
 
     return `  "${key}" : "${normalizedValue}",`;
   },
-  insert(_, newValues) {
+  async insert(_, newValues) {
     newValues = newValues.substring(0, newValues.length - 1);
 
     const output = `${EOL}{${EOL}${newValues}${EOL}}`;
+    const formatted = await format(output);
 
-    return output;
+    return formatted;
   },
+
   getFileName: (item) => item.toLowerCase() + ".json",
 };
 
