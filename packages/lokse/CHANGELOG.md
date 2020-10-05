@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="1.0.0-beta.7"></a>
+## 1.0.0-beta.7 (2020-10-05)
+
+### Added
+
+- ✨ Add formatting json output with prettier [[eeb505b](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/eeb505bf958b7d39eefbc57f4a0d405c4705715a)]
+
+
 <a name="1.0.0-beta.6"></a>
 ## 1.0.0-beta.6 (2020-10-02)
 
