@@ -16,6 +16,13 @@ class MissingApiKeyError extends CLIError {
   }
 }
 
+class LoadDataError extends CLIError {
+  constructor(reason: string) {
+    super(reason);
+    this.name = "Error when loading localization data";
+  }
+}
+
 export class SpreadsheetReader {
   private spreadsheet: GoogleSpreadsheet;
 
@@ -37,7 +44,12 @@ export class SpreadsheetReader {
 
     if (!this.worksheets) {
       this.spreadsheet.useApiKey(process.env.LOKSE_API_KEY);
-      await this.spreadsheet.loadInfo();
+
+      try {
+        await this.spreadsheet.loadInfo();
+      } catch (error) {
+        throw new LoadDataError(error.message);
+      }
 
       this.worksheets = await this.sheetsReader.read(this.spreadsheet);
     }
