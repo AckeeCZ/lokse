@@ -3,7 +3,6 @@ import { flatten } from "lodash";
 import { CLIError } from "@oclif/errors";
 
 import Line from "../line";
-import logger from "../../logger";
 import WorksheetReader, { Worksheet } from "./worksheet-reader";
 import { isEqualCaseInsensitive } from "../../utils";
 
@@ -19,7 +18,16 @@ class MissingApiKeyError extends CLIError {
 class LoadDataError extends CLIError {
   constructor(reason: string) {
     super(reason);
-    this.name = "Error when loading localization data";
+    this.name = "LoadDataError";
+  }
+}
+
+class ColumnDataError extends CLIError {
+  constructor(reason: string) {
+    super(reason, {
+      exit: false,
+    });
+    this.name = "ColumnDataError";
   }
 }
 
@@ -74,6 +82,14 @@ export class SpreadsheetReader {
       }
     }
 
+    if (!keyColumnId) {
+      throw new LoadDataError(`Key column "${keyColumn}" not found!`);
+    }
+
+    if (!valueColumnId) {
+      throw new ColumnDataError(`Language column "${valueColumn}" not found!`);
+    }
+
     return worksheet.rows.map(
       (row) => new Line(row[keyColumnId], row[valueColumnId])
     );
@@ -82,22 +98,17 @@ export class SpreadsheetReader {
   async read(keyColumn: string, valueColumn: string) {
     const worksheets = await this.fetchSheets();
 
-    try {
-      const extractedLines: Line[][] = worksheets.map((worksheet) => {
-        const worksheetLines = this.extractFromWorksheet(
-          worksheet,
-          keyColumn,
-          valueColumn
-        );
+    const extractedLines: Line[][] = worksheets.map((worksheet) => {
+      const worksheetLines = this.extractFromWorksheet(
+        worksheet,
+        keyColumn,
+        valueColumn
+      );
 
-        return worksheetLines;
-      });
+      return worksheetLines;
+    });
 
-      return flatten(extractedLines);
-    } catch (error) {
-      logger.error(`Error at processing ${valueColumn} cells data`, error);
-      return [];
-    }
+    return flatten(extractedLines);
   }
 }
 

@@ -113,9 +113,9 @@ class Update extends Base {
       } catch (error) {
         spinner.fail(`Generating ${langName} translations failed.`);
 
-        if (error instanceof CLIError) {
-          throw error;
-        }
+        this.error(error, {
+          exit: error?.oclif.exit,
+        });
       }
     }
   }
