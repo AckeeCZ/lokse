@@ -15,6 +15,7 @@
     "@types/dedent": "^0.7.0",
     "@types/google-spreadsheet": "^3.0.1",
     "@types/mkdirp": "^1.0.1",
+    "@types/update-notifier": "^5.0.0",
     "bluebird": "^3.7.2",
     "cosmiconfig": "^7.0.0",
     "dedent": "^0.7.0",
@@ -25,7 +26,8 @@
     "ora": "^5.0.0",
     "prettier": "^2.1.2",
     "ts-node": "^9.0.0",
-    "tslib": "^1"
+    "tslib": "^1",
+    "update-notifier": "^5.0.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",
