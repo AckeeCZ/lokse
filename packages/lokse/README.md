@@ -14,7 +14,7 @@ Tool to efficient usage of translations stored in google spreadsheet
 * [Configuration](#configuration)
 * [Commands](#commands)
 
-# 🚀 Usage
+## 🚀 Usage
 <!-- usage -->
 ```sh-session
 $ npm install -g lokse
@@ -28,13 +28,13 @@ USAGE
 ...
 ```
 <!-- usagestop -->
-# 🔑 Authentication 
+## 🔑 Authentication 
 
 Last version of Google Spreadsheets API requires us to be authenticated to allow fetching spreadsheet data.
 
 There are two options for authentication: Service Account or API key. For each of these options we have to define some values as  environment variables.
 
-## Environment variables
+### Environment variables
  
 We have practically two ways of how to define environment variables containing API key or Service Account credentials
 
@@ -60,7 +60,7 @@ $ lokse update
 > For the sake of security reasons **Never check your API keys / secrets into version control**. That means you should **not forget to add `.env.local` into the `.gitignore`**.
 
 
-## Service Account
+### Service Account
 
 Currently the best option of authentication is to create a Service account (if you don't have any, follow [the instructions here](https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication?id=service-account)) and then setup at least read permissions for your account in the spreadsheet. 
 
@@ -76,7 +76,7 @@ Once you have the Service account created, you should have its client email and 
 Take these two values, put them into `LOKSE_SERVICE_ACCOUNT_EMAIL` and `LOKSE_PRIVATE_KEY` variables using one of two ways [described above](#environment-variables) and there you go, fetching data from spreadsheet should work now.
 
 
-## API key
+### API key
 
 For read only access, we're good with usage of API key, if you don't have any, follow [the instructions here](https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication?id=api-key) to create one. 
 
@@ -84,13 +84,13 @@ Then define the variable `LOKSE_API_KEY=this_is_your_api_key` and then if the ke
 
 Using API key instead of Service account has one important limitation: You spreadsheet must set permissions to be visible for everyone in the Internet.
 
-# 🔧 Configuration
+## 🔧 Configuration
 
 CLI uses [`Cosmiconfig`](https://www.npmjs.com/package/cosmiconfig) which means you can hold the configuration in [any format it supports](https://github.com/davidtheclark/cosmiconfig#cosmiconfig). 
 
 So just create `lokse.config.js`, `.lokserc`, `.lokserc.yml`, `.lokserc.json` or add `lokse` property into the `package.json` and there you can setup on of the options:
 
-## Options
+### Options
 
 * **`sheetId`** - spreadsheet id. When you open your spreadsheet it's this string ![](https://github.com/AckeeCZ/lokse/doc/spreadsheet-id.png)
 * **`dir`** - output directory where generatd translation files will be written
@@ -114,13 +114,13 @@ Example of `.lokserc`
 }
 ```
 
-# 🕹 Commands 
+## 🕹 Commands 
 <!-- commands -->
 * [`lokse help [COMMAND]`](#lokse-help-command)
 * [`lokse open`](#lokse-open)
 * [`lokse update`](#lokse-update)
 
-## `lokse help [COMMAND]`
+### `lokse help [COMMAND]`
 
 display help for lokse
 
@@ -137,7 +137,7 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
 
-## `lokse open`
+### `lokse open`
 
 open localization spreadsheet in default browser
 
@@ -155,7 +155,7 @@ EXAMPLE
 
 _See code: [src/commands/open.ts](https://github.com/AckeeCZ/lokse/blob/v1.0.0/src/commands/open.ts)_
 
-## `lokse update`
+### `lokse update`
 
 update translations from localization spreadsheet
 
