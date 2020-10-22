@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="1.1.0"></a>
+## 1.1.0 (2020-10-22)
+
+### Added
+
+- ✨ Add update notifier [[e692e4a](https://github.com/AckeeCZ/lokse/commit/e692e4a10267e99912027c0e53caa3395ccef460)]
+
+### Changed
+
+- 📝 Decrease README heading level by one level [[28e2b69](https://github.com/AckeeCZ/lokse/commit/28e2b69f9fa08255038d1dcc761d8a5ad0b7b09d)]
+
+
 <a name="1.0.0"></a>
 ## 1.0.0 (2020-10-22)
 
