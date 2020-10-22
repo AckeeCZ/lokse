@@ -38,7 +38,7 @@ There are two options for authentication: Service Account or API key. For each o
  
 We have practically two ways of how to define environment variables containing API key or Service Account credentials
 
-Use i before the command like
+Use it before the command like
 
 ```sh-session
 $ LOKSE_SERVICE_ACCOUNT_EMAIL=this_is_account_email LOKSE_PRIVATE_KEY=this_is_the_private_key lokse update
