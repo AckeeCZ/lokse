@@ -1,17 +1,21 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { flatten } from "lodash";
 import { CLIError } from "@oclif/errors";
+import * as dedent from "dedent";
 
 import Line from "../line";
 import WorksheetReader, { Worksheet } from "./worksheet-reader";
 import { isEqualCaseInsensitive } from "../../utils";
 
-class MissingApiKeyError extends CLIError {
+class MissingAuthError extends CLIError {
   constructor() {
     super(
-      `Could not get API key. Use LOKSE_API_KEY env variable to provide it 🔑`
+      dedent`
+        Cannot authenticate to fetch Spreadsheet data. 
+          Provide either Service account credentials or API key 🔑 See detail info at https://github.com/AckeeCZ/lokse/tree/master/packages/lokse#authentication
+        `
     );
-    this.name = "MissingApiKeyError";
+    this.name = "MissingAuthError";
   }
 }
 
@@ -45,13 +49,29 @@ export class SpreadsheetReader {
     this.worksheets = null;
   }
 
-  async fetchSheets() {
-    if (!process.env.LOKSE_API_KEY) {
-      throw new MissingApiKeyError();
-    }
+  async authenticate() {
+    const {
+      LOKSE_API_KEY,
+      LOKSE_SERVICE_ACCOUNT_EMAIL,
+      LOKSE_PRIVATE_KEY,
+    } = process.env;
 
+    if (LOKSE_SERVICE_ACCOUNT_EMAIL && LOKSE_PRIVATE_KEY) {      
+      await this.spreadsheet.useServiceAccountAuth({
+        client_email: LOKSE_SERVICE_ACCOUNT_EMAIL,
+        // Treat new lines properly - https://stackoverflow.com/a/36439803/7051731
+        private_key: LOKSE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      });
+    } else if (LOKSE_API_KEY) {
+      this.spreadsheet.useApiKey(LOKSE_API_KEY);
+    } else {
+      throw new MissingAuthError();
+    }
+  }
+
+  async fetchSheets() {
     if (!this.worksheets) {
-      this.spreadsheet.useApiKey(process.env.LOKSE_API_KEY);
+      await this.authenticate();
 
       try {
         await this.spreadsheet.loadInfo();
