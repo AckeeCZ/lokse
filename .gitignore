@@ -6,3 +6,4 @@ samples/
 
 *.log
 .env.local
+*.bak
