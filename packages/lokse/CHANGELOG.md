@@ -1,5 +1,19 @@
 # Changelog
 
+<a name="1.0.0"></a>
+## 1.0.0 (2020-10-22)
+
+### Added
+
+- ✨ Add service account support [[8b26da6](https://github.com/AckeeCZ/lokse/commit/8b26da60d790c230be7d6ee27bc98bb31ad4d4e4)]
+- ✨ Handle mispelled key column name and missing language column [[b6a84c0](https://github.com/AckeeCZ/lokse/commit/b6a84c0d133ad0aa08d10275e7de6d1477993cb0)]
+- ✨ Print CLI error with reason when loading data fail [[1375363](https://github.com/AckeeCZ/lokse/commit/1375363861af170c6b54e93e559b1fab58d94bfa)]
+- 📝 Document usage of service account [[a4b9f6c](https://github.com/AckeeCZ/lokse/commit/a4b9f6ca8bfa98fd526eeacdd64959553394d6ab)]
+
+### Fixed
+
+- 🐛 Fix accessing exit property of error [[a390014](https://github.com/AckeeCZ/lokse/commit/a39001413f9f0d4206ae3983b1cc30ca7890d8b1)]
+
 <a name="1.0.0-beta.7"></a>
 ## 1.0.0-beta.7 (2020-10-05)
 
