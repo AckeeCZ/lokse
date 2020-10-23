@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { flatten } from "lodash";
-import { CLIError } from "@oclif/errors";
+import { CLIError, warn } from "@oclif/errors";
 import * as dedent from "dedent";
 
 import Line from "../line";
@@ -56,11 +56,11 @@ export class SpreadsheetReader {
       LOKSE_PRIVATE_KEY,
     } = process.env;
 
-    if (LOKSE_SERVICE_ACCOUNT_EMAIL && LOKSE_PRIVATE_KEY) {      
+    if (LOKSE_SERVICE_ACCOUNT_EMAIL && LOKSE_PRIVATE_KEY) {
       await this.spreadsheet.useServiceAccountAuth({
         client_email: LOKSE_SERVICE_ACCOUNT_EMAIL,
         // Treat new lines properly - https://stackoverflow.com/a/36439803/7051731
-        private_key: LOKSE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        private_key: LOKSE_PRIVATE_KEY.replace(/\\n/g, "\n"),
       });
     } else if (LOKSE_API_KEY) {
       this.spreadsheet.useApiKey(LOKSE_API_KEY);
@@ -103,11 +103,11 @@ export class SpreadsheetReader {
     }
 
     if (!keyColumnId) {
-      throw new LoadDataError(`Key column "${keyColumn}" not found!`);
+      warn(`Key column "${keyColumn}" not found in sheet ${worksheet.title}.`)
     }
 
     if (!valueColumnId) {
-      throw new ColumnDataError(`Language column "${valueColumn}" not found!`);
+      throw new ColumnDataError(`Language column "${valueColumn}" not found in sheet ${worksheet.title}!`);
     }
 
     return worksheet.rows.map(

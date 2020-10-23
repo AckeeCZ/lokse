@@ -11,6 +11,7 @@ declare type SheetIndexOrTitle = number | string;
 declare type SheetsFilter = string | SheetIndexOrTitle[];
 
 export declare type Worksheet = {
+  title: string;
   header: string[];
   rows: GoogleSpreadsheetRow[];
 };
@@ -45,7 +46,7 @@ class WorksheetReader {
   async loadSheet(worksheet: GoogleSpreadsheetWorksheet) {
     const rows = await worksheet.getRows();
 
-    return { header: worksheet.headerValues, rows };
+    return { title: worksheet.title, header: worksheet.headerValues, rows };
   }
 
   async read(spreadsheet: GoogleSpreadsheet) {
