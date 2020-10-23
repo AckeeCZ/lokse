@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="1.1.1"></a>
+## 1.1.1 (2020-10-23)
+
+### Fixed
+
+- 🐛 Only warn, don&#x27;t throw, when key column not found in worksheet [[649dc00](https://github.com/AckeeCZ/lokse/commit/649dc00a03815410f01dfe7638e2a777f0cfbe01)]
+
+
 <a name="1.1.0"></a>
 ## 1.1.0 (2020-10-22)
 
