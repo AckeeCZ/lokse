@@ -65,7 +65,7 @@
     "posttest": "yarn lint",
     "prepack": "rm -rf lib && yarn build && oclif-dev manifest && oclif-dev readme",
     "prettier": "prettier --write --config ../../.prettierrc \"(src|test)/**/*.ts\"",
-    "test": "jest --config ../../jest.config.js",
+    "test": "jest",
     "version": "yarn readme && yarn changelog && code --wait CHANGELOG.md && git add README.md CHANGELOG.md",
     "readme": "oclif-dev readme",
     "changelog": "gitmoji-changelog",
