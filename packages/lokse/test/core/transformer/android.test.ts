@@ -54,9 +54,9 @@ describe("AndroidTransformer.transformKeyValue", () => {
 });
 
 describe("AndroidTransformer.insert", () => {
-  it("should create resources tag when empty", () => {
+  it("should create resources tag when empty", async () => {
     const xmlHeader = '<?xml version="1.0" encoding="utf-8"?>';
-    const result = transformer.insert("", "à insérer");
+    const result = await transformer.insert("", "à insérer");
     expect(result).toEqual(
       xmlHeader +
         EOL +
@@ -70,8 +70,8 @@ describe("AndroidTransformer.insert", () => {
     );
   });
 
-  it("should insert before end tag when has resource tag", () => {
-    const result = transformer.insert(
+  it("should insert before end tag when has resource tag", async () => {
+    const result = await transformer.insert(
       "<resources>" + EOL + "aa" + EOL + "</resources>",
       "à insérer"
     );
@@ -88,8 +88,8 @@ describe("AndroidTransformer.insert", () => {
     );
   });
 
-  it("should replace auto generated tag when available", () => {
-    const result = transformer.insert(
+  it("should replace auto generated tag when available", async () => {
+    const result = await transformer.insert(
       "<resources>" +
         EOL +
         "aa" +
@@ -114,7 +114,7 @@ describe("AndroidTransformer.insert", () => {
     );
   });
 
-  it("inserts after same as before if new value dont change", () => {
+  it("inserts after same as before if new value dont change", async () => {
     const before =
       "<resources>" +
       EOL +
@@ -125,7 +125,7 @@ describe("AndroidTransformer.insert", () => {
       "before" +
       EOL +
       "</resources>";
-    const result = transformer.insert(before, "before");
+    const result = await transformer.insert(before, "before");
     expect(result).toEqual(before);
   });
 });

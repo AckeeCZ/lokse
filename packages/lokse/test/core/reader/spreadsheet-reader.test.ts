@@ -13,6 +13,7 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
     const reader = new SpreadsheetReader("api_key", "*");
 
     const worksheet: Worksheet = {
+      title: "Worksheet1",
       header: ["Key", "Value_fr", "Value_nl"],
       rows: [
         createRow(1, {
@@ -42,10 +43,11 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
     expect(lines[4].isEmpty()).toEqual(true);
   });
 
-  it("should still work when val column doesnt exist ", () => {
+  it("should throw when val column doesnt exist ", () => {
     const reader = new SpreadsheetReader("api_key", "*");
 
     const worksheet: Worksheet = {
+      title: "Worksheet2",
       header: ["Key", "Value_fr", "Value_nl"],
       rows: [
         createRow(1, {
@@ -56,19 +58,14 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
       ],
     };
 
-    const result = reader.extractFromWorksheet(worksheet, "Key", "NotExist");
-
-    expect(result.length).toEqual(1);
-    expect(result[0].key).toEqual("MaClé1");
-    expect(result[0].value).toEqual("");
-
-    expect(result[0].isComment()).toEqual(false);
+    expect(() => reader.extractFromWorksheet(worksheet, "Key", "NotExist")).toThrow(/column "NotExist" not found/);
   });
 
   it("should keep empty lines", () => {
     const reader = new SpreadsheetReader("api_key", "*");
 
     const worksheet: Worksheet = {
+      title: "Worksheet3",
       header: ["Key", "Value_fr", "Value_nl"],
       rows: [
         createRow(1, {}),
@@ -91,6 +88,7 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
     const reader = new SpreadsheetReader("api_key", "*");
 
     let worksheet: Worksheet = {
+      title: "Worksheet4",
       header: ["Key", "Value_FR"],
       rows: [createRow(1, { Key: "MaClé1", Value_FR: "La valeur 1" })],
     };
@@ -102,6 +100,7 @@ describe("SpreadsheetReader.extractFromWorksheet", () => {
     expect(result[0].value).toEqual("La valeur 1");
 
     worksheet = {
+      title: "Worksheet5",
       header: ["key", "value_fr"],
       rows: [createRow(1, { key: "MaClé2", value_fr: "La valeur 2" })],
     };

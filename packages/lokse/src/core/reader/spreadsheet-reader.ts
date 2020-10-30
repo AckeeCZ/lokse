@@ -19,21 +19,18 @@ class MissingAuthError extends CLIError {
   }
 }
 
-class LoadDataError extends CLIError {
-  constructor(reason: string) {
-    super(reason);
-    this.name = "LoadDataError";
+const cliInvariant = (
+  expression: any,
+  message: string,
+  options: object = {}
+) => {
+  if (!expression) {
+    throw new CLIError(message, options);
   }
-}
+};
 
-class ColumnDataError extends CLIError {
-  constructor(reason: string) {
-    super(reason, {
-      exit: false,
-    });
-    this.name = "ColumnDataError";
-  }
-}
+const noExitCliInvariant = (expression: any, message: string) =>
+  cliInvariant(expression, message, { exit: false });
 
 export class SpreadsheetReader {
   private spreadsheet: GoogleSpreadsheet;
@@ -76,7 +73,7 @@ export class SpreadsheetReader {
       try {
         await this.spreadsheet.loadInfo();
       } catch (error) {
-        throw new LoadDataError(error.message);
+        cliInvariant(false, error.message);
       }
 
       this.worksheets = await this.sheetsReader.read(this.spreadsheet);
@@ -103,12 +100,13 @@ export class SpreadsheetReader {
     }
 
     if (!keyColumnId) {
-      warn(`Key column "${keyColumn}" not found in sheet ${worksheet.title}.`)
+      warn(`Key column "${keyColumn}" not found in sheet ${worksheet.title}.`);
     }
 
-    if (!valueColumnId) {
-      throw new ColumnDataError(`Language column "${valueColumn}" not found in sheet ${worksheet.title}!`);
-    }
+    noExitCliInvariant(
+      valueColumnId,
+      `Language column "${valueColumn}" not found in sheet ${worksheet.title}!`
+    );
 
     return worksheet.rows.map(
       (row) => new Line(row[keyColumnId], row[valueColumnId])
