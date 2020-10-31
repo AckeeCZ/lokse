@@ -1,6 +1,5 @@
 import { test } from "@oclif/test";
 import * as open from "open";
-import { exit } from "process";
 
 jest.mock("open");
 
@@ -17,7 +16,9 @@ describe("open command", () => {
   test
     .command(["open"])
     .catch((error) => {
-      expect(error.message).toEqual(`💥 Sheet id is required for updating translations`);
+      expect(error.message).toEqual(
+        `💥 Sheet id is required for updating translations`
+      );
     })
     .it("throws when id not provided");
 });
