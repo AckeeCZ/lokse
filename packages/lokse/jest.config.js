@@ -5,11 +5,6 @@ module.exports = {
   transform: {
     "\\.ts$": "ts-jest",
   },
-  globals: {
-    "ts-jest": {
-      tsconfig: "<rootDir>/test/tsconfig.json",
-    },
-  },
   coverageReporters: ["lcov", "text-summary"],
   collectCoverageFrom: ["src/**/*.ts"],
   coveragePathIgnorePatterns: ["/templates/"],
