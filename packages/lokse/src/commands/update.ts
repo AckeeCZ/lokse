@@ -1,6 +1,5 @@
 import * as path from "path";
 import { flags } from "@oclif/command";
-import { CLIError } from "@oclif/errors";
 import * as ora from "ora";
 
 import { NAME } from "../constants";
@@ -57,7 +56,6 @@ class Update extends Base {
 
     cliFlags.id.invariant(sheetId);
 
-    // TODO: polish error messages
     if (!dir) {
       throw new MissingFlagValue("Output directory");
     }
@@ -68,15 +66,7 @@ class Update extends Base {
 
     if (!Array.isArray(languages)) {
       throw new IncorrectFlagValue(
-        `Translation columns have to be list of languages, but ${languages} given`
-      );
-    }
-
-    if (!outputFormats.includes(format)) {
-      throw new IncorrectFlagValue(
-        `Format has to be one of ${outputFormats.join(
-          ", "
-        )}, but ${format} given`
+        `🤷‍♂️ Translation columns have to be list of languages, but ${languages} given`
       );
     }
 
