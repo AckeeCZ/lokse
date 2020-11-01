@@ -5,7 +5,11 @@ import * as dedent from "dedent";
 
 import Line from "../line";
 import WorksheetReader, { Worksheet } from "./worksheet-reader";
-import { isEqualCaseInsensitive } from "../../utils";
+import {
+  isEqualCaseInsensitive,
+  cliInvariant,
+  noExitCliInvariant,
+} from "../../utils";
 
 class MissingAuthError extends CLIError {
   constructor() {
@@ -18,19 +22,6 @@ class MissingAuthError extends CLIError {
     this.name = "MissingAuthError";
   }
 }
-
-const cliInvariant = (
-  expression: any,
-  message: string,
-  options: object = {}
-) => {
-  if (!expression) {
-    throw new CLIError(message, options);
-  }
-};
-
-const noExitCliInvariant = (expression: any, message: string) =>
-  cliInvariant(expression, message, { exit: false });
 
 export class SpreadsheetReader {
   private spreadsheet: GoogleSpreadsheet;
