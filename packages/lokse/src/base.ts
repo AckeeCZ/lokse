@@ -12,7 +12,7 @@ export default abstract class Base extends Command {
     const notifier = updateNotifier({
       pkg,
       updateCheckInterval: 1000,
-      shouldNotifyInNpmScript: true
+      shouldNotifyInNpmScript: true,
     });
     notifier.notify();
 

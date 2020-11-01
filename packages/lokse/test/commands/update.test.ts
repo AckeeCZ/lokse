@@ -62,7 +62,7 @@ describe("update command", () => {
 
       /**
        * Mocking error output with https://www.npmjs.com/package/fancy-test#stdoutstderr-mocking
-       * doesn't work as Jest somehow wraps error output by itself. Therefore we need to moc 
+       * doesn't work as Jest somehow wraps error output by itself. Therefore we need to mock
        * console.error and check what was send into it
        */
       consoleErrorBackup = console.error;
@@ -301,8 +301,12 @@ describe("update command", () => {
 
         /* eslint-disable no-console */
         expect(console.error).toHaveBeenCalledTimes(2);
-        expect((console.error as jest.Mock).mock.calls[0][0]).toContain('No exit read cs error');
-        expect((console.error as jest.Mock).mock.calls[1][0]).toContain('No exit write translations error');
+        expect((console.error as jest.Mock).mock.calls[0][0]).toContain(
+          "No exit read cs error"
+        );
+        expect((console.error as jest.Mock).mock.calls[1][0]).toContain(
+          "No exit write translations error"
+        );
         /* eslint-enable no-console */
       }
     );

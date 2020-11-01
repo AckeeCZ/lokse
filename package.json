@@ -5,7 +5,9 @@
     "packages/*"
   ],
   "scripts": {
-    "postinstall": "./scripts/fix-gitmoji-changelog-node-preset"
+    "postinstall": "./scripts/fix-gitmoji-changelog-node-preset",
+    "lint": "eslint packages/*/src/ --ext .ts --config ./.eslintrc",
+    "prettier": "prettier --write --config ./.prettierrc \"packages/*/(src|test)/**/*.(ts|tsx)\""
   },
   "devDependencies": {
     "chai": "^4.2.0",
