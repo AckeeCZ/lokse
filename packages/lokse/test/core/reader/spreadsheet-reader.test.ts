@@ -1,5 +1,6 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import SpreadsheetReader from "../../../src/core/reader";
+import { MissingAuthError } from "../../../src/core/errors";
 
 const GoogleSpreadsheetMock = GoogleSpreadsheet as jest.Mock;
 
@@ -51,12 +52,13 @@ describe("SpreadsheetReader", () => {
 
     it("throw if service account nor api key found", async () => {
       expect.assertions(1);
+      const expectedError = new MissingAuthError();
 
       const reader = new SpreadsheetReader("test-sheet-id", "*");
 
       await expect(reader.authenticate()).rejects.toHaveProperty(
         "message",
-        expect.stringMatching(/Cannot authenticate to fetch Spreadsheet data/)
+        expectedError.message
       );
     });
   });

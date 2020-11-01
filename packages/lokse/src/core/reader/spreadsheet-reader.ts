@@ -1,24 +1,11 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { flatten } from "lodash";
 import { CLIError } from "@oclif/errors";
-import * as dedent from "dedent";
 
 import Line from "../line";
+import { MissingAuthError } from "../errors";
 import WorksheetReader from "./worksheet-reader";
 import Worksheet from "./worksheet";
-import { cliInvariant } from "../../utils";
-
-class MissingAuthError extends CLIError {
-  constructor() {
-    super(
-      dedent`
-        Cannot authenticate to fetch Spreadsheet data. 
-          Provide either Service account credentials or API key 🔑 See detail info at https://github.com/AckeeCZ/lokse/tree/master/packages/lokse#authentication
-        `
-    );
-    this.name = "MissingAuthError";
-  }
-}
 
 export class SpreadsheetReader {
   private spreadsheet: GoogleSpreadsheet;
@@ -61,7 +48,7 @@ export class SpreadsheetReader {
       try {
         await this.spreadsheet.loadInfo();
       } catch (error) {
-        cliInvariant(false, error.message);
+        throw new CLIError(error.message);
       }
 
       this.worksheets = await this.sheetsReader.read(this.spreadsheet);
