@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { flatten } from "lodash";
-import { CLIError } from "@oclif/errors";
+import { CLIError, warn } from "@oclif/errors";
 
 import Line from "../line";
 import { MissingAuthError } from "../errors";
@@ -60,9 +60,14 @@ export class SpreadsheetReader {
   async read(keyColumn: string, valueColumn: string) {
     const worksheets = await this.fetchSheets();
 
-    const extractedLines: Line[][] = worksheets.map((worksheet) =>
-      worksheet.extractLines(keyColumn, valueColumn)
-    );
+    const extractedLines: Line[][] = worksheets.map((worksheet) => {
+      try {
+        return worksheet.extractLines(keyColumn, valueColumn);
+      } catch (error) {
+        warn(error.message);
+        return [];
+      }
+    });
 
     return flatten(extractedLines);
   }

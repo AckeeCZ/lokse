@@ -1,12 +1,9 @@
 import { GoogleSpreadsheetRow } from "google-spreadsheet";
-import { warn } from "@oclif/errors";
 
 import Line from "../line";
-import {
-    isEqualCaseInsensitive,
-    noExitCliInvariant,
-  } from "../../utils";
-  
+import { isEqualCaseInsensitive } from "../../utils";
+import { KeyColumnNotFound, LangColumnNotFound } from "../errors";
+
 export default class Worksheet {
   public title: string;
 
@@ -20,30 +17,29 @@ export default class Worksheet {
     this.rows = rows;
   }
 
-  extractLines(keyColumn: string, valueColumn: string) {
+  extractLines(keyColumn: string, langColumn: string) {
     let keyColumnId = "";
-    let valueColumnId = "";
+    let langColumnId = "";
 
     for (const headerKey of this.header) {
       if (isEqualCaseInsensitive(headerKey, keyColumn)) {
         keyColumnId = headerKey;
       }
-      if (isEqualCaseInsensitive(headerKey, valueColumn)) {
-        valueColumnId = headerKey;
+      if (isEqualCaseInsensitive(headerKey, langColumn)) {
+        langColumnId = headerKey;
       }
     }
 
     if (!keyColumnId) {
-      warn(`Key column "${keyColumn}" not found in sheet ${this.title}.`);
+      throw new KeyColumnNotFound(keyColumn, this.title);
     }
 
-    noExitCliInvariant(
-      valueColumnId,
-      `Language column "${valueColumn}" not found in sheet ${this.title}!`
-    );
+    if (!langColumnId) {
+      throw new LangColumnNotFound(langColumn, this.title);
+    }
 
     return this.rows.map(
-      (row) => new Line(row[keyColumnId], row[valueColumnId])
+      (row) => new Line(row[keyColumnId], row[langColumnId])
     );
   }
 }

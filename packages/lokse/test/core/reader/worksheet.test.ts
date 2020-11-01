@@ -1,4 +1,5 @@
 import { GoogleSpreadsheetRow } from "google-spreadsheet";
+import { KeyColumnNotFound, LangColumnNotFound } from "../../../src/core/errors";
 import Worksheet from "../../../src/core/reader/worksheet";
 
 describe("Worksheet", () => {
@@ -42,7 +43,25 @@ describe("Worksheet", () => {
     expect(lines[4].isEmpty()).toEqual(true);
   });
 
-  it("should throw when val column doesnt exist ", () => {
+  it("should throw when key column doesnt exist ", () => {
+    const worksheet = new Worksheet(
+      "Worksheet2",
+      ["Key", "Value_fr", "Value_nl"],
+      [
+        createRow(1, {
+          Key: "MaClé1",
+          Value_fr: "La valeur 1",
+          Value_nl: "De valuue 1",
+        }),
+      ]
+    );
+
+    expect(() => worksheet.extractLines("Wrong_Key", "Value_fr")).toThrow(
+      new KeyColumnNotFound("Wrong_Key", "Worksheet2").message
+    );
+  });
+
+  it("should throw when lang column doesnt exist ", () => {
     const worksheet = new Worksheet(
       "Worksheet2",
       ["Key", "Value_fr", "Value_nl"],
@@ -56,7 +75,7 @@ describe("Worksheet", () => {
     );
 
     expect(() => worksheet.extractLines("Key", "NotExist")).toThrow(
-      /column "NotExist" not found/
+      new LangColumnNotFound("NotExist", "Worksheet2").message
     );
   });
 

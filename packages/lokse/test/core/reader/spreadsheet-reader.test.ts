@@ -1,6 +1,12 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import SpreadsheetReader from "../../../src/core/reader";
-import { MissingAuthError } from "../../../src/core/errors";
+import {
+  LangColumnNotFound,
+  KeyColumnNotFound,
+  MissingAuthError,
+} from "../../../src/core/errors";
+import Line from "../../../src/core/line";
+import Worksheet from "../../../src/core/reader/worksheet";
 
 const GoogleSpreadsheetMock = GoogleSpreadsheet as jest.Mock;
 
@@ -59,6 +65,101 @@ describe("SpreadsheetReader", () => {
       await expect(reader.authenticate()).rejects.toHaveProperty(
         "message",
         expectedError.message
+      );
+    });
+  });
+
+  describe("read", () => {
+    let consoleErrorBackup: typeof console.error;
+    const makeFakeLine = (id: string) => {
+      return ({ id: `line_${id}` } as unknown) as Line;
+    };
+
+    const makeFakeWorksheet = (title: string, lines: Line[]) => {
+      const fakeWorksheet = {
+        title,
+        extractLines: jest.fn().mockReturnValue(lines),
+      };
+      return (fakeWorksheet as unknown) as Worksheet;
+    };
+
+    const linesSet1 = [makeFakeLine("1_1"), makeFakeLine("1_2")];
+
+    const linesSet2 = [
+      makeFakeLine("2_1"),
+      makeFakeLine("2_2"),
+      makeFakeLine("2_3"),
+    ];
+
+    const linesSet3 = [makeFakeLine("3_1")];
+
+    /* eslint-disable no-console */
+    beforeEach(() => {
+      consoleErrorBackup = console.error;
+      console.error = jest.fn();
+    });
+
+    afterEach(() => {
+      console.error = consoleErrorBackup;
+    });
+
+    it("should return list of lines from all sheets concated", async () => {
+      expect.assertions(1);
+
+      const sheetsList = [
+        makeFakeWorksheet("fakeSheet1", linesSet1),
+        makeFakeWorksheet("fakeSheet2", linesSet2),
+        makeFakeWorksheet("fakeSheet3", linesSet3),
+      ];
+
+      const reader = new SpreadsheetReader("test-sheet-id", "*");
+      jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
+
+      await expect(reader.read("key", "en-gb")).resolves.toEqual([
+        ...linesSet1,
+        ...linesSet2,
+        ...linesSet3,
+      ]);
+    });
+
+    it("should return list of lines from other sheets when extracting from any fail", async () => {
+      expect.assertions(4);
+
+      const sheetsList = [
+        makeFakeWorksheet("fakeSheet1", linesSet1),
+        makeFakeWorksheet("fakeSheet2", linesSet2),
+        makeFakeWorksheet("fakeSheet3", linesSet2),
+        makeFakeWorksheet("fakeSheet4", linesSet3),
+      ];
+
+      const mockLangColError = new LangColumnNotFound(
+        "en-gb",
+        sheetsList[1].title
+      );
+      (sheetsList[1].extractLines as jest.Mock).mockImplementationOnce(() => {
+        throw mockLangColError;
+      });
+
+      const mockKeyColError = new KeyColumnNotFound("key", sheetsList[2].title);
+      (sheetsList[2].extractLines as jest.Mock).mockImplementationOnce(() => {
+        throw mockKeyColError;
+      });
+
+      const reader = new SpreadsheetReader("test-sheet-id", "*");
+      jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
+
+      await expect(reader.read("key", "en-gb")).resolves.toEqual([
+        ...linesSet1,
+        ...linesSet3,
+      ]);
+      expect(console.error).toHaveBeenCalledTimes(2);
+      expect(console.error).toHaveBeenNthCalledWith(
+        1,
+        expect.stringContaining(mockLangColError.message)
+      );
+      expect(console.error).toHaveBeenNthCalledWith(
+        2,
+        expect.stringContaining(mockKeyColError.message)
       );
     });
   });
