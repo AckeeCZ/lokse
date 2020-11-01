@@ -2,19 +2,13 @@ import { all } from "bluebird";
 import {
   GoogleSpreadsheet,
   GoogleSpreadsheetWorksheet,
-  GoogleSpreadsheetRow,
 } from "google-spreadsheet";
 import { forceArray } from "../../utils";
+import Worksheet from "./worksheet";
 
 declare type SheetIndexOrTitle = number | string;
 
 declare type SheetsFilter = string | SheetIndexOrTitle[];
-
-export declare type Worksheet = {
-  title: string;
-  header: string[];
-  rows: GoogleSpreadsheetRow[];
-};
 
 class WorksheetReader {
   static ALL_SHEETS_FILTER = "*";
@@ -46,7 +40,7 @@ class WorksheetReader {
   async loadSheet(worksheet: GoogleSpreadsheetWorksheet) {
     const rows = await worksheet.getRows();
 
-    return { title: worksheet.title, header: worksheet.headerValues, rows };
+    return new Worksheet(worksheet.title, worksheet.headerValues, rows);
   }
 
   async read(spreadsheet: GoogleSpreadsheet) {

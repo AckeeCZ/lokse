@@ -1,15 +1,12 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { flatten } from "lodash";
-import { CLIError, warn } from "@oclif/errors";
+import { CLIError } from "@oclif/errors";
 import * as dedent from "dedent";
 
 import Line from "../line";
-import WorksheetReader, { Worksheet } from "./worksheet-reader";
-import {
-  isEqualCaseInsensitive,
-  cliInvariant,
-  noExitCliInvariant,
-} from "../../utils";
+import WorksheetReader from "./worksheet-reader";
+import Worksheet from "./worksheet";
+import { cliInvariant } from "../../utils";
 
 class MissingAuthError extends CLIError {
   constructor() {
@@ -73,49 +70,12 @@ export class SpreadsheetReader {
     return this.worksheets;
   }
 
-  extractFromWorksheet(
-    worksheet: Worksheet,
-    keyColumn: string,
-    valueColumn: string
-  ) {
-    let keyColumnId = "";
-    let valueColumnId = "";
-
-    for (const headerKey of worksheet.header) {
-      if (isEqualCaseInsensitive(headerKey, keyColumn)) {
-        keyColumnId = headerKey;
-      }
-      if (isEqualCaseInsensitive(headerKey, valueColumn)) {
-        valueColumnId = headerKey;
-      }
-    }
-
-    if (!keyColumnId) {
-      warn(`Key column "${keyColumn}" not found in sheet ${worksheet.title}.`);
-    }
-
-    noExitCliInvariant(
-      valueColumnId,
-      `Language column "${valueColumn}" not found in sheet ${worksheet.title}!`
-    );
-
-    return worksheet.rows.map(
-      (row) => new Line(row[keyColumnId], row[valueColumnId])
-    );
-  }
-
   async read(keyColumn: string, valueColumn: string) {
     const worksheets = await this.fetchSheets();
 
-    const extractedLines: Line[][] = worksheets.map((worksheet) => {
-      const worksheetLines = this.extractFromWorksheet(
-        worksheet,
-        keyColumn,
-        valueColumn
-      );
-
-      return worksheetLines;
-    });
+    const extractedLines: Line[][] = worksheets.map((worksheet) =>
+      worksheet.extractLines(keyColumn, valueColumn)
+    );
 
     return flatten(extractedLines);
   }

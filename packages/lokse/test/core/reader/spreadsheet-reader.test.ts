@@ -1,114 +1,63 @@
+import { GoogleSpreadsheet } from "google-spreadsheet";
 import SpreadsheetReader from "../../../src/core/reader";
-import { Worksheet } from "../../../src/core/reader/worksheet-reader";
 
-describe("SpreadsheetReader.extractFromWorksheet", () => {
-  const createRow = (rowIndex, values) => ({
-    rowIndex,
-    ...values,
-    save: () => null,
-    delete: () => null,
-  });
+const GoogleSpreadsheetMock = GoogleSpreadsheet as jest.Mock;
 
-  it("should extract lines", () => {
-    const reader = new SpreadsheetReader("api_key", "*");
+jest.mock("google-spreadsheet");
 
-    const worksheet: Worksheet = {
-      title: "Worksheet1",
-      header: ["Key", "Value_fr", "Value_nl"],
-      rows: [
-        createRow(1, {
-          Key: "MaClé1",
-          Value_fr: "La valeur 1",
-          Value_nl: "De valuue 1",
-        }),
-        createRow(2, {
-          Key: "MaClé2",
-          Value_fr: "La vale de la clé 2",
-          Value_nl: "De valuee van key 2",
-        }),
-        createRow(3, { Key: "// un commentaire" }),
-        createRow(4, { Key: "une clée" }),
-        createRow(5, {}),
-        createRow(6, { Key: "# un autre commentaire" }),
-      ],
-    };
+describe("SpreadsheetReader", () => {
+  describe("authenticate", () => {
+    beforeEach(() => {
+      GoogleSpreadsheetMock.mockClear();
+    });
 
-    const lines = reader.extractFromWorksheet(worksheet, "Key", "Value_fr");
+    afterEach(() => {
+      delete process.env.LOKSE_API_KEY;
+      delete process.env.LOKSE_SERVICE_ACCOUNT_EMAIL;
+      delete process.env.LOKSE_PRIVATE_KEY;
+    });
 
-    expect(lines.length).toEqual(6);
-    expect(lines[0].key).toEqual("MaClé1");
-    expect(lines[0].value).toEqual("La valeur 1");
+    it("uses service account if available", async () => {
+      expect.assertions(2);
+      const private_key = "this-is-dummy-private-key";
+      const client_email = "this-is@dummy-email";
+      process.env.LOKSE_SERVICE_ACCOUNT_EMAIL = client_email;
+      process.env.LOKSE_PRIVATE_KEY = private_key;
 
-    expect(lines[2].isComment()).toEqual(true);
-    expect(lines[4].isEmpty()).toEqual(true);
-  });
+      const reader = new SpreadsheetReader("test-sheet-id", "*");
+      await reader.authenticate();
 
-  it("should throw when val column doesnt exist ", () => {
-    const reader = new SpreadsheetReader("api_key", "*");
+      const useServiceAccountAuthMock =
+        GoogleSpreadsheetMock.mock.instances[0].useServiceAccountAuth;
+      expect(useServiceAccountAuthMock).toHaveBeenCalledTimes(1);
+      expect(useServiceAccountAuthMock).toHaveBeenLastCalledWith({
+        client_email,
+        private_key,
+      });
+    });
 
-    const worksheet: Worksheet = {
-      title: "Worksheet2",
-      header: ["Key", "Value_fr", "Value_nl"],
-      rows: [
-        createRow(1, {
-          Key: "MaClé1",
-          Value_fr: "La valeur 1",
-          Value_nl: "De valuue 1",
-        }),
-      ],
-    };
+    it("uses api key if available", async () => {
+      expect.assertions(2);
+      const dummyApiKey = "dummy-api-key";
+      process.env.LOKSE_API_KEY = dummyApiKey;
 
-    expect(() => reader.extractFromWorksheet(worksheet, "Key", "NotExist")).toThrow(/column "NotExist" not found/);
-  });
+      const reader = new SpreadsheetReader("test-sheet-id", "*");
+      await reader.authenticate();
 
-  it("should keep empty lines", () => {
-    const reader = new SpreadsheetReader("api_key", "*");
+      const useApiKeyMock = GoogleSpreadsheetMock.mock.instances[0].useApiKey;
+      expect(useApiKeyMock).toHaveBeenCalledTimes(1);
+      expect(useApiKeyMock).toHaveBeenLastCalledWith(dummyApiKey);
+    });
 
-    const worksheet: Worksheet = {
-      title: "Worksheet3",
-      header: ["Key", "Value_fr", "Value_nl"],
-      rows: [
-        createRow(1, {}),
-        createRow(2, {
-          Key: "MaClé1",
-          Value_fr: "La valeur 1",
-          Value_nl: "De valuue 1",
-        }),
-      ],
-    };
+    it("throw if service account nor api key found", async () => {
+      expect.assertions(1);
 
-    const result = reader.extractFromWorksheet(worksheet, "Key", "Value_fr");
+      const reader = new SpreadsheetReader("test-sheet-id", "*");
 
-    expect(result.length).toEqual(2);
-    expect(result[0].isEmpty()).toEqual(true);
-    expect(result[1].isEmpty()).toEqual(false);
-  });
-
-  it("should match column names case insensitively", () => {
-    const reader = new SpreadsheetReader("api_key", "*");
-
-    let worksheet: Worksheet = {
-      title: "Worksheet4",
-      header: ["Key", "Value_FR"],
-      rows: [createRow(1, { Key: "MaClé1", Value_FR: "La valeur 1" })],
-    };
-
-    let result = reader.extractFromWorksheet(worksheet, "key", "value_fr");
-
-    expect(result.length).toEqual(1);
-    expect(result[0].key).toEqual("MaClé1");
-    expect(result[0].value).toEqual("La valeur 1");
-
-    worksheet = {
-      title: "Worksheet5",
-      header: ["key", "value_fr"],
-      rows: [createRow(1, { key: "MaClé2", value_fr: "La valeur 2" })],
-    };
-
-    result = reader.extractFromWorksheet(worksheet, "Key", "VALUE_FR");
-
-    expect(result.length).toEqual(1);
-    expect(result[0].key).toEqual("MaClé2");
-    expect(result[0].value).toEqual("La valeur 2");
+      await expect(reader.authenticate()).rejects.toHaveProperty(
+        "message",
+        expect.stringMatching(/Cannot authenticate to fetch Spreadsheet data/)
+      );
+    });
   });
 });
