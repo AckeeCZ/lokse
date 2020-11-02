@@ -1,4 +1,4 @@
-import Line from "../../src/core/line";
+import Line from "../line";
 
 describe("Line.isComment", () => {
   it("is false when not comment", () => {

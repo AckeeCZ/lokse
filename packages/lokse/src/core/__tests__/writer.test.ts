@@ -1,8 +1,8 @@
 import { EOL } from "os";
-import { FileWriter } from "../../src/core/writer";
-import Line from "../../src/core/line";
-import { transformersByFormat } from "../../src/core/transformer";
-import { OutputFormat } from "../../src/constants";
+import { FileWriter } from "../writer";
+import Line from "../line";
+import { transformersByFormat } from "../transformer";
+import { OutputFormat } from "../../constants";
 
 const androidTransformer = transformersByFormat[OutputFormat.ANDROID];
 const iosTransformer = transformersByFormat[OutputFormat.IOS];

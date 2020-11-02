@@ -1,5 +1,5 @@
 import { EOL } from "os";
-import transformer from "../../../src/core/transformer/android";
+import transformer from "../android";
 
 describe("AndroidTransformer.transformComment", () => {
   it("transforms comment", () => {

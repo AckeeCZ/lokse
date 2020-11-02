@@ -1,4 +1,4 @@
-import transformer from "../../../src/core/transformer/json";
+import transformer from "../json";
 
 describe("JSONTransformer.transformKeyValue", () => {
   it("should replace new lines with empty string", () => {

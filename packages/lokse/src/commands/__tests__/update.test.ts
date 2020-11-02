@@ -1,9 +1,9 @@
 import { test as oclifTest } from "@oclif/test";
 
-import Reader from "../../src/core/reader";
-import { FileWriter } from "../../src/core/writer";
-import { OutputFormat } from "../../src/constants";
-import { noExitCliInvariant } from "../../src/utils";
+import Reader from "../../core/reader";
+import { FileWriter } from "../../core/writer";
+import { OutputFormat } from "../../constants";
+import { noExitCliInvariant } from "../../utils";
 
 const mockOraInstance = {
   start: jest.fn(),
@@ -14,7 +14,7 @@ const mockOraInstance = {
 jest.mock("ora", () => jest.fn().mockReturnValue(mockOraInstance));
 
 // File writer mock
-jest.mock("../../src/core/writer");
+jest.mock("../../core/writer");
 const mockWrite = jest.fn();
 const FileWriterMock = FileWriter as jest.Mock;
 FileWriterMock.mockReturnValue({
@@ -22,7 +22,7 @@ FileWriterMock.mockReturnValue({
 });
 
 // Spreadsheet reader mock
-jest.mock("../../src/core/reader");
+jest.mock("../../core/reader");
 const mockRead = jest.fn();
 const ReaderMock = Reader as jest.Mock;
 ReaderMock.mockReturnValue({

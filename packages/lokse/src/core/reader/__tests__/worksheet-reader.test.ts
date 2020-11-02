@@ -1,5 +1,5 @@
 import { GoogleSpreadsheetWorksheet } from "google-spreadsheet";
-import WorksheetReader from "../../../src/core/reader/worksheet-reader";
+import WorksheetReader from "../worksheet-reader";
 
 const createWorksheet = (title: string, index = 1) => ({
   title,

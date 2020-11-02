@@ -1,5 +1,5 @@
 import { EOL } from "os";
-import transformer from "../../../src/core/transformer/ios";
+import transformer from "../ios";
 
 describe("iOSTransformer.transformComment", () => {
   it("transforms comment", () => {

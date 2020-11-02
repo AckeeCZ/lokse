@@ -1,9 +1,6 @@
 import { GoogleSpreadsheetRow } from "google-spreadsheet";
-import {
-  KeyColumnNotFound,
-  LangColumnNotFound,
-} from "../../../src/core/errors";
-import Worksheet from "../../../src/core/reader/worksheet";
+import { KeyColumnNotFound, LangColumnNotFound } from "../../errors";
+import Worksheet from "..//worksheet";
 
 describe("Worksheet", () => {
   const createRow = (rowIndex: number, values: { [key: string]: any }) =>

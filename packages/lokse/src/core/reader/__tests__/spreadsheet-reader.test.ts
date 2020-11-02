@@ -1,12 +1,12 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import SpreadsheetReader from "../../../src/core/reader";
+import SpreadsheetReader from "../spreadsheet-reader";
 import {
   LangColumnNotFound,
   KeyColumnNotFound,
   MissingAuthError,
-} from "../../../src/core/errors";
-import Line from "../../../src/core/line";
-import Worksheet from "../../../src/core/reader/worksheet";
+} from "../../errors";
+import Line from "../../line";
+import Worksheet from "../worksheet";
 
 const GoogleSpreadsheetMock = GoogleSpreadsheet as jest.Mock;
 
