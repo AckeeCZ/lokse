@@ -3,7 +3,7 @@ import {
   GoogleSpreadsheet,
   GoogleSpreadsheetWorksheet,
 } from "google-spreadsheet";
-import { forceArray } from "../../utils";
+import { forceArray, isEqualCaseInsensitive } from "../../utils";
 import Worksheet from "./worksheet";
 
 declare type SheetIndexOrTitle = number | string;
@@ -30,7 +30,10 @@ class WorksheetReader {
       if (typeof sheetFilter === "number" && worksheet.index === sheetFilter) {
         return true;
       }
-      if (typeof sheetFilter === "string" && worksheet.title === sheetFilter) {
+      if (
+        typeof sheetFilter === "string" &&
+        isEqualCaseInsensitive(worksheet.title, sheetFilter)
+      ) {
         return true;
       }
       return false;
