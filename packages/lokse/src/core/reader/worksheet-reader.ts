@@ -8,7 +8,7 @@ import Worksheet from "./worksheet";
 
 declare type SheetIndexOrTitle = number | string;
 
-declare type SheetsFilter = string | SheetIndexOrTitle[];
+export declare type SheetsFilter = string | SheetIndexOrTitle[];
 
 class WorksheetReader {
   static ALL_SHEETS_FILTER = "*";

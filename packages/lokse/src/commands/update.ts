@@ -43,6 +43,12 @@ class Update extends Base {
       options: outputFormats,
       description: `output format. Default is ${defaultFormat}.`,
     }),
+    sheets: flags.string({
+      char: "s",
+      name: "sheets",
+      description:
+        "sheets to get translations from. Name or list of names, comma sepaarated. For example ",
+    }),
   };
 
   async run() {
@@ -53,6 +59,7 @@ class Update extends Base {
     const languages = flags.languages?.split(",") ?? this.conf?.languages;
     const column = flags.col ?? this.conf?.column;
     const format = flags.format ?? this.conf?.format ?? defaultFormat;
+    const sheets = flags.sheets?.split(",") ?? undefined;
 
     cliFlags.id.invariant(sheetId);
 
@@ -72,7 +79,7 @@ class Update extends Base {
 
     const outputTransformer = transformersByFormat[format];
 
-    const reader = new Reader(sheetId, "*");
+    const reader = new Reader(sheetId, sheets);
     const writer = new FileWriter();
 
     for (const language of languages) {

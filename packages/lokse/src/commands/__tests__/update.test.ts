@@ -51,7 +51,7 @@ describe("update command", () => {
     /* eslint-disable no-console */
     run() {
       ReaderMock.mockClear();
-      mockRead.mockClear();
+      mockRead.mockClear().mockReturnValue(mockSheetLines);
       FileWriterMock.mockClear();
       mockWrite.mockClear();
 
@@ -131,19 +131,47 @@ describe("update command", () => {
 
   test
     .setupMocks()
-    .stdout()
-    .do(() => mockRead.mockReturnValue(mockSheetLines))
+    .command(["update", ...Object.values(params)])
+    .it("set empty filter when no one supplied", () => {
+      expect(true).toBe(true);
+      expect(ReaderMock.mock.instances).toHaveLength(1);
+      expect(ReaderMock.mock.instances[0][1]).toBeUndefined();
+    });
+
+  test
+    .setupMocks()
+    .command(["update", ...Object.values(params), "--sheets=Main translations"])
+    .it("uses filter when only one name supplied", () => {
+      expect(ReaderMock.mock.instances).toHaveLength(1);
+      expect(ReaderMock.mock.calls[0][1]).toEqual(["Main translations"]);
+    });
+
+  test
+    .setupMocks()
     .command([
       "update",
-      params.id,
-      params.dir,
-      params.col,
-      params.langs,
-      params.format,
+      ...Object.values(params),
+      "--sheets=Main translations,Secondary translations",
     ])
+    .it("parses and uses filter when list of names supplied", () => {
+      expect(ReaderMock.mock.instances).toHaveLength(1);
+      expect(ReaderMock.mock.calls[0][1]).toEqual([
+        "Main translations",
+        "Secondary translations",
+      ]);
+    });
+
+  // TODO: Same as for translations columns, we're only able to provide invalid
+  // value through config
+  test.skip().it("throws when filter is not a value or list of values");
+
+  test
+    .setupMocks()
+    .stdout()
+    .command(["update", ...Object.values(params)])
     .it("reads data for each language", () => {
       expect(ReaderMock.mock.instances).toHaveLength(1);
-      expect(ReaderMock.mock.calls[0]).toEqual([fakeSpreadsheetId, "*"]);
+      expect(ReaderMock.mock.calls[0][0]).toEqual(fakeSpreadsheetId);
 
       expect(mockRead).toHaveBeenCalledTimes(3);
       expect(mockRead).toHaveBeenNthCalledWith(1, keyColumn, languages[0]);
@@ -155,14 +183,7 @@ describe("update command", () => {
     .setupMocks()
     .stdout()
     .do(() => mockRead.mockReturnValue([]))
-    .command([
-      "update",
-      params.id,
-      params.dir,
-      params.col,
-      params.langs,
-      params.format,
-    ])
+    .command(["update", ...Object.values(params)])
     // TODO - find out if we can get empty se of lines
     .it("doesnt write language data when lines set is empty", () => {
       expect(mockWrite).not.toHaveBeenCalled();
@@ -186,15 +207,7 @@ describe("update command", () => {
     .setupMocks()
     .stdout()
     .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
-    .do(() => mockRead.mockReturnValue(mockSheetLines))
-    .command([
-      "update",
-      params.id,
-      params.dir,
-      params.col,
-      params.langs,
-      params.format,
-    ])
+    .command(["update", ...Object.values(params)])
     .it("writes language data in desired format into the output dir", () => {
       let relPath = "";
 
@@ -233,14 +246,7 @@ describe("update command", () => {
           throw new Error("Read spreadsheet error");
         });
     })
-    .command([
-      "update",
-      params.id,
-      params.dir,
-      params.col,
-      params.langs,
-      params.format,
-    ])
+    .command(["update", ...Object.values(params)])
     .catch((error) => {
       expect(mockRead).toHaveBeenCalledTimes(2);
       expect(mockWrite).toHaveBeenCalledTimes(1);
@@ -270,14 +276,7 @@ describe("update command", () => {
         noExitCliInvariant(false, "No exit write translations error");
       });
     })
-    .command([
-      "update",
-      params.id,
-      params.dir,
-      params.col,
-      params.langs,
-      params.format,
-    ])
+    .command(["update", ...Object.values(params)])
     .it(
       "goes through other langs when non critical error occur during read or write",
       () => {
