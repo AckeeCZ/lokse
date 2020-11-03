@@ -61,7 +61,6 @@
   "scripts": {
     "build": "tsc -b",
     "postpack": "rm -f oclif.manifest.json",
-    "posttest": "yarn lint",
     "prepack": "rm -rf lib && yarn build && oclif-dev manifest && oclif-dev readme",
     "test": "jest",
     "version": "yarn readme && yarn changelog && code --wait CHANGELOG.md && git add README.md CHANGELOG.md",

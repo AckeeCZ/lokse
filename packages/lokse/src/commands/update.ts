@@ -5,7 +5,7 @@ import * as ora from "ora";
 import { NAME } from "../constants";
 import Base from "../base";
 import { OutputFormat } from "../constants";
-import Reader from "../core/reader";
+import Reader, { WorksheetReader } from "../core/reader";
 import { transformersByFormat } from "../core/transformer";
 import { FileWriter } from "../core/writer";
 import * as cliFlags from "../flags";
@@ -43,6 +43,12 @@ class Update extends Base {
       options: outputFormats,
       description: `output format. Default is ${defaultFormat}.`,
     }),
+    sheets: flags.string({
+      char: "s",
+      name: "sheets",
+      description:
+        "sheets to get translations from. Name or list of names, comma separated. For example Translations1,Translations2",
+    }),
   };
 
   async run() {
@@ -53,6 +59,7 @@ class Update extends Base {
     const languages = flags.languages?.split(",") ?? this.conf?.languages;
     const column = flags.col ?? this.conf?.column;
     const format = flags.format ?? this.conf?.format ?? defaultFormat;
+    const sheets = flags.sheets?.split(",") ?? this.conf?.sheets;
 
     cliFlags.id.invariant(sheetId);
 
@@ -70,9 +77,15 @@ class Update extends Base {
       );
     }
 
+    if (sheets !== undefined && !WorksheetReader.isValidFilter(sheets)) {
+      throw new IncorrectFlagValue(
+        `🤷‍♂️ Sheets filter have to be string name or array of names, but ${sheets} given`
+      );
+    }
+
     const outputTransformer = transformersByFormat[format];
 
-    const reader = new Reader(sheetId, "*");
+    const reader = new Reader(sheetId, sheets);
     const writer = new FileWriter();
 
     for (const language of languages) {

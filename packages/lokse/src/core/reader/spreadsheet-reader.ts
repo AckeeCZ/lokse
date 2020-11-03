@@ -4,7 +4,7 @@ import { CLIError, warn } from "@oclif/errors";
 
 import Line from "../line";
 import { MissingAuthError } from "../errors";
-import WorksheetReader from "./worksheet-reader";
+import WorksheetReader, { SheetsFilter } from "./worksheet-reader";
 import Worksheet from "./worksheet";
 
 export class SpreadsheetReader {
@@ -14,7 +14,7 @@ export class SpreadsheetReader {
 
   private worksheets: Worksheet[] | null;
 
-  constructor(spreadsheetId: string, sheetsFilter?: string | null) {
+  constructor(spreadsheetId: string, sheetsFilter?: SheetsFilter | null) {
     this.spreadsheet = new GoogleSpreadsheet(spreadsheetId);
     this.sheetsReader = new WorksheetReader(sheetsFilter);
 

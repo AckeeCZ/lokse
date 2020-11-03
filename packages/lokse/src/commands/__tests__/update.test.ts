@@ -1,9 +1,16 @@
 import { test as oclifTest } from "@oclif/test";
+import { cosmiconfigSync } from "cosmiconfig";
 
-import Reader from "../../core/reader";
+import Reader from "../../core/reader/spreadsheet-reader";
 import { FileWriter } from "../../core/writer";
 import { OutputFormat } from "../../constants";
 import { noExitCliInvariant } from "../../utils";
+
+jest.mock("cosmiconfig");
+const explorerMock = {
+  search: jest.fn(),
+};
+(cosmiconfigSync as jest.Mock).mockReturnValue(explorerMock);
 
 const mockOraInstance = {
   start: jest.fn(),
@@ -22,7 +29,7 @@ FileWriterMock.mockReturnValue({
 });
 
 // Spreadsheet reader mock
-jest.mock("../../core/reader");
+jest.mock("../../core/reader/spreadsheet-reader");
 const mockRead = jest.fn();
 const ReaderMock = Reader as jest.Mock;
 ReaderMock.mockReturnValue({
@@ -51,7 +58,7 @@ describe("update command", () => {
     /* eslint-disable no-console */
     run() {
       ReaderMock.mockClear();
-      mockRead.mockClear();
+      mockRead.mockClear().mockReturnValue(mockSheetLines);
       FileWriterMock.mockClear();
       mockWrite.mockClear();
 
@@ -60,6 +67,7 @@ describe("update command", () => {
       mockOraInstance.succeed.mockClear();
       mockOraInstance.fail.mockClear();
 
+      explorerMock.search.mockReset();
       /**
        * Mocking error output with https://www.npmjs.com/package/fancy-test#stdoutstderr-mocking
        * doesn't work as Jest somehow wraps error output by itself. Therefore we need to mock
@@ -111,8 +119,12 @@ describe("update command", () => {
     .it("throws when languages list not provided");
 
   test
-    .skip() // TODO: we're able to provide non array value only through config
-    .command(["update", params.id, params.dir, params.col, "--languages="])
+    .do(() =>
+      explorerMock.search.mockReturnValue({
+        config: { languages: "cs,en" },
+      })
+    )
+    .command(["update", params.id, params.dir, params.col])
     .catch((error) => {
       expect(error.message).toEqual(
         `🤷‍♂️ Translation columns have to be list of languages, but cs,en given`
@@ -131,19 +143,83 @@ describe("update command", () => {
 
   test
     .setupMocks()
-    .stdout()
-    .do(() => mockRead.mockReturnValue(mockSheetLines))
+    .command(["update", ...Object.values(params)])
+    .it("set empty filter when no one supplied", () => {
+      expect(true).toBe(true);
+      expect(ReaderMock.mock.instances).toHaveLength(1);
+      expect(ReaderMock.mock.instances[0][1]).toBeUndefined();
+    });
+
+  test
+    .setupMocks()
+    .command(["update", ...Object.values(params), "--sheets=Main translations"])
+    .it("uses filter when only one name supplied", () => {
+      expect(ReaderMock.mock.instances).toHaveLength(1);
+      expect(ReaderMock.mock.calls[0][1]).toEqual(["Main translations"]);
+    });
+
+  test
+    .setupMocks()
     .command([
       "update",
-      params.id,
-      params.dir,
-      params.col,
-      params.langs,
-      params.format,
+      ...Object.values(params),
+      "--sheets=Main translations,Secondary translations",
     ])
+    .it("parses and uses filter when list of names supplied", () => {
+      expect(ReaderMock.mock.instances).toHaveLength(1);
+      expect(ReaderMock.mock.calls[0][1]).toEqual([
+        "Main translations",
+        "Secondary translations",
+      ]);
+    });
+
+  test
+    .setupMocks()
+    .do(() => explorerMock.search.mockReturnValue({ config: { sheets: true } }))
+    .command(["update", ...Object.values(params)])
+    .catch((error) => {
+      expect(error.message).toEqual(
+        `🤷‍♂️ Sheets filter have to be string name or array of names, but ${true} given`
+      );
+    })
+    .it("throws when filter is not a string or list of string");
+
+  test
+    .setupMocks()
+    .do(() =>
+      explorerMock.search.mockReturnValue({
+        config: { sheets: "Secondary translations" },
+      })
+    )
+    .command(["update", ...Object.values(params)])
+    .it("uses string filter supplied through config", () => {
+      expect(ReaderMock.mock.instances).toHaveLength(1);
+      expect(ReaderMock.mock.calls[0][1]).toEqual("Secondary translations");
+    });
+
+  test
+    .setupMocks()
+    .do(() =>
+      explorerMock.search.mockReturnValue({
+        config: { sheets: ["Main translations", "Secondary translations"] },
+      })
+    )
+    .command(["update", ...Object.values(params)])
+    .it("uses names list filter supplied through config", () => {
+      expect(ReaderMock.mock.instances).toHaveLength(1);
+      expect(ReaderMock.mock.calls[0][1]).toEqual([
+        "Main translations",
+        "Secondary translations",
+      ]);
+    });
+
+  test
+    .setupMocks()
+    .stdout()
+    .command(["update", ...Object.values(params)])
     .it("reads data for each language", () => {
       expect(ReaderMock.mock.instances).toHaveLength(1);
-      expect(ReaderMock.mock.calls[0]).toEqual([fakeSpreadsheetId, "*"]);
+      expect(ReaderMock.mock.calls[0][0]).toEqual(fakeSpreadsheetId);
 
       expect(mockRead).toHaveBeenCalledTimes(3);
       expect(mockRead).toHaveBeenNthCalledWith(1, keyColumn, languages[0]);
@@ -155,15 +231,7 @@ describe("update command", () => {
     .setupMocks()
     .stdout()
     .do(() => mockRead.mockReturnValue([]))
-    .command([
-      "update",
-      params.id,
-      params.dir,
-      params.col,
-      params.langs,
-      params.format,
-    ])
-    // TODO - find out if we can get empty se of lines
+    .command(["update", ...Object.values(params)])
     .it("doesnt write language data when lines set is empty", () => {
       expect(mockWrite).not.toHaveBeenCalled();
 
@@ -186,15 +254,7 @@ describe("update command", () => {
     .setupMocks()
     .stdout()
     .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
-    .do(() => mockRead.mockReturnValue(mockSheetLines))
-    .command([
-      "update",
-      params.id,
-      params.dir,
-      params.col,
-      params.langs,
-      params.format,
-    ])
+    .command(["update", ...Object.values(params)])
     .it("writes language data in desired format into the output dir", () => {
       let relPath = "";
 
@@ -233,14 +293,7 @@ describe("update command", () => {
           throw new Error("Read spreadsheet error");
         });
     })
-    .command([
-      "update",
-      params.id,
-      params.dir,
-      params.col,
-      params.langs,
-      params.format,
-    ])
+    .command(["update", ...Object.values(params)])
     .catch((error) => {
       expect(mockRead).toHaveBeenCalledTimes(2);
       expect(mockWrite).toHaveBeenCalledTimes(1);
@@ -270,14 +323,7 @@ describe("update command", () => {
         noExitCliInvariant(false, "No exit write translations error");
       });
     })
-    .command([
-      "update",
-      params.id,
-      params.dir,
-      params.col,
-      params.langs,
-      params.format,
-    ])
+    .command(["update", ...Object.values(params)])
     .it(
       "goes through other langs when non critical error occur during read or write",
       () => {
