@@ -47,7 +47,7 @@ class Update extends Base {
       char: "s",
       name: "sheets",
       description:
-        "sheets to get translations from. Name or list of names, comma sepaarated. For example ",
+        "sheets to get translations from. Name or list of names, comma separated. For example Translations1,Translations2",
     }),
   };
 

@@ -59,7 +59,7 @@ class WorksheetReader {
     );
 
     if (worksheets.length === 0) {
-      let message = `Could find any sheets`;
+      let message = `Couldn't find any sheets`;
 
       if (this.filter !== WorksheetReader.ALL_SHEETS_FILTER) {
         const existingSheets = Object.keys(spreadsheet.sheetsByTitle);
