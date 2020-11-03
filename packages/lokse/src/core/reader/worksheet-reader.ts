@@ -1,4 +1,5 @@
 import { all } from "bluebird";
+import { warn } from "@oclif/errors";
 import {
   GoogleSpreadsheet,
   GoogleSpreadsheetWorksheet,
@@ -50,6 +51,18 @@ class WorksheetReader {
     const worksheets = spreadsheet.sheetsByIndex.filter((worksheet) =>
       this.shouldUseWorksheet(worksheet)
     );
+
+    if (worksheets.length === 0) {
+      let message = `Could find any sheets`;
+
+      if (this.filter !== WorksheetReader.ALL_SHEETS_FILTER) {
+        const existingSheets = Object.keys(spreadsheet.sheetsByTitle);
+
+        message += ` that match the filter ${this.filter.toString()}. Existing sheets are ${existingSheets}`;
+      }
+
+      warn(`${message}. `);
+    }
 
     const sheets = await all(worksheets.map(this.loadSheet));
 
