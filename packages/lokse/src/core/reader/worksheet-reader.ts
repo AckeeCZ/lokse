@@ -20,6 +20,12 @@ class WorksheetReader {
     this.filter = filter || WorksheetReader.ALL_SHEETS_FILTER;
   }
 
+  static isValidFilter(filter: any): filter is SheetsFilter {
+    return forceArray(filter).every(
+      (f) => typeof f === "string" || typeof f === "number"
+    );
+  }
+
   shouldUseWorksheet(worksheet: GoogleSpreadsheetWorksheet) {
     if (this.filter === WorksheetReader.ALL_SHEETS_FILTER) {
       return true;

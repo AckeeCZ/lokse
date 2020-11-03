@@ -5,7 +5,7 @@ import * as ora from "ora";
 import { NAME } from "../constants";
 import Base from "../base";
 import { OutputFormat } from "../constants";
-import Reader from "../core/reader";
+import Reader, { WorksheetReader } from "../core/reader";
 import { transformersByFormat } from "../core/transformer";
 import { FileWriter } from "../core/writer";
 import * as cliFlags from "../flags";
@@ -59,7 +59,7 @@ class Update extends Base {
     const languages = flags.languages?.split(",") ?? this.conf?.languages;
     const column = flags.col ?? this.conf?.column;
     const format = flags.format ?? this.conf?.format ?? defaultFormat;
-    const sheets = flags.sheets?.split(",") ?? undefined;
+    const sheets = flags.sheets?.split(",") ?? this.conf?.sheets ?? undefined;
 
     cliFlags.id.invariant(sheetId);
 
@@ -74,6 +74,12 @@ class Update extends Base {
     if (!Array.isArray(languages)) {
       throw new IncorrectFlagValue(
         `🤷‍♂️ Translation columns have to be list of languages, but ${languages} given`
+      );
+    }
+
+    if (sheets !== undefined && !WorksheetReader.isValidFilter(sheets)) {
+      throw new IncorrectFlagValue(
+        `🤷‍♂️ Sheets filter have to be string name or array of names, but ${sheets} given`
       );
     }
 

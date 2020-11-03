@@ -1,9 +1,16 @@
 import { test as oclifTest } from "@oclif/test";
+import { cosmiconfigSync } from "cosmiconfig";
 
-import Reader from "../../core/reader";
+import Reader from "../../core/reader/spreadsheet-reader";
 import { FileWriter } from "../../core/writer";
 import { OutputFormat } from "../../constants";
 import { noExitCliInvariant } from "../../utils";
+
+jest.mock("cosmiconfig");
+const explorerMock = {
+  search: jest.fn(),
+};
+(cosmiconfigSync as jest.Mock).mockReturnValue(explorerMock);
 
 const mockOraInstance = {
   start: jest.fn(),
@@ -22,7 +29,7 @@ FileWriterMock.mockReturnValue({
 });
 
 // Spreadsheet reader mock
-jest.mock("../../core/reader");
+jest.mock("../../core/reader/spreadsheet-reader");
 const mockRead = jest.fn();
 const ReaderMock = Reader as jest.Mock;
 ReaderMock.mockReturnValue({
@@ -60,6 +67,7 @@ describe("update command", () => {
       mockOraInstance.succeed.mockClear();
       mockOraInstance.fail.mockClear();
 
+      explorerMock.search.mockReset();
       /**
        * Mocking error output with https://www.npmjs.com/package/fancy-test#stdoutstderr-mocking
        * doesn't work as Jest somehow wraps error output by itself. Therefore we need to mock
@@ -111,8 +119,12 @@ describe("update command", () => {
     .it("throws when languages list not provided");
 
   test
-    .skip() // TODO: we're able to provide non array value only through config
-    .command(["update", params.id, params.dir, params.col, "--languages="])
+    .do(() =>
+      explorerMock.search.mockReturnValue({
+        config: { languages: "cs,en" },
+      })
+    )
+    .command(["update", params.id, params.dir, params.col])
     .catch((error) => {
       expect(error.message).toEqual(
         `🤷‍♂️ Translation columns have to be list of languages, but cs,en given`
@@ -161,9 +173,45 @@ describe("update command", () => {
       ]);
     });
 
-  // TODO: Same as for translations columns, we're only able to provide invalid
-  // value through config
-  test.skip().it("throws when filter is not a value or list of values");
+  test
+    .setupMocks()
+    .do(() => explorerMock.search.mockReturnValue({ config: { sheets: true } }))
+    .command(["update", ...Object.values(params)])
+    .catch((error) => {
+      expect(error.message).toEqual(
+        `🤷‍♂️ Sheets filter have to be string name or array of names, but ${true} given`
+      );
+    })
+    .it("throws when filter is not a string or list of string");
+
+  test
+    .setupMocks()
+    .do(() =>
+      explorerMock.search.mockReturnValue({
+        config: { sheets: "Secondary translations" },
+      })
+    )
+    .command(["update", ...Object.values(params)])
+    .it("uses string filter supplied through config", () => {
+      expect(ReaderMock.mock.instances).toHaveLength(1);
+      expect(ReaderMock.mock.calls[0][1]).toEqual("Secondary translations");
+    });
+
+  test
+    .setupMocks()
+    .do(() =>
+      explorerMock.search.mockReturnValue({
+        config: { sheets: ["Main translations", "Secondary translations"] },
+      })
+    )
+    .command(["update", ...Object.values(params)])
+    .it("uses names list filter supplied through config", () => {
+      expect(ReaderMock.mock.instances).toHaveLength(1);
+      expect(ReaderMock.mock.calls[0][1]).toEqual([
+        "Main translations",
+        "Secondary translations",
+      ]);
+    });
 
   test
     .setupMocks()
@@ -184,7 +232,6 @@ describe("update command", () => {
     .stdout()
     .do(() => mockRead.mockReturnValue([]))
     .command(["update", ...Object.values(params)])
-    // TODO - find out if we can get empty se of lines
     .it("doesnt write language data when lines set is empty", () => {
       expect(mockWrite).not.toHaveBeenCalled();
 
