@@ -59,7 +59,7 @@ class Update extends Base {
     const languages = flags.languages?.split(",") ?? this.conf?.languages;
     const column = flags.col ?? this.conf?.column;
     const format = flags.format ?? this.conf?.format ?? defaultFormat;
-    const sheets = flags.sheets?.split(",") ?? this.conf?.sheets ?? undefined;
+    const sheets = flags.sheets?.split(",") ?? this.conf?.sheets;
 
     cliFlags.id.invariant(sheetId);
 
