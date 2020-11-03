@@ -97,6 +97,7 @@ So just create `lokse.config.js`, `.lokserc`, `.lokserc.yml`, `.lokserc.json` or
 * **`languages`** - list of languages you want to generate translations for. Also names of columns in spreadsheet
 * **`column`** - name of spreadsheet columm containing translation ids
 * **`format`** - format of output translation file
+* **`sheets`** - titles of sheets to use. Can be string or array of string. If none provided, all sheets are used.
 
 Example of `.lokserc`
 
@@ -110,7 +111,8 @@ Example of `.lokserc`
     "fr"
   ],
   "column": "key_web",
-  "format": "json"
+  "format": "json",
+  "sheets": ["App translations", "Legal docs"]
 }
 ```
 
@@ -172,6 +174,8 @@ OPTIONS
 
   -l, --languages=languages        translation columns languages. Multiple values are comma separated. For example
                                    cs,en,fr
+
+  -s, --sheets=sheets              sheets to get translations from. Name or list of names, comma sepaarated. For example
 
 EXAMPLES
   $ lokse update
