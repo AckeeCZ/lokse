@@ -1,5 +1,30 @@
 # Changelog
 
+<a name="1.2.0"></a>
+## 1.2.0 (2020-11-03)
+
+### Added
+
+- ✨ Add sheets flag into the update command [[b3325b3](https://github.com/AckeeCZ/lokse/commit/b3325b3b2b7ac5d37da3ab6e85df2afd5671e943)]
+- ✨ Add warning when no sheets pass the filter [[6b305ef](https://github.com/AckeeCZ/lokse/commit/6b305efe5dc70c0b013770fd542d23cd77fa2033)]
+- ➕ Add husky and lint-staged [[9b65157](https://github.com/AckeeCZ/lokse/commit/9b651579a9e276f9ad160541a2a14e00869b46f0)]
+- ✅ Add update command tests [[5aee1af](https://github.com/AckeeCZ/lokse/commit/5aee1af0d41c3a3985857a23a36d7fd436dc08c7)]
+- ✅ Add open command tests [[08925c0](https://github.com/AckeeCZ/lokse/commit/08925c0824442c8faf962403e452edb77f2c7ce7)]
+
+### Changed
+
+- ⬆️ Upgrade eslint packages [[e04d477](https://github.com/AckeeCZ/lokse/commit/e04d47778d9065c6c1b893c8c256c23115e20dbf)]
+- ♻️ Handle failed extraction of sheet data in spreadsheet reader [[c26149d](https://github.com/AckeeCZ/lokse/commit/c26149dd02017987631ac8520d5b9de5ece13761)]
+- ♻️ Move worksheet extraction into the worksheet class [[196ebbb](https://github.com/AckeeCZ/lokse/commit/196ebbb6653af758a148592a8f5d4051fb03081a)]
+- 🔨 Move lint and prettier scripts to the root [[fa36c40](https://github.com/AckeeCZ/lokse/commit/fa36c40444c8a952bc33729ca879dd14e793f8a0)]
+- 🚚 Move tests to the src/**/__tests__ folder [[122c66f](https://github.com/AckeeCZ/lokse/commit/122c66fa1daca3aa2cbc313a046a0d394bc51dc6)]
+
+### Removed
+
+- 🔥 Remove known output format check [[7adc4d0](https://github.com/AckeeCZ/lokse/commit/7adc4d0e82fbfb906ba4acc8ed987d62c735a677)]
+- 🔥 Remove different tsconfig for tests [[48b2d37](https://github.com/AckeeCZ/lokse/commit/48b2d37f10c8dd0eebd00dd4b832ed900f243a1d)]
+
+
 <a name="1.1.1"></a>
 ## 1.1.1 (2020-10-23)
 

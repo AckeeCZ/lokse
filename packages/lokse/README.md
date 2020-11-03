@@ -21,7 +21,7 @@ $ npm install -g lokse
 $ lokse COMMAND
 running command...
 $ lokse (-v|--version|version)
-lokse/1.1.1 darwin-x64 node-v12.17.0
+lokse/1.2.0 darwin-x64 node-v12.17.0
 $ lokse --help [COMMAND]
 USAGE
   $ lokse COMMAND
@@ -155,7 +155,7 @@ EXAMPLE
   $ lokse open -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk
 ```
 
-_See code: [src/commands/open.ts](https://github.com/AckeeCZ/lokse/blob/v1.1.1/src/commands/open.ts)_
+_See code: [src/commands/open.ts](https://github.com/AckeeCZ/lokse/blob/v1.2.0/src/commands/open.ts)_
 
 ### `lokse update`
 
@@ -175,12 +175,13 @@ OPTIONS
   -l, --languages=languages        translation columns languages. Multiple values are comma separated. For example
                                    cs,en,fr
 
-  -s, --sheets=sheets              sheets to get translations from. Name or list of names, comma sepaarated. For example
+  -s, --sheets=sheets              sheets to get translations from. Name or list of names, comma separated. For example
+                                   Translations1,Translations2
 
 EXAMPLES
   $ lokse update
   $ lokse update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web
 ```
 
-_See code: [src/commands/update.ts](https://github.com/AckeeCZ/lokse/blob/v1.1.1/src/commands/update.ts)_
+_See code: [src/commands/update.ts](https://github.com/AckeeCZ/lokse/blob/v1.2.0/src/commands/update.ts)_
 <!-- commandsstop -->
