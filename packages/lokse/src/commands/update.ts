@@ -60,6 +60,7 @@ class Update extends Base {
     const column = flags.col ?? this.conf?.column;
     const format = flags.format ?? this.conf?.format ?? defaultFormat;
     const sheets = flags.sheets?.split(",") ?? this.conf?.sheets;
+    const splitTranslations = false;
 
     cliFlags.id.invariant(sheetId);
 
@@ -103,12 +104,22 @@ class Update extends Base {
       try {
         // Reason: Process languages sequentially
         // eslint-disable-next-line no-await-in-loop
-        const lines = await reader.read(column, language);
+        const linesByWorkshet = await reader.read(column, language);
+        const worksheetsLinesEntries = Object.entries(linesByWorkshet);
 
-        if (lines.length === 0) {
+        if (worksheetsLinesEntries.length === 0) {
           spinner.warn(`Received empty lines set for language ${langName}`);
+          continue;
+        }
+
+        if (splitTranslations && outputTransformer.supportsSplit) {
+          continue;
         } else {
-          writer.write(outputPath, lines, outputTransformer);
+          const allLines = worksheetsLinesEntries
+            .map(([_, lines]) => lines)
+            .flat();
+
+          writer.write(outputPath, allLines, outputTransformer);
           spinner.succeed(
             `${langName} translations saved into ${relativeOutputPath}`
           );

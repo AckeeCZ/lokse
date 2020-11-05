@@ -49,6 +49,8 @@ const jsonTransformer: Transformer = {
   },
 
   getFileName: (item) => item.toLowerCase() + ".json",
+
+  supportsSplit: true,
 };
 
 export default jsonTransformer;

@@ -215,7 +215,6 @@ describe("update command", () => {
 
   test
     .setupMocks()
-    .stdout()
     .command(["update", ...Object.values(params)])
     .it("reads data for each language", () => {
       expect(ReaderMock.mock.instances).toHaveLength(1);
@@ -229,8 +228,7 @@ describe("update command", () => {
 
   test
     .setupMocks()
-    .stdout()
-    .do(() => mockRead.mockReturnValue([]))
+    .do(() => mockRead.mockReturnValue({}))
     .command(["update", ...Object.values(params)])
     .it("doesnt write language data when lines set is empty", () => {
       expect(mockWrite).not.toHaveBeenCalled();
@@ -252,7 +250,7 @@ describe("update command", () => {
 
   test
     .setupMocks()
-    .stdout()
+    .do(() => mockRead.mockReturnValue({ sheet1: mockSheetLines }))
     .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
     .command(["update", ...Object.values(params)])
     .it("writes language data in desired format into the output dir", () => {
@@ -263,6 +261,7 @@ describe("update command", () => {
 
       relPath = `${translationsDir}/${languages[0]}.json`;
       expect(mockWrite.mock.calls[0][0]).toEqual(`/ROOT_PKG_PATH/${relPath}`);
+      expect(mockWrite.mock.calls[0][1]).toEqual(mockSheetLines);
       expect(mockOraInstance.succeed).toHaveBeenNthCalledWith(
         1,
         `${languages[0]} translations saved into ${relPath}`
@@ -270,6 +269,7 @@ describe("update command", () => {
 
       relPath = `${translationsDir}/${languages[1]}.json`;
       expect(mockWrite.mock.calls[1][0]).toEqual(`/ROOT_PKG_PATH/${relPath}`);
+      expect(mockWrite.mock.calls[1][1]).toEqual(mockSheetLines);
       expect(mockOraInstance.succeed).toHaveBeenNthCalledWith(
         2,
         `${languages[1]} translations saved into ${relPath}`
