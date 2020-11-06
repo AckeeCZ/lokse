@@ -4,7 +4,6 @@ import * as config from "../config";
 
 export const flag = flags.build({
   char: "i",
-  name: "id",
   description: "spreadsheet id",
 
   default: ({ flags }) => {

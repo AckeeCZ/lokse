@@ -28,24 +28,20 @@ class Update extends Base {
     dir: flags.string({ char: "d", name: "dir", description: "output folder" }),
     languages: flags.string({
       char: "l",
-      name: "languages",
       description:
         "translation columns languages. Multiple values are comma separated. For example cs,en,fr",
     }),
     col: flags.string({
       char: "c",
-      name: "col",
       description: "column containing translations keys. For example key_web.",
     }),
     format: flags.enum({
       char: "f",
-      name: "format",
       options: outputFormats,
       description: `output format. Default is ${defaultFormat}.`,
     }),
     sheets: flags.string({
       char: "s",
-      name: "sheets",
       description:
         "sheets to get translations from. Name or list of names, comma separated. For example Translations1,Translations2",
     }),
