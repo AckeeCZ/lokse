@@ -1,10 +1,13 @@
 import { test as oclifTest } from "@oclif/test";
 import { cosmiconfigSync } from "cosmiconfig";
+import * as dedent from "dedent";
+import { when } from "jest-when";
 
 import Reader from "../../core/reader/spreadsheet-reader";
 import { FileWriter } from "../../core/writer";
 import { OutputFormat } from "../../constants";
 import { noExitCliInvariant } from "../../utils";
+import jsonTransformer from "../../core/transformer/json";
 
 jest.mock("cosmiconfig");
 const explorerMock = {
@@ -52,7 +55,9 @@ describe("update command", () => {
     format: `--format=json`,
   };
 
-  const mockSheetLines = ["line1", "line2"];
+  const mockSheetLines = [{ key: "sheet1.line" }, { key: "sheet1.line" }];
+  const mockSheetLines2 = [{ key: "sheet2.line_1" }, { key: "sheet2.line_2" }];
+  const mockSheetLines3 = [{ key: "sheet3.line_1" }, { key: "sheet3.line_2" }];
 
   const test = oclifTest.register("setupMocks", () => ({
     /* eslint-disable no-console */
@@ -79,7 +84,6 @@ describe("update command", () => {
     finally() {
       console.error = consoleErrorBackup;
     },
-    /* eslint-enable no-console */
   }));
 
   test
@@ -264,7 +268,7 @@ describe("update command", () => {
       expect(mockWrite.mock.calls[0][1]).toEqual(mockSheetLines);
       expect(mockOraInstance.succeed).toHaveBeenNthCalledWith(
         1,
-        `${languages[0]} translations saved into ${relPath}`
+        `All ${languages[0]} translations saved into ${relPath}`
       );
 
       relPath = `${translationsDir}/${languages[1]}.json`;
@@ -272,14 +276,14 @@ describe("update command", () => {
       expect(mockWrite.mock.calls[1][1]).toEqual(mockSheetLines);
       expect(mockOraInstance.succeed).toHaveBeenNthCalledWith(
         2,
-        `${languages[1]} translations saved into ${relPath}`
+        `All ${languages[1]} translations saved into ${relPath}`
       );
 
       relPath = `${translationsDir}/${languages[2]}.json`;
       expect(mockWrite.mock.calls[2][0]).toEqual(`/ROOT_PKG_PATH/${relPath}`);
       expect(mockOraInstance.succeed).toHaveBeenNthCalledWith(
         3,
-        `${languages[2]} translations saved into ${relPath}`
+        `All ${languages[2]} translations saved into ${relPath}`
       );
     });
 
@@ -288,7 +292,7 @@ describe("update command", () => {
     .stderr()
     .do(() => {
       mockRead
-        .mockImplementationOnce(() => mockSheetLines)
+        .mockImplementationOnce(() => ({ sheet1: mockSheetLines }))
         .mockImplementationOnce(() => {
           throw new Error("Read spreadsheet error");
         });
@@ -305,7 +309,7 @@ describe("update command", () => {
 
       expect(mockOraInstance.succeed).toHaveBeenCalledTimes(1);
       expect(mockOraInstance.succeed).toHaveBeenCalledWith(
-        `${languages[0]} translations saved into ${translationsDir}/${languages[0]}.json`
+        `All ${languages[0]} translations saved into ${translationsDir}/${languages[0]}.json`
       );
       expect(error.message).toEqual("Read spreadsheet error");
     })
@@ -342,10 +346,9 @@ describe("update command", () => {
 
         expect(mockOraInstance.succeed).toHaveBeenCalledTimes(1);
         expect(mockOraInstance.succeed).toHaveBeenCalledWith(
-          `${languages[2]} translations saved into ${translationsDir}/${languages[2]}.json`
+          `All ${languages[2]} translations saved into ${translationsDir}/${languages[2]}.json`
         );
 
-        /* eslint-disable no-console */
         expect(console.error).toHaveBeenCalledTimes(2);
         expect((console.error as jest.Mock).mock.calls[0][0]).toContain(
           "No exit read cs error"
@@ -353,7 +356,313 @@ describe("update command", () => {
         expect((console.error as jest.Mock).mock.calls[1][0]).toContain(
           "No exit write translations error"
         );
-        /* eslint-enable no-console */
       }
     );
+
+  describe("Splitting translations", () => {
+    const langsParam = `--languages=${languages[0]},${languages[1]}`;
+    const threeSheets = {
+      "sheet1 Title": mockSheetLines,
+      "sheet2 Title": mockSheetLines2,
+      "sheet3 Title": mockSheetLines3,
+    };
+
+    test.it("fail when splitTranslations isnt boolean nor array of strings");
+
+    test
+      .setupMocks()
+      .do(() => {
+        mockRead.mockReturnValue(threeSheets);
+        explorerMock.search.mockReturnValue({
+          config: { splitTranslations: true },
+        });
+      })
+      .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
+      .command([
+        "update",
+        ...Object.values(params),
+        langsParam,
+        `--format=android`,
+      ])
+      .it(
+        "doesnt split when option enabled but output transformer doesnt support it",
+        () => {
+          let relPath = "";
+
+          expect(mockWrite).toHaveBeenCalledTimes(2);
+          expect(mockOraInstance.succeed).toHaveBeenCalledTimes(2);
+
+          const writeCalls = mockWrite.mock.calls;
+
+          relPath = `${translationsDir}/values-${languages[0]}strings.xml`;
+          expect(writeCalls[0][0]).toEqual(`/ROOT_PKG_PATH/${relPath}`);
+          expect(writeCalls[0][1]).toEqual([
+            ...mockSheetLines,
+            ...mockSheetLines2,
+            ...mockSheetLines3,
+          ]);
+
+          expect(mockOraInstance.succeed).toHaveBeenNthCalledWith(
+            1,
+            `All ${languages[0]} translations saved into ${relPath}`
+          );
+
+          relPath = `${translationsDir}/values-${languages[1]}strings.xml`;
+          expect(writeCalls[1][0]).toEqual(`/ROOT_PKG_PATH/${relPath}`);
+          expect(writeCalls[1][1]).toEqual([
+            ...mockSheetLines,
+            ...mockSheetLines2,
+            ...mockSheetLines3,
+          ]);
+
+          expect(mockOraInstance.succeed).toHaveBeenNthCalledWith(
+            2,
+            `All ${languages[1]} translations saved into ${relPath}`
+          );
+        }
+      );
+
+    test
+      .setupMocks()
+      .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
+      .do(() => {
+        mockRead.mockReturnValue(threeSheets);
+        explorerMock.search.mockReturnValue({
+          config: { splitTranslations: true },
+        });
+      })
+      .command(["update", ...Object.values(params), langsParam])
+      .it("splits by sheet title when split option is true", () => {
+        expect(mockWrite).toHaveBeenCalledTimes(6);
+        expect(mockOraInstance.succeed).toHaveBeenCalledTimes(2);
+
+        const writeCalls = mockWrite.mock.calls;
+
+        expect(writeCalls[0][0]).toEqual(
+          `/ROOT_PKG_PATH/${translationsDir}/sheet1-title.${languages[0]}.json`
+        );
+        expect(writeCalls[0][1]).toEqual(mockSheetLines);
+        expect(writeCalls[1][0]).toEqual(
+          `/ROOT_PKG_PATH/${translationsDir}/sheet2-title.${languages[0]}.json`
+        );
+        expect(writeCalls[1][1]).toEqual(mockSheetLines2);
+        expect(writeCalls[2][0]).toEqual(
+          `/ROOT_PKG_PATH/${translationsDir}/sheet3-title.${languages[0]}.json`
+        );
+        expect(writeCalls[2][1]).toEqual(mockSheetLines3);
+
+        expect(mockOraInstance.succeed).toHaveBeenNthCalledWith(
+          1,
+          dedent`All ${languages[0]} translations saved into ${translationsDir}
+                Splitted to sheet1-title, sheet2-title, sheet3-title`
+        );
+
+        expect(writeCalls[3][0]).toEqual(
+          `/ROOT_PKG_PATH/${translationsDir}/sheet1-title.${languages[1]}.json`
+        );
+        expect(writeCalls[3][1]).toEqual(mockSheetLines);
+        expect(writeCalls[4][0]).toEqual(
+          `/ROOT_PKG_PATH/${translationsDir}/sheet2-title.${languages[1]}.json`
+        );
+        expect(writeCalls[4][1]).toEqual(mockSheetLines2);
+        expect(writeCalls[5][0]).toEqual(
+          `/ROOT_PKG_PATH/${translationsDir}/sheet3-title.${languages[1]}.json`
+        );
+        expect(writeCalls[5][1]).toEqual(mockSheetLines3);
+
+        expect(mockOraInstance.succeed).toHaveBeenNthCalledWith(
+          2,
+          dedent`All ${languages[1]} translations saved into ${translationsDir}
+                Splitted to sheet1-title, sheet2-title, sheet3-title`
+        );
+      });
+
+    test
+      .setupMocks()
+      .do(() => {
+        mockRead.mockReturnValue({ "Sheet 1": mockSheetLines });
+        explorerMock.search.mockReturnValue({
+          config: { splitTranslations: true },
+        });
+      })
+      .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
+      .command(["update", ...Object.values(params), langsParam])
+      .it(
+        "warns if there is only one sheet so splitting is unnecessary",
+        () => {
+          expect(mockWrite).toHaveBeenCalledTimes(2);
+          expect(mockOraInstance.succeed).toHaveBeenCalledTimes(2);
+
+          const writeCalls = mockWrite.mock.calls;
+
+          expect(writeCalls[0][0]).toEqual(
+            `/ROOT_PKG_PATH/${translationsDir}/sheet-1.${languages[0]}.json`
+          );
+          expect(writeCalls[0][1]).toEqual(mockSheetLines);
+
+          expect(writeCalls[1][0]).toEqual(
+            `/ROOT_PKG_PATH/${translationsDir}/sheet-1.${languages[1]}.json`
+          );
+          expect(writeCalls[1][1]).toEqual(mockSheetLines);
+
+          expect(console.error).toHaveBeenCalledTimes(2);
+          expect((console.error as jest.Mock).mock.calls[0][0]).toContain(
+            `Requested splitting translations by sheet but`
+          );
+        }
+      );
+
+    test
+      .setupMocks()
+      .do(() => {
+        mockRead.mockReturnValue(threeSheets);
+        explorerMock.search.mockReturnValue({
+          config: { splitTranslations: ["sheet1", "sheet3"] },
+        });
+      })
+      .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
+      .command(["update", ...Object.values(params), langsParam])
+      .it(
+        "split translations by specified domains and put rest into the general",
+        () => {
+          expect(mockWrite).toHaveBeenCalledTimes(6);
+          expect(mockOraInstance.succeed).toHaveBeenCalledTimes(2);
+
+          const writeCalls = mockWrite.mock.calls;
+
+          expect(writeCalls[0][0]).toEqual(
+            `/ROOT_PKG_PATH/${translationsDir}/sheet1.${languages[0]}.json`
+          );
+          expect(writeCalls[0][1]).toEqual(mockSheetLines);
+
+          expect(writeCalls[1][0]).toEqual(
+            `/ROOT_PKG_PATH/${translationsDir}/sheet3.${languages[0]}.json`
+          );
+          expect(writeCalls[1][1]).toEqual(mockSheetLines3);
+
+          expect(writeCalls[2][0]).toEqual(
+            `/ROOT_PKG_PATH/${translationsDir}/${languages[0]}.json`
+          );
+          expect(writeCalls[2][1]).toEqual(mockSheetLines2);
+
+          expect(mockOraInstance.succeed).toHaveBeenNthCalledWith(
+            1,
+            dedent`All ${languages[0]} translations saved into ${translationsDir}
+                  Splitted to sheet1, sheet3, other`
+          );
+
+          expect(writeCalls[3][0]).toEqual(
+            `/ROOT_PKG_PATH/${translationsDir}/sheet1.${languages[1]}.json`
+          );
+          expect(writeCalls[3][1]).toEqual(mockSheetLines);
+
+          expect(writeCalls[4][0]).toEqual(
+            `/ROOT_PKG_PATH/${translationsDir}/sheet3.${languages[1]}.json`
+          );
+          expect(writeCalls[4][1]).toEqual(mockSheetLines3);
+
+          expect(writeCalls[5][0]).toEqual(
+            `/ROOT_PKG_PATH/${translationsDir}/${languages[1]}.json`
+          );
+          expect(writeCalls[5][1]).toEqual(mockSheetLines2);
+
+          expect(mockOraInstance.succeed).toHaveBeenNthCalledWith(
+            2,
+            dedent`All ${languages[1]} translations saved into ${translationsDir}
+                  Splitted to sheet1, sheet3, other`
+          );
+        }
+      );
+
+    test
+      .setupMocks()
+      .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
+      .do(() => {
+        mockRead.mockReturnValue(threeSheets);
+
+        when(mockWrite)
+          .calledWith(
+            `/ROOT_PKG_PATH/${translationsDir}/sheet2-title.${languages[0]}.json`,
+            mockSheetLines2,
+            jsonTransformer
+          )
+          .mockImplementationOnce(() => {
+            throw new Error(`Write error`);
+          });
+        when(mockWrite)
+          .calledWith(
+            `/ROOT_PKG_PATH/${translationsDir}/sheet1-title.${languages[1]}.json`,
+            mockSheetLines,
+            jsonTransformer
+          )
+          .mockImplementationOnce(() => {
+            throw new Error(`Write error 2`);
+          });
+
+        explorerMock.search.mockReturnValue({
+          config: { splitTranslations: true },
+        });
+      })
+      .command(["update", ...Object.values(params), langsParam])
+      .it("write other domain translations if writing one of them fail", () => {
+        expect(mockWrite).toHaveBeenCalledTimes(6);
+        expect(mockOraInstance.warn).toHaveBeenCalledTimes(2);
+
+        const writeCalls = mockWrite.mock.calls;
+
+        expect(writeCalls[0][0]).toEqual(
+          `/ROOT_PKG_PATH/${translationsDir}/sheet1-title.${languages[0]}.json`
+        );
+        expect(writeCalls[0][1]).toEqual(mockSheetLines);
+        expect(writeCalls[1][0]).toEqual(
+          `/ROOT_PKG_PATH/${translationsDir}/sheet2-title.${languages[0]}.json`
+        );
+        expect(writeCalls[1][1]).toEqual(mockSheetLines2);
+        expect(writeCalls[2][0]).toEqual(
+          `/ROOT_PKG_PATH/${translationsDir}/sheet3-title.${languages[0]}.json`
+        );
+        expect(writeCalls[2][1]).toEqual(mockSheetLines3);
+
+        expect(mockOraInstance.warn).toHaveBeenNthCalledWith(
+          1,
+          `Some of ${languages[0]} splitted translations were not saved`
+        );
+
+        expect(writeCalls[3][0]).toEqual(
+          `/ROOT_PKG_PATH/${translationsDir}/sheet1-title.${languages[1]}.json`
+        );
+        expect(writeCalls[3][1]).toEqual(mockSheetLines);
+        expect(writeCalls[4][0]).toEqual(
+          `/ROOT_PKG_PATH/${translationsDir}/sheet2-title.${languages[1]}.json`
+        );
+        expect(writeCalls[4][1]).toEqual(mockSheetLines2);
+        expect(writeCalls[5][0]).toEqual(
+          `/ROOT_PKG_PATH/${translationsDir}/sheet3-title.${languages[1]}.json`
+        );
+        expect(writeCalls[5][1]).toEqual(mockSheetLines3);
+
+        expect(mockOraInstance.warn).toHaveBeenNthCalledWith(
+          2,
+          `Some of ${languages[1]} splitted translations were not saved`
+        );
+      });
+
+    test
+      // TODO
+      .setupMocks()
+      .do(() => {
+        mockRead.mockReturnValue(threeSheets);
+        explorerMock.search.mockReturnValue({
+          config: { splitTranslations: true },
+        });
+      })
+      .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
+      .command(["update", ...Object.values(params), langsParam])
+      .it(
+        "should not create the other group when every translation belongs to any named group"
+      );
+
+    // TODO - maybe warn if notify that there is sheets filter turned
+    // on and so not all sheets are included in processing
+  });
 });

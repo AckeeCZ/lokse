@@ -11,6 +11,7 @@
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
+    "@sindresorhus/slugify": "^1.1.0",
     "@types/bluebird": "^3.5.32",
     "@types/dedent": "^0.7.0",
     "@types/google-spreadsheet": "^3.0.1",
