@@ -1,5 +1,4 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import { flatten } from "lodash";
 import { CLIError, warn } from "@oclif/errors";
 
 import Line from "../line";
@@ -7,7 +6,7 @@ import { MissingAuthError } from "../errors";
 import WorksheetReader, { SheetsFilter } from "./worksheet-reader";
 import Worksheet from "./worksheet";
 
-declare type WorksheetLinesByTitle = {
+export declare type WorksheetLinesByTitle = {
   [worksheetTitle: string]: Line[];
 };
 

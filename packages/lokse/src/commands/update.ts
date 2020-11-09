@@ -7,7 +7,7 @@ import * as dedent from "dedent";
 import { NAME } from "../constants";
 import Base from "../base";
 import { OutputFormat } from "../constants";
-import Reader, { WorksheetReader } from "../core/reader";
+import Reader, { WorksheetReader, WorksheetLinesByTitle } from "../core/reader";
 import { transformersByFormat } from "../core/transformer";
 import { FileWriter } from "../core/writer";
 import Line from "../core/line";
@@ -51,7 +51,72 @@ class Update extends Base {
     }),
   };
 
-  /* eslint-disable complexity */
+  splitTranslations(
+    domains: boolean | string[],
+    linesByWorkshet: WorksheetLinesByTitle,
+    langName: string
+  ): { lines: Line[]; domain?: string }[] {
+    // Variant 1: true => split by title name
+    if (typeof domains === "boolean" && domains === true) {
+      const worksheetLinesEntries = Object.entries(linesByWorkshet);
+
+      if (worksheetLinesEntries.length === 1) {
+        this.warn(
+          dedent`Requested splitting translations by sheet but only one sheet 
+                called ${worksheetLinesEntries[0][0]} got. Check if this is intended.`
+        );
+      }
+
+      return worksheetLinesEntries.map(([title, lines]) => ({
+        lines,
+        domain: slugify(title),
+      }));
+    }
+
+    if (Array.isArray(domains)) {
+      // Variant 2: Array.<string> => split by domain
+      const allWorksheetLines = Object.values(linesByWorkshet).flat();
+      const OTHER_DOMAIN = "__other__";
+
+      const linesByDomain = allWorksheetLines.reduce(
+        (domainLines: { [domain: string]: Line[] }, line: Line) => {
+          const [parsedDomain] = line.key.split(".");
+          const domain = domains.includes(parsedDomain)
+            ? parsedDomain
+            : OTHER_DOMAIN;
+
+          domainLines[domain] = domainLines[domain] ?? [];
+          domainLines[domain].push(line);
+
+          return domainLines;
+        },
+        {}
+      );
+
+      domains
+        .filter((domain) => linesByDomain[domain].length === 0)
+        .forEach((domain) => {
+          this.warn(
+            `😐 Received no lines for language ${langName} and domain ${domain}`
+          );
+        });
+
+      return (
+        Object.keys(linesByDomain)
+          // move OTHER_DOMAIN to the end
+          .sort((d1, d2) =>
+            d1 === OTHER_DOMAIN ? 1 : d2 === OTHER_DOMAIN ? -1 : 0
+          )
+          .map((domain) => ({
+            domain: domain === OTHER_DOMAIN ? undefined : domain,
+            lines: linesByDomain[domain],
+          }))
+      );
+    }
+
+    this.error("💥 Unknown error occured when splitting translations");
+  }
+
   async run() {
     const { flags } = this.parse(Update);
 
@@ -116,9 +181,9 @@ class Update extends Base {
         `Saving ${langName} translations into ${relativeOutputPath}`
       );
 
+      // Reason: Process languages sequentially
+      /* eslint-disable no-await-in-loop */
       try {
-        // Reason: Process languages sequentially
-        // eslint-disable-next-line no-await-in-loop
         const linesByWorkshet = await reader.read(column, language);
         const allWorksheetLines = Object.values(linesByWorkshet).flat();
 
@@ -128,56 +193,12 @@ class Update extends Base {
         }
 
         if (splitTranslations && outputTransformer.supportsSplit) {
-          let linesWithDomain: { lines: Line[]; domain?: string }[] = [];
+          const linesWithDomain = this.splitTranslations(
+            splitTranslations,
+            linesByWorkshet,
+            langName
+          );
 
-          // Variant 1: true => split by title name
-          if (typeof splitTranslations === "boolean") {
-            // TODO - warn if there is only one sheet that it's maybe unnecessary to split translations
-
-            const worksheetLinesEntries = Object.entries(linesByWorkshet);
-            if (worksheetLinesEntries.length === 1) {
-              this.warn(
-                dedent`Requested splitting translations by sheet but only one sheet 
-                      called ${worksheetLinesEntries[0][0]} got. Check if this is intended.`
-              );
-            }
-
-            linesWithDomain = worksheetLinesEntries.map(([title, lines]) => ({
-              lines,
-              domain: slugify(title),
-            }));
-          } else if (Array.isArray(splitTranslations)) {
-            // Variant 2: Array.<string> => split by domain
-            const domains = splitTranslations;
-
-            const domainsTranslations = domains.map((domain) => {
-              const domainLines = allWorksheetLines.filter((line) =>
-                line.key.startsWith(`${domain}.`)
-              );
-
-              if (domainLines.length === 0) {
-                this.warn(
-                  `😐 Received no lines for language ${langName} and domain ${domain}`
-                );
-              }
-
-              return { domain, lines: domainLines };
-            });
-
-            const nonDomainTranslations = {
-              lines: allWorksheetLines.filter(
-                (line) =>
-                  !domains.some((domain) => line.key.startsWith(`${domain}.`))
-              ),
-            };
-
-            linesWithDomain = (domainsTranslations as {
-              lines: Line[];
-              domain?: string;
-            }[]).concat(nonDomainTranslations);
-          }
-
-          // eslint-disable-next-line no-await-in-loop
           const writeResults = await Promise.all(
             linesWithDomain.map(({ lines, domain }) =>
               writeLines(lines, language, domain).catch(() => {
@@ -201,9 +222,10 @@ class Update extends Base {
             );
           }
         } else {
-          // eslint-disable-next-line no-await-in-loop
           const filePath = await writeLines(allWorksheetLines, language);
-          spinner.succeed(`All ${langName} translations saved into ${filePath}`);
+          spinner.succeed(
+            `All ${langName} translations saved into ${filePath}`
+          );
         }
       } catch (error) {
         spinner.fail(`Generating ${langName} translations failed.`);
