@@ -1,7 +1,7 @@
 lokse
 ===
 
-Tool to efficient usage of translations stored in google spreadsheet
+A tool to efficient usage of translations stored in google spreadsheet
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/lokse.svg)](https://npmjs.org/package/lokse)
@@ -30,9 +30,9 @@ USAGE
 <!-- usagestop -->
 ## 🔑 Authentication 
 
-Last version of Google Spreadsheets API requires us to be authenticated to allow fetching spreadsheet data.
+THe last version of Google Spreadsheets API requires us to be authenticated to allow fetching spreadsheet data.
 
-There are two options for authentication: Service Account or API key. For each of these options we have to define some values as  environment variables.
+There are two options for authentication: Service Account or API key. For each of these options we have to define some values as environment variables.
 
 ### Environment variables
  
@@ -44,7 +44,7 @@ Use it before the command like
 $ LOKSE_SERVICE_ACCOUNT_EMAIL=this_is_account_email LOKSE_PRIVATE_KEY=this_is_the_private_key lokse update
 ```
 
-or use more flexible and handy way of keeping variables inside the `.env.local` file. Create the file if you don't have it yet  and put your variables into it like
+or use a more flexible and handy way of keeping variables inside the `.env.local` file. Create the file if you don't have it yet  and put your variables into it like
 
 ```
 LOKSE_SERVICE_ACCOUNT_EMAIL=this_is_account_email
@@ -70,7 +70,7 @@ Once you have the Service account created, you should have its client email and 
 
 ```
 "client_email": "localize-with-spreadsheet@localize-with-spreadsheet.iam.gserviceaccount.com",
-"private_key": "-----BEGIN PRIVATE KEY-----\nAnd_there_is_long_text_of_random_characters_that_defines_the_private_key\n-----END PRIVATE KEY-----\n",
+"private_key": "-----BEGIN PRIVATE KEY-----\nAnd_here_is_a_long_text_of_random_characters_that_defines_the_private_key\n-----END PRIVATE KEY-----\n",
 ```
 
 Take these two values, put them into `LOKSE_SERVICE_ACCOUNT_EMAIL` and `LOKSE_PRIVATE_KEY` variables using one of two ways [described above](#environment-variables) and there you go, fetching data from spreadsheet should work now.
@@ -90,16 +90,47 @@ CLI uses [`Cosmiconfig`](https://www.npmjs.com/package/cosmiconfig) which means 
 
 So just create `lokse.config.js`, `.lokserc`, `.lokserc.yml`, `.lokserc.json` or add `lokse` property into the `package.json` and there you can setup on of the options:
 
-### Options
+### `sheetId`
 
-* **`sheetId`** - spreadsheet id. When you open your spreadsheet it's this string ![](https://github.com/AckeeCZ/lokse/doc/spreadsheet-id.png)
-* **`dir`** - output directory where generatd translation files will be written
-* **`languages`** - list of languages you want to generate translations for. Also names of columns in spreadsheet
-* **`column`** - name of spreadsheet columm containing translation ids
-* **`format`** - format of output translation file
-* **`sheets`** - titles of sheets to use. Can be string or array of string. If none provided, all sheets are used.
+Spreadsheet id. When you open your spreadsheet it's this string   
+![](https://raw.githubusercontent.com/AckeeCZ/lokse/master/doc/spreadsheet-id.png)
 
-Example of `.lokserc`
+### `dir`
+
+Output directory where generated translation files will be written to.
+
+### `languages`
+
+List of languages you want to generate translations for. Also names of columns in spreadsheet.
+
+### `column`
+
+Name of spreadsheet columm containing translation ids.
+
+### `format`
+
+Format of output translation file.
+
+### `sheets`
+
+Titles of sheets to use. Can be string or array of string. If none provided, all sheets are used.
+
+### `splitTranslations`
+
+Enables splitting translations into multiple files which is useful for lazy loading of some big parts of translations (eg. translation of the whole legal document). 
+
+You have two ways of how to split your translations:
+
+* **Split by sheets - `splitTranslations: true`** - each sheet means one translations file and name of file is determined by sheet title. Given 3 sheets in yout spreadsheet named "App translations", "Legal docs", "Landing Page" the result will be 3 files named `app-translations.cs.json`, `legal-docs.cs.json`, `legal-docs.cs.json` (of course the language and format depends on your settings).  
+
+* **Split by domains - `splitTranslations: string[]`** - this configuration expects an array of domain names. Domain is a first part of your translation id, given translation id `news.mostRead.error.text` the domain is `news`. The domain name determines also the filename, `news.cs.json` in our example.  
+Translations that starts with domain `news.` will be written into the `news.cs.json`, other translations that does not belong to any other group will be saved into general translations in file `cs.json`.
+
+The `splitTranslations` option can be provided only through configuration not inline CLI parameter.
+
+---
+
+### Example of `.lokserc`
 
 ```json
 {
@@ -112,7 +143,8 @@ Example of `.lokserc`
   ],
   "column": "key_web",
   "format": "json",
-  "sheets": ["App translations", "Legal docs"]
+  "sheets": ["App translations", "Legal docs"],
+  "splitTranslations": ["news", "documents"]
 }
 ```
 
