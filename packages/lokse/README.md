@@ -1,7 +1,7 @@
 lokse
 ===
 
-A tool to efficient usage of translations stored in google spreadsheet
+A tool for efficient usage of translations stored in google spreadsheet
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/lokse.svg)](https://npmjs.org/package/lokse)
@@ -30,7 +30,7 @@ USAGE
 <!-- usagestop -->
 ## 🔑 Authentication 
 
-THe last version of Google Spreadsheets API requires us to be authenticated to allow fetching spreadsheet data.
+The last version of Google Spreadsheets API requires us to be authenticated to allow fetching spreadsheet data.
 
 There are two options for authentication: Service Account or API key. For each of these options we have to define some values as environment variables.
 
@@ -121,7 +121,7 @@ Enables splitting translations into multiple files which is useful for lazy load
 
 You have two ways of how to split your translations:
 
-* **Split by sheets - `splitTranslations: true`** - each sheet means one translations file and name of file is determined by sheet title. Given 3 sheets in yout spreadsheet named "App translations", "Legal docs", "Landing Page" the result will be 3 files named `app-translations.cs.json`, `legal-docs.cs.json`, `legal-docs.cs.json` (of course the language and format depends on your settings).  
+* **Split by sheets - `splitTranslations: true`** - each sheet means one translations file and name of file is determined by sheet title. Given 3 sheets in yout spreadsheet named "App translations", "Legal docs", "Landing Page" the result will be 3 files named `app-translations.cs.json`, `legal-docs.cs.json`, `landing-page.cs.json` (of course the language and format depends on your settings).  
 
 * **Split by domains - `splitTranslations: string[]`** - this configuration expects an array of domain names. Domain is a first part of your translation id, given translation id `news.mostRead.error.text` the domain is `news`. The domain name determines also the filename, `news.cs.json` in our example.  
 Translations that starts with domain `news.` will be written into the `news.cs.json`, other translations that does not belong to any other group will be saved into general translations in file `cs.json`.
