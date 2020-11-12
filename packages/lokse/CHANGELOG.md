@@ -1,5 +1,22 @@
 # Changelog
 
+<a name="1.3.0"></a>
+## 1.3.0 (2020-11-12)
+
+### Added
+
+- ✨ Add splitting translations by domain or sheet title [[abea79c](https://github.com/AckeeCZ/lokse/commit/abea79cdf1cab066e5a4a179b7f11754f59ea7a9)]
+
+### Changed
+
+- ♻️ Change reader to return lines by worksheet title instead of flat list [[c2c177b](https://github.com/AckeeCZ/lokse/commit/c2c177be1acc34807392a868783866a019c5db7d)]
+- 🔧 Exclude test files from typescript check [[9d4f5b5](https://github.com/AckeeCZ/lokse/commit/9d4f5b5763d7ba1436aa93e2cc475063720703d1)]
+
+### Removed
+
+- 🔥 Remove name from flag definitions, it&#x27;s useless there [[2dbe4a0](https://github.com/AckeeCZ/lokse/commit/2dbe4a0cc279c009f81a2dca7f7222a81a073287)]
+
+
 <a name="1.2.0"></a>
 ## 1.2.0 (2020-11-03)
 
