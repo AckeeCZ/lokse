@@ -103,7 +103,7 @@ describe("SpreadsheetReader", () => {
       console.error = consoleErrorBackup;
     });
 
-    it("should return list of lines from all sheets concated", async () => {
+    it("should return map of lines by sheet title", async () => {
       expect.assertions(1);
 
       const sheetsList = [
@@ -115,14 +115,14 @@ describe("SpreadsheetReader", () => {
       const reader = new SpreadsheetReader("test-sheet-id", "*");
       jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
 
-      await expect(reader.read("key", "en-gb")).resolves.toEqual([
-        ...linesSet1,
-        ...linesSet2,
-        ...linesSet3,
-      ]);
+      await expect(reader.read("key", "en-gb")).resolves.toEqual({
+        fakeSheet1: linesSet1,
+        fakeSheet2: linesSet2,
+        fakeSheet3: linesSet3,
+      });
     });
 
-    it("should return list of lines from other sheets when extracting from any fail", async () => {
+    it("should omit sheet in map lines when extracting from any fail", async () => {
       expect.assertions(4);
 
       const sheetsList = [
@@ -148,10 +148,10 @@ describe("SpreadsheetReader", () => {
       const reader = new SpreadsheetReader("test-sheet-id", "*");
       jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
 
-      await expect(reader.read("key", "en-gb")).resolves.toEqual([
-        ...linesSet1,
-        ...linesSet3,
-      ]);
+      await expect(reader.read("key", "en-gb")).resolves.toEqual({
+        fakeSheet1: linesSet1,
+        fakeSheet4: linesSet3,
+      });
       expect(console.error).toHaveBeenCalledTimes(2);
       expect(console.error).toHaveBeenNthCalledWith(
         1,
@@ -160,6 +160,28 @@ describe("SpreadsheetReader", () => {
       expect(console.error).toHaveBeenNthCalledWith(
         2,
         expect.stringContaining(mockKeyColError.message)
+      );
+    });
+
+    it("should concat sheets with same title", async () => {
+      expect.assertions(3);
+
+      const sheetsList = [
+        makeFakeWorksheet("fakeSheet1", linesSet1),
+        makeFakeWorksheet("fakeSheet2", linesSet2),
+        makeFakeWorksheet("fakeSheet1", linesSet3),
+      ];
+
+      const reader = new SpreadsheetReader("test-sheet-id", "*");
+      jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
+
+      await expect(reader.read("key", "en-gb")).resolves.toEqual({
+        fakeSheet1: linesSet1.concat(linesSet3),
+        fakeSheet2: linesSet2,
+      });
+      expect(console.error).toHaveBeenCalledTimes(1);
+      expect(console.error).toHaveBeenCalledWith(
+        expect.stringContaining(`🔀 Found two sheets with same title fakeSheet1`)
       );
     });
   });

@@ -1,11 +1,14 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import { flatten } from "lodash";
 import { CLIError, warn } from "@oclif/errors";
 
 import Line from "../line";
 import { MissingAuthError } from "../errors";
 import WorksheetReader, { SheetsFilter } from "./worksheet-reader";
 import Worksheet from "./worksheet";
+
+export declare type WorksheetLinesByTitle = {
+  [worksheetTitle: string]: Line[];
+};
 
 export class SpreadsheetReader {
   private spreadsheet: GoogleSpreadsheet;
@@ -60,16 +63,30 @@ export class SpreadsheetReader {
   async read(keyColumn: string, valueColumn: string) {
     const worksheets = await this.fetchSheets();
 
-    const extractedLines: Line[][] = worksheets.map((worksheet) => {
-      try {
-        return worksheet.extractLines(keyColumn, valueColumn);
-      } catch (error) {
-        warn(error.message);
-        return [];
-      }
-    });
+    return worksheets.reduce(
+      (worksheetLines: WorksheetLinesByTitle, worksheet) => {
+        const { title } = worksheet;
 
-    return flatten(extractedLines);
+        try {
+          const lines = worksheet.extractLines(keyColumn, valueColumn);
+
+          if (worksheetLines[title]) {
+            warn(
+              `🔀 Found two sheets with same title ${title}. We're gonna concat the data.`
+            );
+
+            worksheetLines[title] = worksheetLines[title].concat(lines);
+          } else {
+            worksheetLines[title] = lines;
+          }
+        } catch (error) {
+          warn(error.message);
+        }
+
+        return worksheetLines;
+      },
+      {}
+    );
   }
 }
 

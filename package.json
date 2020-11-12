@@ -10,12 +10,14 @@
     "prettier": "prettier --write --config ./.prettierrc \"packages/*/(src|test)/**/*.(ts|tsx)\""
   },
   "devDependencies": {
+    "@types/jest-when": "^2.7.2",
     "chai": "^4.2.0",
     "eslint": "^5.13",
     "eslint-config-oclif": "^3.1",
     "eslint-config-oclif-typescript": "^0.1",
     "eslint-config-prettier": "^6.11.0",
     "husky": "^4.3.0",
+    "jest-when": "^3.0.1",
     "lint-staged": "^10.5.1",
     "prettier": "^2.1.1"
   },

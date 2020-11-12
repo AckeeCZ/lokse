@@ -11,6 +11,7 @@ export type ConfigType = {
   column?: string;
   format?: typeof OutputFormat;
   sheets?: SheetsFilter;
+  splitTranslations?: boolean | string[];
 };
 
 export function get(): undefined | null | ConfigType {

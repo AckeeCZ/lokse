@@ -48,7 +48,14 @@ const jsonTransformer: Transformer = {
     return formatted;
   },
 
-  getFileName: (item) => item.toLowerCase() + ".json",
+  getFileName(lang, domain) {
+    return [domain, lang, "json"]
+      .filter(Boolean)
+      .map((s) => s!.toLowerCase())
+      .join(".");
+  },
+
+  supportsSplit: true,
 };
 
 export default jsonTransformer;
