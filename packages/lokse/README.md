@@ -9,10 +9,10 @@ A tool for efficient usage of translations stored in google spreadsheet
 [![License](https://img.shields.io/npm/l/lokse.svg)](https://github.com/AckeeCZ/lokse/blob/master/package.json)
 
 
-* [Usage](#usage)
-* [Authentication](#authentication)
-* [Configuration](#configuration)
-* [Commands](#commands)
+* [Usage](#-usage)
+* [Authentication](#-authentication)
+* [Configuration](#-configuration)
+* [Commands](#-commands)
 
 ## 🚀 Usage
 <!-- usage -->
@@ -154,7 +154,7 @@ The `splitTranslations` option can be provided only through configuration not in
 * [`lokse open`](#lokse-open)
 * [`lokse update`](#lokse-update)
 
-### `lokse help [COMMAND]`
+## `lokse help [COMMAND]`
 
 display help for lokse
 
@@ -171,7 +171,7 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
 
-### `lokse open`
+## `lokse open`
 
 open localization spreadsheet in default browser
 
@@ -189,7 +189,7 @@ EXAMPLE
 
 _See code: [src/commands/open.ts](https://github.com/AckeeCZ/lokse/blob/v1.3.0/src/commands/open.ts)_
 
-### `lokse update`
+## `lokse update`
 
 update translations from localization spreadsheet
 
