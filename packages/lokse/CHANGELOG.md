@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="1.3.1"></a>
+## 1.3.1 (2020-11-23)
+
+### Added
+
+- ➕ Shim array.flat to support older node.js versions [[2912a5a](https://github.com/AckeeCZ/lokse/commit/2912a5a53a026c5c693519f0c6b838135e1d08f5)]
+
+### Changed
+
+- 📝 Fix TOC in package readme [[4ef1c8d](https://github.com/AckeeCZ/lokse/commit/4ef1c8d19a34a9a1b8c5969ba6e30a3767e1e6a0)]
+
+
 <a name="1.3.0"></a>
 ## 1.3.0 (2020-11-12)
 
