@@ -3,6 +3,7 @@ import { flags } from "@oclif/command";
 import * as ora from "ora";
 import * as slugify from "@sindresorhus/slugify";
 import * as dedent from "dedent";
+import * as flat from "array.prototype.flat";
 
 import { NAME } from "../constants";
 import Base from "../base";
@@ -14,6 +15,8 @@ import Line from "../core/line";
 
 import * as cliFlags from "../flags";
 import { MissingFlagValue, IncorrectFlagValue } from "../flags/errors";
+
+flat.shim();
 
 const outputFormats = Object.values(OutputFormat);
 const defaultFormat = OutputFormat.JSON;
