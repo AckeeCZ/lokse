@@ -86,7 +86,7 @@ class Line {
   }
 
   isEmpty() {
-    return !this.isComment() && !this.key;
+    return !this.isComment() && !(this.key && this.value);
   }
 
   isComment() {
