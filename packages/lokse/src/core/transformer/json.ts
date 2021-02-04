@@ -11,7 +11,9 @@ async function format(output: string) {
     return output;
   }
 
-  const options = await prettier.resolveConfig(prettierConfig);
+  const options = await prettier.resolveConfig(prettierConfig, {
+    editorconfig: true,
+  });
 
   if (options === null) {
     return output;
