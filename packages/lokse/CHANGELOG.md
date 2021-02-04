@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="1.4.0"></a>
+## 1.4.0 (2021-02-04)
+
+### Changed
+
+- ♻️ Consider line without a translation empty [[9aaca5e](https://github.com/AckeeCZ/lokse/commit/9aaca5e179e637e7fee970b227c8ad4aa137af32)]
+
+### Fixed
+
+- 🐛 Take in account editorconfig when resolving prettier configuration [[02fbfa8](https://github.com/AckeeCZ/lokse/commit/02fbfa8de9a913e206fbb4f83dd5187506217e99)]
+
+
 <a name="1.3.1"></a>
 ## 1.3.1 (2020-11-23)
 
