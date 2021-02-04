@@ -23,7 +23,7 @@ export class FileWriter {
 
       fileContent = fileContent.toString();
     } catch {
-      // file doesnt exist
+      // file doesnt exist yet
     }
 
     const valueToInsert = this.getTransformedLines(lines, transformer);
@@ -43,21 +43,22 @@ export class FileWriter {
       const line = lines[i];
       const isLastLine = i === lines.length - 1;
 
-      if (!line.isEmpty()) {
-        if (line.isComment()) {
-          valueToInsert += transformer.transformComment(line.getComment());
-        } else if (line.isPlural()) {
-          if (!plurals[line.key]) {
-            plurals[line.key] = [];
-          }
-          plurals[line.key].push(line);
-        } else {
-          valueToInsert += transformer.transformKeyValue(line.key, line.value);
+      if (line.isEmpty()) {
+        continue;
+      }
+
+      if (line.isComment()) {
+        valueToInsert += transformer.transformComment(line.getComment());
+      } else if (line.isPlural()) {
+        if (!plurals[line.key]) {
+          plurals[line.key] = [];
         }
+        plurals[line.key].push(line);
+      } else {
+        valueToInsert += transformer.transformKeyValue(line.key, line.value);
       }
 
       if (
-        line.key !== "" &&
         !line.isPlural() &&
         (!isLastLine || Object.keys(plurals).length > 0)
       ) {

@@ -26,10 +26,28 @@ describe("Line.getComment", () => {
 });
 
 describe("Line.isEmpty", () => {
-  const line1 = new Line(null, null);
+  it("returns true if key is missing", () => {
+    const line = new Line(null, 'Translation with missing key');
+  
+    expect(line.isEmpty()).toEqual(true);
+    expect(line.isComment()).toEqual(false);
 
-  expect(line1.isEmpty()).toEqual(true);
-  expect(line1.isComment()).toEqual(false);
+  });
+
+  it("returns true if translation is missing", () => {
+    const line = new Line('missing.translation.key', null);
+  
+    expect(line.isEmpty()).toEqual(true);
+    expect(line.isComment()).toEqual(false);
+
+  });
+
+  it("returns true if both key and translation are missing", () => {
+    const line = new Line(null, null);
+
+    expect(line.isEmpty()).toEqual(true);
+    expect(line.isComment()).toEqual(false);
+  });
 });
 
 describe("Line", () => {

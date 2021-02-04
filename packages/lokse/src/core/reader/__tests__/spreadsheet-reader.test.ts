@@ -122,7 +122,7 @@ describe("SpreadsheetReader", () => {
       });
     });
 
-    it("should omit sheet in map lines when extracting from any fail", async () => {
+    it("should omit sheet in map lines when extracting fail from any reason", async () => {
       expect.assertions(4);
 
       const sheetsList = [
