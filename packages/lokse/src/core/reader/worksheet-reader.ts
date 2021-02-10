@@ -1,5 +1,6 @@
 import { all } from "bluebird";
 import { warn } from "@oclif/errors";
+import { isPlainObject } from "lodash";
 import {
   GoogleSpreadsheet,
   GoogleSpreadsheetWorksheet,
@@ -7,17 +8,58 @@ import {
 import { forceArray, isEqualCaseInsensitive } from "../../utils";
 import Worksheet from "./worksheet";
 
-declare type SheetIndexOrTitle = number | string;
+type SheetTitle = string;
 
-export declare type SheetsFilter = string | SheetIndexOrTitle[];
+type SheetIndexOrTitle = number | SheetTitle;
+
+interface SheetFilterComplex {
+  include: SheetIndexOrTitle[];
+  exclude: SheetIndexOrTitle[];
+}
+
+export type SheetsFilter =
+  | SheetTitle
+  | SheetIndexOrTitle[]
+  | {
+      include?: string | SheetIndexOrTitle[];
+      exclude?: string | SheetIndexOrTitle[];
+    };
 
 class WorksheetReader {
   static ALL_SHEETS_FILTER = "*";
 
-  public filter: SheetsFilter;
+  public filter: SheetFilterComplex;
 
   constructor(filter?: SheetsFilter | null) {
-    this.filter = filter || WorksheetReader.ALL_SHEETS_FILTER;
+    this.filter = WorksheetReader.normalizeFilter(filter);
+  }
+
+  static normalizeFilter(filter?: SheetsFilter | null): SheetFilterComplex {
+    if (!filter || filter === WorksheetReader.ALL_SHEETS_FILTER) {
+      return {
+        include: [WorksheetReader.ALL_SHEETS_FILTER],
+        exclude: [],
+      };
+    }
+
+    if (typeof filter === "string" || Array.isArray(filter)) {
+      return {
+        include: forceArray(filter),
+        exclude: [],
+      };
+    }
+
+    if (isPlainObject(filter)) {
+      return {
+        include: forceArray(
+          filter.include ?? WorksheetReader.ALL_SHEETS_FILTER
+        ),
+        exclude: forceArray(filter.exclude ?? []),
+      };
+    }
+
+    // TODO: better error
+    throw new Error("unknown filter type");
   }
 
   static isValidFilter(filter: any): filter is SheetsFilter {
@@ -26,25 +68,37 @@ class WorksheetReader {
     );
   }
 
-  shouldUseWorksheet(worksheet: GoogleSpreadsheetWorksheet) {
-    if (this.filter === WorksheetReader.ALL_SHEETS_FILTER) {
-      return true;
-    }
+  static isSheetInTheList(
+    worksheet: GoogleSpreadsheetWorksheet,
+    list: SheetIndexOrTitle[]
+  ) {
+    return list.some((sheetFilter: string | number) => {
+      if (sheetFilter === WorksheetReader.ALL_SHEETS_FILTER) {
+        return true;
+      }
 
-    const filtersList = forceArray<string | number>(this.filter);
-
-    return filtersList.some((sheetFilter: string | number) => {
       if (typeof sheetFilter === "number" && worksheet.index === sheetFilter) {
         return true;
       }
+
       if (
         typeof sheetFilter === "string" &&
         isEqualCaseInsensitive(worksheet.title, sheetFilter)
       ) {
         return true;
       }
+
       return false;
     });
+  }
+
+  shouldUseWorksheet(worksheet: GoogleSpreadsheetWorksheet): boolean {
+    const { include, exclude } = this.filter;
+
+    const isIncluded = WorksheetReader.isSheetInTheList(worksheet, include);
+    const isExcluded = WorksheetReader.isSheetInTheList(worksheet, exclude);
+
+    return isIncluded && !isExcluded;
   }
 
   async loadSheet(worksheet: GoogleSpreadsheetWorksheet) {
@@ -61,11 +115,17 @@ class WorksheetReader {
     if (worksheets.length === 0) {
       let message = `Couldn't find any sheets`;
 
-      if (this.filter !== WorksheetReader.ALL_SHEETS_FILTER) {
-        const existingSheets = Object.keys(spreadsheet.sheetsByTitle);
+      const existingSheets = Object.keys(spreadsheet.sheetsByTitle);
+      const { include, exclude } = this.filter;
 
-        message += ` that match the filter ${this.filter.toString()}. Existing sheets are ${existingSheets}`;
-      }
+      const filterStringified = [
+        include.length > 0 && `include: ${include.toString()}`,
+        exclude.length > 0 && `exclude: ${exclude.toString()}`,
+      ]
+        .filter(Boolean)
+        .join(", ");
+
+      message += ` that match the filter ${filterStringified}. Existing sheets are ${existingSheets}`;
 
       warn(`${message}. `);
     }
