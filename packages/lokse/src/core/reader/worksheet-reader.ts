@@ -8,6 +8,16 @@ import {
 import { forceArray, isEqualCaseInsensitive } from "../../utils";
 import Worksheet from "./worksheet";
 
+export class InvalidFilter extends Error {
+  constructor(filter: any) {
+    super(
+      `💥 Invalid sheets filter provided: ${JSON.stringify(
+        filter
+      )}. Look at the supported filter format reference.`
+    );
+  }
+}
+
 type SheetTitle = string;
 
 type SheetIndexOrTitle = number | SheetTitle;
@@ -58,14 +68,7 @@ class WorksheetReader {
       };
     }
 
-    // TODO: better error
-    throw new Error("unknown filter type");
-  }
-
-  static isValidFilter(filter: any): filter is SheetsFilter {
-    return forceArray(filter).every(
-      (f) => typeof f === "string" || typeof f === "number"
-    );
+    throw new InvalidFilter(filter);
   }
 
   static isSheetInTheList(
