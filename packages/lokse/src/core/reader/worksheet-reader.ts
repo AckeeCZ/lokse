@@ -9,12 +9,15 @@ import { forceArray, isEqualCaseInsensitive } from "../../utils";
 import Worksheet from "./worksheet";
 
 export class InvalidFilter extends Error {
+  public filterStringified: string;
+
   constructor(filter: any) {
+    const filterStringified = JSON.stringify(filter);
     super(
-      `💥 Invalid sheets filter provided: ${JSON.stringify(
-        filter
-      )}. Look at the supported filter format reference.`
+      `💥 Invalid sheets filter provided: ${filterStringified}. Look at the supported filter format reference.`
     );
+
+    this.filterStringified = filterStringified;
   }
 }
 

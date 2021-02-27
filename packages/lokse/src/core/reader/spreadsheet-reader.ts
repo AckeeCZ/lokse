@@ -3,7 +3,7 @@ import { CLIError, warn } from "@oclif/errors";
 
 import Line from "../line";
 import { MissingAuthError } from "../errors";
-import WorksheetReader, { SheetsFilter } from "./worksheet-reader";
+import WorksheetReader from "./worksheet-reader";
 import Worksheet from "./worksheet";
 
 export declare type WorksheetLinesByTitle = {
@@ -17,9 +17,9 @@ export class SpreadsheetReader {
 
   private worksheets: Worksheet[] | null;
 
-  constructor(spreadsheetId: string, sheetsFilter?: SheetsFilter | null) {
+  constructor(spreadsheetId: string, sheetsReader: WorksheetReader) {
     this.spreadsheet = new GoogleSpreadsheet(spreadsheetId);
-    this.sheetsReader = new WorksheetReader(sheetsFilter);
+    this.sheetsReader = sheetsReader;
 
     this.worksheets = null;
   }

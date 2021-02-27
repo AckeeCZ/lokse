@@ -8,7 +8,11 @@ import * as flat from "array.prototype.flat";
 import { NAME } from "../constants";
 import Base from "../base";
 import { OutputFormat } from "../constants";
-import Reader, { WorksheetReader, WorksheetLinesByTitle } from "../core/reader";
+import Reader, {
+  WorksheetReader,
+  WorksheetLinesByTitle,
+  InvalidFilter,
+} from "../core/reader";
 import { transformersByFormat } from "../core/transformer";
 import { FileWriter } from "../core/writer";
 import Line from "../core/line";
@@ -148,15 +152,21 @@ class Update extends Base {
       );
     }
 
-    if (sheets !== undefined && !WorksheetReader.isValidFilter(sheets)) {
-      throw new IncorrectFlagValue(
-        `🤷‍♂️ Sheets filter have to be string name or array of names, but ${sheets} given`
-      );
+    let worksheetReader;
+
+    try {
+      worksheetReader = new WorksheetReader(sheets);
+    } catch (error) {
+      if (error instanceof InvalidFilter) {
+        throw new IncorrectFlagValue(error.message);
+      } else {
+        throw error;
+      }
     }
 
     const outputTransformer = transformersByFormat[format];
 
-    const reader = new Reader(sheetId, sheets);
+    const reader = new Reader(sheetId, worksheetReader);
     const writer = new FileWriter();
 
     const outputDir = path.resolve(process.cwd(), dir);
