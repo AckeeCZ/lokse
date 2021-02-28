@@ -1,5 +1,4 @@
-lokse
-===
+# lokse
 
 A tool for efficient usage of translations stored in google spreadsheet
 
@@ -8,14 +7,15 @@ A tool for efficient usage of translations stored in google spreadsheet
 [![Downloads/week](https://img.shields.io/npm/dw/lokse.svg)](https://npmjs.org/package/lokse)
 [![License](https://img.shields.io/npm/l/lokse.svg)](https://github.com/AckeeCZ/lokse/blob/master/package.json)
 
-
-* [Usage](#-usage)
-* [Authentication](#-authentication)
-* [Configuration](#-configuration)
-* [Commands](#-commands)
+- [Usage](#-usage)
+- [Authentication](#-authentication)
+- [Configuration](#-configuration)
+- [Commands](#-commands)
 
 ## 🚀 Usage
+
 <!-- usage -->
+
 ```sh-session
 $ npm install -g lokse
 $ lokse COMMAND
@@ -27,15 +27,17 @@ USAGE
   $ lokse COMMAND
 ...
 ```
+
 <!-- usagestop -->
-## 🔑 Authentication 
+
+## 🔑 Authentication
 
 The last version of Google Spreadsheets API requires us to be authenticated to allow fetching spreadsheet data.
 
 There are two options for authentication: Service Account or API key. For each of these options we have to define some values as environment variables.
 
 ### Environment variables
- 
+
 We have practically two ways of how to define environment variables containing API key or Service Account credentials
 
 Use it before the command like
@@ -44,7 +46,7 @@ Use it before the command like
 $ LOKSE_SERVICE_ACCOUNT_EMAIL=this_is_account_email LOKSE_PRIVATE_KEY=this_is_the_private_key lokse update
 ```
 
-or use a more flexible and handy way of keeping variables inside the `.env.local` file. Create the file if you don't have it yet  and put your variables into it like
+or use a more flexible and handy way of keeping variables inside the `.env.local` file. Create the file if you don't have it yet and put your variables into it like
 
 ```
 LOKSE_SERVICE_ACCOUNT_EMAIL=this_is_account_email
@@ -53,16 +55,15 @@ LOKSE_PRIVATE_KEY=this_is_the_private_key
 
 then you'll be able to run
 
-```sh-session 
+```sh-session
 $ lokse update
 ```
 
 > For the sake of security reasons **Never check your API keys / secrets into version control**. That means you should **not forget to add `.env.local` into the `.gitignore`**.
 
-
 ### Service Account
 
-Currently the best option of authentication is to create a Service account (if you don't have any, follow [the instructions here](https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication?id=service-account)) and then setup at least read permissions for your account in the spreadsheet. 
+Currently the best option of authentication is to create a Service account (if you don't have any, follow [the instructions here](https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication?id=service-account)) and then setup at least read permissions for your account in the spreadsheet.
 
 Since every Service account contains email adress just click the "Share" button at top right corner of the spreadsheet and add your Service account email there.
 
@@ -75,10 +76,9 @@ Once you have the Service account created, you should have its client email and 
 
 Take these two values, put them into `LOKSE_SERVICE_ACCOUNT_EMAIL` and `LOKSE_PRIVATE_KEY` variables using one of two ways [described above](#environment-variables) and there you go, fetching data from spreadsheet should work now.
 
-
 ### API key
 
-For read only access, we're good with usage of API key, if you don't have any, follow [the instructions here](https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication?id=api-key) to create one. 
+For read only access, we're good with usage of API key, if you don't have any, follow [the instructions here](https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication?id=api-key) to create one.
 
 Then define the variable `LOKSE_API_KEY=this_is_your_api_key` and then if the key is valid fetching data should work for you.
 
@@ -86,13 +86,13 @@ Using API key instead of Service account has one important limitation: You sprea
 
 ## 🔧 Configuration
 
-CLI uses [`Cosmiconfig`](https://www.npmjs.com/package/cosmiconfig) which means you can hold the configuration in [any format it supports](https://github.com/davidtheclark/cosmiconfig#cosmiconfig). 
+CLI uses [`Cosmiconfig`](https://www.npmjs.com/package/cosmiconfig) which means you can hold the configuration in [any format it supports](https://github.com/davidtheclark/cosmiconfig#cosmiconfig).
 
 So just create `lokse.config.js`, `.lokserc`, `.lokserc.yml`, `.lokserc.json` or add `lokse` property into the `package.json` and there you can setup on of the options:
 
 ### `sheetId`
 
-Spreadsheet id. When you open your spreadsheet it's this string   
+Spreadsheet id. When you open your spreadsheet it's this string  
 ![](https://raw.githubusercontent.com/AckeeCZ/lokse/master/doc/spreadsheet-id.png)
 
 ### `dir`
@@ -113,18 +113,62 @@ Format of output translation file.
 
 ### `sheets`
 
-Titles of sheets to use. Can be string or array of string. If none provided, all sheets are used.
+Target spreadsheet can contain more than one sheet and default behaviour is to use all of them, but sometimes you need only some of them. This option determines sheets to fetch translations from. You can define sheets you want to use or those you don't want to or combine these definition.
 
+You can choose from various formats to define sheets to use
+
+1. Special value `*` means to include all sheets and is the default behaviour when you omit the `sheets` option.
+  
+    ```json
+    {
+      "sheets": "*",
+    }
+    ```
+
+2. Titles of sheets to use. Can be string or array of strings
+  
+    ```json
+      {
+        "sheets": "Web translations",
+      }
+      // or
+      {
+        "sheets": ["App translations", "Legal docs"]
+      }
+    ```
+
+3. Definition of sheets to include or exclude from the list of all sheets. Can be one of formats mentioned above
+  
+    ```json
+      {
+        "sheets": {
+          "include": ["Web translations", "Legal docs"],
+          "exclude": "CMS translations"
+        }
+      }
+      // or
+      {
+        "sheets": {
+          "exclude": ["CMS translations"]
+        }
+      }
+      // or 
+      {
+        "sheets": {
+          "include": ["Web translations", "Legal docs"],
+        }
+      }
+    ```
 ### `splitTranslations`
 
-Enables splitting translations into multiple files which is useful for lazy loading of some big parts of translations (eg. translation of the whole legal document). 
+Enables splitting translations into multiple files which is useful for lazy loading of some big parts of translations (eg. translation of the whole legal document).
 
 You have two ways of how to split your translations:
 
-* **Split by sheets - `splitTranslations: true`** - each sheet means one translations file and name of file is determined by sheet title. Given 3 sheets in yout spreadsheet named "App translations", "Legal docs", "Landing Page" the result will be 3 files named `app-translations.cs.json`, `legal-docs.cs.json`, `landing-page.cs.json` (of course the language and format depends on your settings).  
+- **Split by sheets - `splitTranslations: true`** - each sheet means one translations file and name of file is determined by sheet title. Given 3 sheets in yout spreadsheet named "App translations", "Legal docs", "Landing Page" the result will be 3 files named `app-translations.cs.json`, `legal-docs.cs.json`, `landing-page.cs.json` (of course the language and format depends on your settings).
 
-* **Split by domains - `splitTranslations: string[]`** - this configuration expects an array of domain names. Domain is a first part of your translation id, given translation id `news.mostRead.error.text` the domain is `news`. The domain name determines also the filename, `news.cs.json` in our example.  
-Translations that starts with domain `news.` will be written into the `news.cs.json`, other translations that does not belong to any other group will be saved into general translations in file `cs.json`.
+- **Split by domains - `splitTranslations: string[]`** - this configuration expects an array of domain names. Domain is a first part of your translation id, given translation id `news.mostRead.error.text` the domain is `news`. The domain name determines also the filename, `news.cs.json` in our example.  
+  Translations that starts with domain `news.` will be written into the `news.cs.json`, other translations that does not belong to any other group will be saved into general translations in file `cs.json`.
 
 The `splitTranslations` option can be provided only through configuration not inline CLI parameter.
 
@@ -136,11 +180,7 @@ The `splitTranslations` option can be provided only through configuration not in
 {
   "sheetId": "1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk",
   "dir": "locales",
-  "languages": [
-    "cs",
-    "en",
-    "fr"
-  ],
+  "languages": ["cs", "en", "fr"],
   "column": "key_web",
   "format": "json",
   "sheets": ["App translations", "Legal docs"],
@@ -148,11 +188,13 @@ The `splitTranslations` option can be provided only through configuration not in
 }
 ```
 
-## 🕹 Commands 
+## 🕹 Commands
+
 <!-- commands -->
-* [`lokse help [COMMAND]`](#lokse-help-command)
-* [`lokse open`](#lokse-open)
-* [`lokse update`](#lokse-update)
+
+- [`lokse help [COMMAND]`](#lokse-help-command)
+- [`lokse open`](#lokse-open)
+- [`lokse update`](#lokse-update)
 
 ## `lokse help [COMMAND]`
 
