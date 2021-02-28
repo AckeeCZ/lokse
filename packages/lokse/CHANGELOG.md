@@ -1,5 +1,16 @@
 # Changelog
 
+<a name="1.4.1"></a>
+## 1.4.1 (2021-02-28)
+
+### Changed
+
+- ⬆️ Upgrade yargs-parser, mem n&amp; npm-registry-fetch [[ac9e1e4](https://github.com/AckeeCZ/lokse/commit/ac9e1e44022d6e4e62ccd8ee79996e8ff9c90674)]
+- ⬆️ Make general upgrade of lokse package deps [[0f97037](https://github.com/AckeeCZ/lokse/commit/0f970377db32cdb88af931bbefcf6932e13d47ea)]
+- ⬆️ Bump node-notifier from 8.0.0 to 8.0.1 [[0afd2c9](https://github.com/AckeeCZ/lokse/commit/0afd2c954bb96812ee951eeba8020dffaedc9679)]
+- ⬆️ Bump ini from 1.3.5 to 1.3.8 [[fbc4309](https://github.com/AckeeCZ/lokse/commit/fbc43098d65f9284a027c5becdb0f7691680413b)]
+
+
 <a name="1.4.0"></a>
 ## 1.4.0 (2021-02-04)
 

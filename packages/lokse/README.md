@@ -21,7 +21,7 @@ $ npm install -g lokse
 $ lokse COMMAND
 running command...
 $ lokse (-v|--version|version)
-lokse/1.4.0 darwin-x64 node-v12.17.0
+lokse/1.4.1 darwin-x64 node-v12.21.0
 $ lokse --help [COMMAND]
 USAGE
   $ lokse COMMAND
@@ -169,7 +169,7 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
 ## `lokse open`
 
@@ -187,7 +187,7 @@ EXAMPLE
   $ lokse open -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk
 ```
 
-_See code: [src/commands/open.ts](https://github.com/AckeeCZ/lokse/blob/v1.4.0/src/commands/open.ts)_
+_See code: [src/commands/open.ts](https://github.com/AckeeCZ/lokse/blob/v1.4.1/src/commands/open.ts)_
 
 ## `lokse update`
 
@@ -215,5 +215,5 @@ EXAMPLES
   $ lokse update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web
 ```
 
-_See code: [src/commands/update.ts](https://github.com/AckeeCZ/lokse/blob/v1.4.0/src/commands/update.ts)_
+_See code: [src/commands/update.ts](https://github.com/AckeeCZ/lokse/blob/v1.4.1/src/commands/update.ts)_
 <!-- commandsstop -->
