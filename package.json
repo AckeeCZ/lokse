@@ -26,5 +26,10 @@
     "gitmoji-changelog": "^2.1.0",
     "jest": "^26.4.2",
     "ts-jest": "^26.3.0"
+  },
+  "resolutions": {
+    "yargs-parser": "<=13.1.2",
+    "mem": "<=4",
+    "npm-registry-fetch": "<=4"
   }
 }
