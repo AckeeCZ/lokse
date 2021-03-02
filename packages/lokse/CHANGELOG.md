@@ -1,5 +1,18 @@
 # Changelog
 
+<a name="1.5.0"></a>
+## 1.5.0 (2021-03-02)
+
+### Added
+
+- ✨ Add support for exclude filter into the worksheet reader [[aaaa31d](https://github.com/AckeeCZ/lokse/commit/aaaa31dd1ba782b43fd060c5d06cc51a130362bf)]
+
+### Changed
+
+- 🔧 Turn off diagnostics in lokse tests [[8ab49fe](https://github.com/AckeeCZ/lokse/commit/8ab49fecaecfca8bc55a8caa8568fb8f2d2ae265)]
+- ♻️ Inject worksheet reader instance into spreadsheet reader [[36b7c93](https://github.com/AckeeCZ/lokse/commit/36b7c938664d79bdf7011c9d92458730c6400377)]
+
+
 <a name="1.4.1"></a>
 ## 1.4.1 (2021-02-28)
 

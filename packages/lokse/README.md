@@ -15,19 +15,17 @@ A tool for efficient usage of translations stored in google spreadsheet
 ## 🚀 Usage
 
 <!-- usage -->
-
 ```sh-session
 $ npm install -g lokse
 $ lokse COMMAND
 running command...
 $ lokse (-v|--version|version)
-lokse/1.4.1 darwin-x64 node-v12.21.0
+lokse/1.5.0 darwin-x64 node-v12.21.0
 $ lokse --help [COMMAND]
 USAGE
   $ lokse COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 ## 🔑 Authentication
@@ -191,10 +189,9 @@ The `splitTranslations` option can be provided only through configuration not in
 ## 🕹 Commands
 
 <!-- commands -->
-
-- [`lokse help [COMMAND]`](#lokse-help-command)
-- [`lokse open`](#lokse-open)
-- [`lokse update`](#lokse-update)
+* [`lokse help [COMMAND]`](#lokse-help-command)
+* [`lokse open`](#lokse-open)
+* [`lokse update`](#lokse-update)
 
 ## `lokse help [COMMAND]`
 
@@ -229,7 +226,7 @@ EXAMPLE
   $ lokse open -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk
 ```
 
-_See code: [src/commands/open.ts](https://github.com/AckeeCZ/lokse/blob/v1.4.1/src/commands/open.ts)_
+_See code: [src/commands/open.ts](https://github.com/AckeeCZ/lokse/blob/v1.5.0/src/commands/open.ts)_
 
 ## `lokse update`
 
@@ -257,5 +254,5 @@ EXAMPLES
   $ lokse update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web
 ```
 
-_See code: [src/commands/update.ts](https://github.com/AckeeCZ/lokse/blob/v1.4.1/src/commands/update.ts)_
+_See code: [src/commands/update.ts](https://github.com/AckeeCZ/lokse/blob/v1.5.0/src/commands/update.ts)_
 <!-- commandsstop -->
