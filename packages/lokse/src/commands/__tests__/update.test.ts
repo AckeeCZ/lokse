@@ -4,6 +4,9 @@ import * as dedent from "dedent";
 import { when } from "jest-when";
 
 import Reader from "../../core/reader/spreadsheet-reader";
+import WorksheetReader, {
+  InvalidFilterError,
+} from "../../core/reader/worksheet-reader";
 import { FileWriter } from "../../core/writer";
 import { OutputFormat } from "../../constants";
 import { noExitCliInvariant } from "../../utils";
@@ -39,6 +42,14 @@ ReaderMock.mockReturnValue({
   read: mockRead,
 });
 
+// Worksheet reader mock
+jest.mock("../../core/reader/worksheet-reader");
+const mockWorksheetRead = jest.fn();
+const WorksheetReaderMock = (WorksheetReader as any) as jest.Mock;
+WorksheetReaderMock.mockReturnValue({
+  read: mockWorksheetRead,
+});
+
 const outputFormats = Object.values(OutputFormat).join(", ");
 
 describe("update command", () => {
@@ -63,6 +74,7 @@ describe("update command", () => {
     /* eslint-disable no-console */
     run() {
       ReaderMock.mockClear();
+      WorksheetReaderMock.mockClear();
       mockRead.mockClear().mockReturnValue(mockSheetLines);
       FileWriterMock.mockClear();
       mockWrite.mockClear();
@@ -154,68 +166,152 @@ describe("update command", () => {
       expect(ReaderMock.mock.instances[0][1]).toBeUndefined();
     });
 
-  test
-    .setupMocks()
-    .command(["update", ...Object.values(params), "--sheets=Main translations"])
-    .it("uses filter when only one name supplied", () => {
-      expect(ReaderMock.mock.instances).toHaveLength(1);
-      expect(ReaderMock.mock.calls[0][1]).toEqual(["Main translations"]);
-    });
+  describe("Sheets filter", () => {
+    test
+      .setupMocks()
+      .command([
+        "update",
+        ...Object.values(params),
+        "--sheets=Main translations",
+      ])
+      .it("uses filter when only one name supplied", () => {
+        expect(WorksheetReaderMock.mock.instances).toHaveLength(1);
+        expect(WorksheetReaderMock.mock.calls[0][0]).toEqual([
+          "Main translations",
+        ]);
+        expect(ReaderMock).toHaveBeenCalled();
+      });
 
-  test
-    .setupMocks()
-    .command([
-      "update",
-      ...Object.values(params),
-      "--sheets=Main translations,Secondary translations",
-    ])
-    .it("parses and uses filter when list of names supplied", () => {
-      expect(ReaderMock.mock.instances).toHaveLength(1);
-      expect(ReaderMock.mock.calls[0][1]).toEqual([
-        "Main translations",
-        "Secondary translations",
-      ]);
-    });
+    test
+      .setupMocks()
+      .command([
+        "update",
+        ...Object.values(params),
+        "--sheets=Main translations,Secondary translations",
+      ])
+      .it("parses and uses filter when list of names supplied", () => {
+        expect(WorksheetReaderMock.mock.instances).toHaveLength(1);
+        expect(WorksheetReaderMock.mock.calls[0][0]).toEqual([
+          "Main translations",
+          "Secondary translations",
+        ]);
+        expect(ReaderMock).toHaveBeenCalled();
+      });
 
-  test
-    .setupMocks()
-    .do(() => explorerMock.search.mockReturnValue({ config: { sheets: true } }))
-    .command(["update", ...Object.values(params)])
-    .catch((error) => {
-      expect(error.message).toEqual(
-        `🤷‍♂️ Sheets filter have to be string name or array of names, but ${true} given`
+    test
+      .setupMocks()
+      .do(() => {
+        explorerMock.search.mockReturnValue({ config: { sheets: true } });
+
+        WorksheetReaderMock.mockImplementationOnce(() => {
+          throw new InvalidFilterError(true);
+        });
+      })
+      .command(["update", ...Object.values(params)])
+      .catch((error) => {
+        expect(error).not.toBeFalsy();
+        expect(WorksheetReaderMock).toHaveBeenCalled();
+        expect(WorksheetReaderMock.mock.calls[0][0]).toEqual(true);
+        expect(ReaderMock).not.toHaveBeenCalled();
+      })
+      .it("throws when filter has invalid format");
+
+    test
+      .setupMocks()
+      .do(() =>
+        explorerMock.search.mockReturnValue({
+          config: { sheets: "Secondary translations" },
+        })
+      )
+      .command(["update", ...Object.values(params)])
+      .it("uses string filter supplied through config", () => {
+        expect(WorksheetReaderMock.mock.instances).toHaveLength(1);
+        expect(WorksheetReaderMock.mock.calls[0][0]).toEqual(
+          "Secondary translations"
+        );
+        expect(ReaderMock).toHaveBeenCalled();
+      });
+
+    test
+      .setupMocks()
+      .do(() =>
+        explorerMock.search.mockReturnValue({
+          config: { sheets: ["Main translations", "Secondary translations"] },
+        })
+      )
+      .command(["update", ...Object.values(params)])
+      .it("uses names list filter supplied through config", () => {
+        expect(WorksheetReaderMock.mock.instances).toHaveLength(1);
+        expect(WorksheetReaderMock.mock.calls[0][0]).toEqual([
+          "Main translations",
+          "Secondary translations",
+        ]);
+        expect(ReaderMock).toHaveBeenCalled();
+      });
+
+    test
+      .setupMocks()
+      .do(() =>
+        explorerMock.search.mockReturnValue({
+          config: {
+            sheets: {
+              include: ["Main translations", "Other translations"],
+            },
+          },
+        })
+      )
+      .command(["update", ...Object.values(params)])
+      .it("uses include only filter supplied through config", () => {
+        expect(WorksheetReaderMock.mock.instances).toHaveLength(1);
+        expect(WorksheetReaderMock.mock.calls[0][0]).toEqual({
+          include: ["Main translations", "Other translations"],
+        });
+        expect(ReaderMock).toHaveBeenCalled();
+      });
+
+    test
+      .setupMocks()
+      .do(() =>
+        explorerMock.search.mockReturnValue({
+          config: {
+            sheets: {
+              exclude: ["Main translations", "Other translations"],
+            },
+          },
+        })
+      )
+      .command(["update", ...Object.values(params)])
+      .it("uses exclude only filter supplied through config", () => {
+        expect(WorksheetReaderMock.mock.instances).toHaveLength(1);
+        expect(WorksheetReaderMock.mock.calls[0][0]).toEqual({
+          exclude: ["Main translations", "Other translations"],
+        });
+      });
+
+    test
+      .setupMocks()
+      .do(() =>
+        explorerMock.search.mockReturnValue({
+          config: {
+            sheets: {
+              include: "Main translations",
+              exclude: ["Other translations", "Non web translations"],
+            },
+          },
+        })
+      )
+      .command(["update", ...Object.values(params)])
+      .it(
+        "uses mixed include and exclude filter supplied through config",
+        () => {
+          expect(WorksheetReaderMock.mock.instances).toHaveLength(1);
+          expect(WorksheetReaderMock.mock.calls[0][0]).toEqual({
+            include: "Main translations",
+            exclude: ["Other translations", "Non web translations"],
+          });
+        }
       );
-    })
-    .it("throws when filter is not a string or list of string");
-
-  test
-    .setupMocks()
-    .do(() =>
-      explorerMock.search.mockReturnValue({
-        config: { sheets: "Secondary translations" },
-      })
-    )
-    .command(["update", ...Object.values(params)])
-    .it("uses string filter supplied through config", () => {
-      expect(ReaderMock.mock.instances).toHaveLength(1);
-      expect(ReaderMock.mock.calls[0][1]).toEqual("Secondary translations");
-    });
-
-  test
-    .setupMocks()
-    .do(() =>
-      explorerMock.search.mockReturnValue({
-        config: { sheets: ["Main translations", "Secondary translations"] },
-      })
-    )
-    .command(["update", ...Object.values(params)])
-    .it("uses names list filter supplied through config", () => {
-      expect(ReaderMock.mock.instances).toHaveLength(1);
-      expect(ReaderMock.mock.calls[0][1]).toEqual([
-        "Main translations",
-        "Secondary translations",
-      ]);
-    });
+  });
 
   test
     .setupMocks()
@@ -696,7 +792,7 @@ describe("update command", () => {
             mockSheetLines2,
             expect.anything()
           );
-          
+
           expect(mockOraInstance.succeed).toHaveBeenNthCalledWith(
             2,
             dedent`All ${languages[1]} translations saved into ${translationsDir}

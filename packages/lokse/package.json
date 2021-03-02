@@ -24,6 +24,7 @@
     "dedent": "^0.7.0",
     "dotenv-flow": "^3.2.0",
     "google-spreadsheet": "^3.0.13",
+    "lodash": "^4.17.20",
     "mkdirp": "^1.0.4",
     "open": "^7.2.1",
     "ora": "^5.0.0",
