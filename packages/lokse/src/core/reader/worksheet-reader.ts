@@ -8,7 +8,7 @@ import {
 import { forceArray, isEqualCaseInsensitive } from "../../utils";
 import Worksheet from "./worksheet";
 
-export class InvalidFilter extends Error {
+export class InvalidFilterError extends Error {
   public filterStringified: string;
 
   constructor(filter: any) {
@@ -71,7 +71,7 @@ class WorksheetReader {
       };
     }
 
-    throw new InvalidFilter(filter);
+    throw new InvalidFilterError(filter);
   }
 
   static isSheetInTheList(

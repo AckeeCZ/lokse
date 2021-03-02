@@ -5,7 +5,7 @@ import { when } from "jest-when";
 
 import Reader from "../../core/reader/spreadsheet-reader";
 import WorksheetReader, {
-  InvalidFilter,
+  InvalidFilterError,
 } from "../../core/reader/worksheet-reader";
 import { FileWriter } from "../../core/writer";
 import { OutputFormat } from "../../constants";
@@ -204,7 +204,7 @@ describe("update command", () => {
         explorerMock.search.mockReturnValue({ config: { sheets: true } });
 
         WorksheetReaderMock.mockImplementationOnce(() => {
-          throw new InvalidFilter(true);
+          throw new InvalidFilterError(true);
         });
       })
       .command(["update", ...Object.values(params)])

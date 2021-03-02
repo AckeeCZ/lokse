@@ -11,7 +11,7 @@ import { OutputFormat } from "../constants";
 import Reader, {
   WorksheetReader,
   WorksheetLinesByTitle,
-  InvalidFilter,
+  InvalidFilterError,
 } from "../core/reader";
 import { transformersByFormat } from "../core/transformer";
 import { FileWriter } from "../core/writer";
@@ -157,7 +157,7 @@ class Update extends Base {
     try {
       worksheetReader = new WorksheetReader(sheets);
     } catch (error) {
-      if (error instanceof InvalidFilter) {
+      if (error instanceof InvalidFilterError) {
         throw new IncorrectFlagValue(error.message);
       } else {
         throw error;

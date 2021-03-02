@@ -1,5 +1,5 @@
 import { GoogleSpreadsheetWorksheet } from "google-spreadsheet";
-import WorksheetReader, { InvalidFilter } from "../worksheet-reader";
+import WorksheetReader, { InvalidFilterError } from "../worksheet-reader";
 
 const createWorksheet = (title: string, index = 1) => ({
   title,
@@ -73,9 +73,9 @@ describe("WorksheetReader - filter normalization", () => {
   });
 
   it("throws when unsupported filter type provided", () => {
-    expect(() => new WorksheetReader(true)).toThrowError(InvalidFilter);
-    expect(() => new WorksheetReader(3)).toThrowError(InvalidFilter);
-    expect(() => new WorksheetReader(new Date)).toThrowError(InvalidFilter);
+    expect(() => new WorksheetReader(true)).toThrowError(InvalidFilterError);
+    expect(() => new WorksheetReader(3)).toThrowError(InvalidFilterError);
+    expect(() => new WorksheetReader(new Date)).toThrowError(InvalidFilterError);
   });
 });
 
