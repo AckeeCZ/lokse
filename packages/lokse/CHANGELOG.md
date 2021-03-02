@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="1.5.1"></a>
+## 1.5.1 (2021-03-02)
+
+### Changed
+
+- ⬆️ Bumb update-notifier version to v5.1.0 [[08f934a](https://github.com/AckeeCZ/lokse/commit/08f934adb03d979f5f926427441ab9d3b574984d)]
+
+
 <a name="1.5.0"></a>
 ## 1.5.0 (2021-03-02)
 
