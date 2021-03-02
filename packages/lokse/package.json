@@ -31,7 +31,7 @@
     "prettier": "^2.1.2",
     "ts-node": "^9.0.0",
     "tslib": "^1",
-    "update-notifier": "^5.0.0"
+    "update-notifier": "^5.1.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",
