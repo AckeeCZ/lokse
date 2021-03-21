@@ -5,9 +5,11 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "lerna run build",
     "postinstall": "./scripts/fix-gitmoji-changelog-node-preset",
     "lint": "eslint packages/*/src/ --ext .ts --config ./.eslintrc",
-    "prettier": "prettier --write --config ./.prettierrc \"packages/*/(src|test)/**/*.(ts|tsx)\""
+    "prettier": "prettier --write --config ./.prettierrc \"packages/*/(src|test)/**/*.(ts|tsx)\"",
+    "test": "lerna run test"
   },
   "devDependencies": {
     "@types/jest-when": "^2.7.2",
@@ -25,10 +27,11 @@
     "@types/jest": "^26.0.13",
     "gitmoji-changelog": "^2.1.0",
     "jest": "^26.4.2",
+    "lerna": "4",
     "ts-jest": "^26.3.0"
   },
   "resolutions": {
-    "yargs-parser": "<=13.1.2",
+    "yargs-parser": "^20.2.4",
     "mem": "<=4",
     "npm-registry-fetch": "<=4"
   }
