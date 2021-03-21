@@ -4706,7 +4706,7 @@ github-slugger@^1.2.1:
   dependencies:
     emoji-regex ">=6.0.0 <=6.1.1"
 
-gitmoji-changelog@^2.1.0:
+gitmoji-changelog@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/gitmoji-changelog/-/gitmoji-changelog-2.2.0.tgz#1cdc6ef69e96eaafdd310dbd0a3bbb882b2e4ba9"
   integrity sha512-jr+YmOPihMNKv8w9BFCamaaf6MgekGuI2LXpg9VSUPbjI1zs14iy6fd+MX3ShK7+w0aQGUXW31Im+Zm7fYR4mQ==
