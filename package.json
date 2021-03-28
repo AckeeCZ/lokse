@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "lokse",
+  "name": "lokse-ecosystem",
   "workspaces": [
     "example",
     "packages/*"
