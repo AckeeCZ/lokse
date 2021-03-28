@@ -4,5 +4,13 @@
   ],
   "version": "1.5.1",
   "useWorkspaces": true,
-  "npmClient": "yarn"
+  "npmClient": "yarn",
+  "command": {
+    "version": {
+      "allowBranch": "master"
+    },
+    "publish": {
+        "allowBranch": "master"
+    }
+  }
 }

@@ -67,9 +67,8 @@
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "rm -rf lib && yarn build && oclif-dev manifest && oclif-dev readme",
     "test": "jest",
-    "version": "yarn readme && yarn changelog && code --wait CHANGELOG.md && git add README.md CHANGELOG.md",
+    "version": "yarn readme && git add README.md",
     "readme": "oclif-dev readme",
-    "changelog": "gitmoji-changelog",
     "release": "yarn version"
   },
   "types": "lib/index.d.ts"
