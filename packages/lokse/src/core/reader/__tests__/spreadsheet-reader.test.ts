@@ -181,7 +181,9 @@ describe("SpreadsheetReader", () => {
       });
       expect(console.error).toHaveBeenCalledTimes(1);
       expect(console.error).toHaveBeenCalledWith(
-        expect.stringContaining(`🔀 Found two sheets with same title fakeSheet1`)
+        expect.stringContaining(
+          `🔀 Found two sheets with same title fakeSheet1`
+        )
       );
     });
   });

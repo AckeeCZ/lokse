@@ -75,7 +75,9 @@ describe("WorksheetReader - filter normalization", () => {
   it("throws when unsupported filter type provided", () => {
     expect(() => new WorksheetReader(true)).toThrowError(InvalidFilterError);
     expect(() => new WorksheetReader(3)).toThrowError(InvalidFilterError);
-    expect(() => new WorksheetReader(new Date)).toThrowError(InvalidFilterError);
+    expect(() => new WorksheetReader(new Date())).toThrowError(
+      InvalidFilterError
+    );
   });
 });
 
