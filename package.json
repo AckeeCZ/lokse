@@ -9,6 +9,7 @@
     "postinstall": "./scripts/fix-gitmoji-changelog-node-preset",
     "lint": "eslint packages/*/src/ --ext .ts --config ./.eslintrc",
     "prettier": "prettier --write --config ./.prettierrc \"packages/*/(src|test)/**/*.(ts|tsx)\"",
+    "release": "lerna version $1",
     "test": "lerna run test"
   },
   "devDependencies": {
