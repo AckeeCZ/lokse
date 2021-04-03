@@ -11,7 +11,7 @@
     "changelog": "yarn update-gitmoji-config && gitmoji-changelog --preset generic",
     "lint": "eslint packages/*/src/ --ext .ts --config ./.eslintrc",
     "prettier": "prettier --write --config ./.prettierrc \"packages/*/(src|test)/**/*.(ts|tsx)\"",
-    "publish:ci": "lerna publish from-package --yes --no-git-reset",
+    "publish:ci": "lerna publish from-package --yes",
     "release": "lerna version $1",
     "version": "yarn changelog && code --wait CHANGELOG.md && git add CHANGELOG.md .gitmoji-changelogrc",
     "test": "lerna run test",
