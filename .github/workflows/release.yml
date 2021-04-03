@@ -1,0 +1,28 @@
+# https://docs.github.com/en/actions/guides/publishing-nodejs-packages
+# https://futurestud.io/tutorials/github-actions-run-a-workflow-when-creating-a-tag
+
+name: Release
+
+on:
+  push:
+    tags: 
+      - 'v*'
+
+jobs:
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      
+      - name: Install dependencies
+        run: yarn bootstrap
+
+      - name: Publish packages
+        run: yarn publish:ci
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
