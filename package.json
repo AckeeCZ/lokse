@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "bootstrap": "lerna bootstrap --use-workspaces",
     "build": "lerna run build",
     "changelog": "yarn update-gitmoji-config && gitmoji-changelog --preset generic",
     "lint": "eslint packages/*/src/ --ext .ts --config ./.eslintrc",

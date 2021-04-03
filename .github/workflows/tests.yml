@@ -18,7 +18,7 @@ jobs:
       with:
         path: node_modules
         key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
-    - run: yarn install --frozen-lockfile
+    - run: yarn bootstrap
     - run: yarn build
   
   test:
