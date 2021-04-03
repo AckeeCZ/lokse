@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="1.5.2"></a>
+## 1.5.2 (2021-04-03)
+
+### Fixed
+
+- 🐛 Fix casing of line.ts import in writer [[e592808](https://github.com/AckeeCZ/lokse/commit/e5928087185a5b7987262ea927fbc4dc62607dfc)]
+
+
 <a name="1.5.1"></a>
 ## 1.5.1 (2021-03-02)
 
