@@ -4,7 +4,7 @@ import * as path from "path";
 import * as mkdirp from "mkdirp";
 
 import Transformer from "./transformer";
-import Line from "./Line";
+import Line from "./line";
 
 const fs = promisifyAll(require("fs"));
 
