@@ -1,9 +1,19 @@
 .idea/
 locales/
 !locales/locales.txt
+
 node_modules/
 samples/
+tmp/
 
 *.log
-.env.local
+*-debug.log
+*-error.log
 *.bak
+
+.env.local
+
+.nyc_output
+packages/*/dist
+packages/*/lib
+
