@@ -12,5 +12,8 @@
     "publish": {
       "allowBranch": "master"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
