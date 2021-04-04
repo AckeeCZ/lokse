@@ -2,30 +2,27 @@
   "name": "lokse",
   "description": "Tool to efficient usage of translations stored in google spreadsheet",
   "version": "1.5.2",
-  "author": "Lukas Horak",
+  "author": {
+    "name": "Lukas Horak",
+    "email": "horaklukas@centrum.cz"
+  },
   "bin": {
     "lokse": "./bin/run"
   },
   "bugs": "https://github.com/AckeeCZ/lokse/issues",
   "dependencies": {
+    "@lokse/core": "*",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
     "@sindresorhus/slugify": "^1.1.0",
     "@types/array.prototype.flat": "^1.2.1",
-    "@types/bluebird": "^3.5.32",
     "@types/dedent": "^0.7.0",
-    "@types/google-spreadsheet": "^3.0.1",
-    "@types/mkdirp": "^1.0.1",
     "@types/update-notifier": "^5.0.0",
     "array.prototype.flat": "^1.2.4",
-    "bluebird": "^3.7.2",
     "cosmiconfig": "^7.0.0",
     "dedent": "^0.7.0",
     "dotenv-flow": "^3.2.0",
-    "google-spreadsheet": "^3.0.13",
-    "lodash": "^4.17.20",
-    "mkdirp": "^1.0.4",
     "open": "^7.2.1",
     "ora": "^5.0.0",
     "prettier": "^2.1.2",
@@ -66,7 +63,6 @@
     "build": "tsc -b",
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "rm -rf lib && yarn build && oclif-dev manifest && oclif-dev readme",
-    "test": "jest",
     "version": "yarn readme && git add README.md",
     "readme": "oclif-dev readme",
     "release": "yarn version"

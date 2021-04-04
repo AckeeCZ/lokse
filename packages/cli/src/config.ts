@@ -1,6 +1,9 @@
 import { cosmiconfigSync } from "cosmiconfig";
-import { NAME, OutputFormat } from "./constants";
-import { SheetsFilter } from "./core/reader/worksheet-reader";
+import { OutputFormat } from "@lokse/core";
+import type { SheetsFilter } from "@lokse/core";
+
+import { NAME } from "./constants";
+
 // TODO: use async API once custom oclif flags will be asynchronous
 const explorerSync = cosmiconfigSync(NAME);
 

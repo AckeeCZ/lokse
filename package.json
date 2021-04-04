@@ -8,13 +8,14 @@
   "scripts": {
     "bootstrap": "lerna bootstrap --use-workspaces",
     "build": "lerna run build",
+    "clean": "lerna exec --ignore example -- rm -r lib",
     "changelog": "yarn update-gitmoji-config && gitmoji-changelog --preset generic",
     "lint": "eslint packages/*/src/ --ext .ts --config ./.eslintrc",
     "prettier": "prettier --write --config ./.prettierrc \"packages/*/(src|test)/**/*.(ts|tsx)\"",
     "publish:ci": "lerna publish from-package --yes",
     "release": "lerna version $1",
     "version": "yarn changelog && code --wait CHANGELOG.md && git add CHANGELOG.md .gitmoji-changelogrc",
-    "test": "lerna run test",
+    "test": "jest",
     "update-gitmoji-config": "node ./scripts/update-gitmoji-config.js"
   },
   "devDependencies": {

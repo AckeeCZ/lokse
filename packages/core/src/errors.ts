@@ -2,6 +2,8 @@ import { CLIError } from "@oclif/errors";
 import * as dedent from "dedent";
 
 export class MissingAuthError extends CLIError {
+  public name: string;
+
   constructor() {
     super(
       dedent`

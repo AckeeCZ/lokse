@@ -2,7 +2,7 @@ import { EOL } from "os";
 import { Transformer } from "./transformer";
 import * as prettier from "prettier";
 
-import logger from "../../logger";
+import logger from "../logger";
 
 async function format(output: string) {
   const prettierConfig = await prettier.resolveConfigFile();

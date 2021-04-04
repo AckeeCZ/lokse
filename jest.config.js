@@ -1,12 +1,12 @@
 module.exports = {
   testEnvironment: "node",
   moduleFileExtensions: ["ts", "js", "json"],
-  testMatch: ["<rootDir>/src/**/__tests__/**/*.test.ts"],
+  testMatch: ["<rootDir>/packages/*/src/**/__tests__/**/*.test.ts"],
   transform: {
     "\\.ts$": "ts-jest",
   },
   coverageReporters: ["lcov", "text-summary"],
-  collectCoverageFrom: ["src/**/*.ts"],
+  collectCoverageFrom: ["packages/*/src/**/*.ts"],
   coveragePathIgnorePatterns: ["/templates/"],
   coverageThreshold: {
     global: {

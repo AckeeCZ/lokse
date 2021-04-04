@@ -1,4 +1,4 @@
-import { OutputFormat } from "../../constants";
+import { OutputFormat } from "../constants";
 
 import { Transformer } from "./transformer";
 import iOSTransformer from "./ios";

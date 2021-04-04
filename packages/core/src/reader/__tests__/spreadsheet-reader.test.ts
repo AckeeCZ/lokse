@@ -1,5 +1,6 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import SpreadsheetReader from "../spreadsheet-reader";
+import WorksheetReader from "../worksheet-reader";
 import {
   LangColumnNotFound,
   KeyColumnNotFound,
@@ -31,7 +32,10 @@ describe("SpreadsheetReader", () => {
       process.env.LOKSE_SERVICE_ACCOUNT_EMAIL = client_email;
       process.env.LOKSE_PRIVATE_KEY = private_key;
 
-      const reader = new SpreadsheetReader("test-sheet-id", "*");
+      const reader = new SpreadsheetReader(
+        "test-sheet-id",
+        new WorksheetReader("*")
+      );
       await reader.authenticate();
 
       const useServiceAccountAuthMock =
@@ -48,7 +52,10 @@ describe("SpreadsheetReader", () => {
       const dummyApiKey = "dummy-api-key";
       process.env.LOKSE_API_KEY = dummyApiKey;
 
-      const reader = new SpreadsheetReader("test-sheet-id", "*");
+      const reader = new SpreadsheetReader(
+        "test-sheet-id",
+        new WorksheetReader("*")
+      );
       await reader.authenticate();
 
       const useApiKeyMock = GoogleSpreadsheetMock.mock.instances[0].useApiKey;
@@ -60,7 +67,10 @@ describe("SpreadsheetReader", () => {
       expect.assertions(1);
       const expectedError = new MissingAuthError();
 
-      const reader = new SpreadsheetReader("test-sheet-id", "*");
+      const reader = new SpreadsheetReader(
+        "test-sheet-id",
+        new WorksheetReader("*")
+      );
 
       await expect(reader.authenticate()).rejects.toHaveProperty(
         "message",
@@ -112,7 +122,10 @@ describe("SpreadsheetReader", () => {
         makeFakeWorksheet("fakeSheet3", linesSet3),
       ];
 
-      const reader = new SpreadsheetReader("test-sheet-id", "*");
+      const reader = new SpreadsheetReader(
+        "test-sheet-id",
+        new WorksheetReader("*")
+      );
       jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
 
       await expect(reader.read("key", "en-gb")).resolves.toEqual({
@@ -145,7 +158,10 @@ describe("SpreadsheetReader", () => {
         throw mockKeyColError;
       });
 
-      const reader = new SpreadsheetReader("test-sheet-id", "*");
+      const reader = new SpreadsheetReader(
+        "test-sheet-id",
+        new WorksheetReader("*")
+      );
       jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
 
       await expect(reader.read("key", "en-gb")).resolves.toEqual({
@@ -172,7 +188,10 @@ describe("SpreadsheetReader", () => {
         makeFakeWorksheet("fakeSheet1", linesSet3),
       ];
 
-      const reader = new SpreadsheetReader("test-sheet-id", "*");
+      const reader = new SpreadsheetReader(
+        "test-sheet-id",
+        new WorksheetReader("*")
+      );
       jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
 
       await expect(reader.read("key", "en-gb")).resolves.toEqual({

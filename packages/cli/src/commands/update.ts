@@ -4,18 +4,19 @@ import * as ora from "ora";
 import * as slugify from "@sindresorhus/slugify";
 import * as dedent from "dedent";
 import * as flat from "array.prototype.flat";
+import {
+  Reader,
+  OutputFormat,
+  WorksheetReader,
+  InvalidFilterError,
+  transformersByFormat,
+  FileWriter,
+  Line,
+} from "@lokse/core";
+import { WorksheetLinesByTitle } from "@lokse/core";
 
 import { NAME } from "../constants";
 import Base from "../base";
-import { OutputFormat } from "../constants";
-import Reader, {
-  WorksheetReader,
-  WorksheetLinesByTitle,
-  InvalidFilterError,
-} from "../core/reader";
-import { transformersByFormat } from "../core/transformer";
-import { FileWriter } from "../core/writer";
-import Line from "../core/line";
 
 import * as cliFlags from "../flags";
 import { MissingFlagValue, IncorrectFlagValue } from "../flags/errors";

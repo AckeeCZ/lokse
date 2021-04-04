@@ -3,14 +3,17 @@ import { cosmiconfigSync } from "cosmiconfig";
 import * as dedent from "dedent";
 import { when } from "jest-when";
 
-import Reader from "../../core/reader/spreadsheet-reader";
-import WorksheetReader, {
+import {
+  Reader,
+  WorksheetReader,
   InvalidFilterError,
-} from "../../core/reader/worksheet-reader";
-import { FileWriter } from "../../core/writer";
-import { OutputFormat } from "../../constants";
-import { noExitCliInvariant } from "../../utils";
-import jsonTransformer from "../../core/transformer/json";
+  FileWriter,
+  OutputFormat,
+  transformersByFormat,
+} from "@lokse/core";
+import { noExitCliInvariant } from "../../invariants";
+
+const jsonTransformer = transformersByFormat[OutputFormat.JSON];
 
 jest.mock("cosmiconfig");
 const explorerMock = {
@@ -26,8 +29,14 @@ const mockOraInstance = {
 };
 jest.mock("ora", () => jest.fn().mockReturnValue(mockOraInstance));
 
+jest.mock("@lokse/core", () => ({
+  ...jest.requireActual("@lokse/core"),
+  FileWriter: jest.fn(),
+  Reader: jest.fn(),
+  WorksheetReader: jest.fn(),
+}));
+
 // File writer mock
-jest.mock("../../core/writer");
 const mockWrite = jest.fn();
 const FileWriterMock = FileWriter as jest.Mock;
 FileWriterMock.mockReturnValue({
@@ -35,7 +44,6 @@ FileWriterMock.mockReturnValue({
 });
 
 // Spreadsheet reader mock
-jest.mock("../../core/reader/spreadsheet-reader");
 const mockRead = jest.fn();
 const ReaderMock = Reader as jest.Mock;
 ReaderMock.mockReturnValue({
@@ -43,7 +51,6 @@ ReaderMock.mockReturnValue({
 });
 
 // Worksheet reader mock
-jest.mock("../../core/reader/worksheet-reader");
 const mockWorksheetRead = jest.fn();
 const WorksheetReaderMock = (WorksheetReader as any) as jest.Mock;
 WorksheetReaderMock.mockReturnValue({

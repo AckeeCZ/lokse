@@ -8,7 +8,7 @@ import Line from "./line";
 
 const fs = promisifyAll(require("fs"));
 
-export class FileWriter {
+class FileWriter {
   async write(
     filePath: string,
     lines: Line[],

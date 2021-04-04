@@ -5,7 +5,7 @@ import {
   GoogleSpreadsheet,
   GoogleSpreadsheetWorksheet,
 } from "google-spreadsheet";
-import { forceArray, isEqualCaseInsensitive } from "../../utils";
+import { forceArray, isEqualCaseInsensitive } from "../utils";
 import Worksheet from "./worksheet";
 
 export class InvalidFilterError extends Error {

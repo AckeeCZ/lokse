@@ -1,7 +1,7 @@
 import { GoogleSpreadsheetRow } from "google-spreadsheet";
 
 import Line from "../line";
-import { isEqualCaseInsensitive } from "../../utils";
+import { isEqualCaseInsensitive } from "../utils";
 import { KeyColumnNotFound, LangColumnNotFound } from "../errors";
 
 export default class Worksheet {
