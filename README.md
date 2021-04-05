@@ -24,3 +24,8 @@ Maybe it was an inspiration. But the truth is, it's a little pun. The has evolve
 * Authors of `ackee-localize-spreadsheet-sdk` - [Jakub Baierl](https://github.com/baierjak), [Jiří Šmolík](https://github.com/smoliji), Lukáš Kočí
 
 Fork of <a href="https://github.com/xavierha/localize-with-spreadsheet" target="_blank">https://github.com/xavierha/localize-with-spreadsheet</a>
+
+## License
+Lokse is licensed under the MIT License.
+Documentation is licensed under Creative Commons License.
+Created with ♥ by [@horaklukas](https://github.com/horaklukas) and all the great contributors.
