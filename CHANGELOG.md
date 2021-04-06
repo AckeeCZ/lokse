@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="1.6.0"></a>
+## 1.6.0 (2021-04-06)
+
+### Changed
+
+- ♻️ Extract core from cli into standalone package [[24aa5ac](https://github.com/AckeeCZ/lokse/commit/24aa5ac68b863353fceb103356069b46f66e5c03)]
+
+
 <a name="1.5.2"></a>
 ## 1.5.2 (2021-04-03)
 
