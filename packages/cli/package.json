@@ -33,8 +33,7 @@
   "devDependencies": {
     "@oclif/dev-cli": "^1",
     "@oclif/test": "^1",
-    "@types/node": "^10",
-    "typescript": "^3.3"
+    "@types/node": "^10"
   },
   "engines": {
     "node": ">=8.0.0"
