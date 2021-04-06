@@ -11,8 +11,5 @@
       "allowBranch": "master",
       "verifyAccess": false
     }
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }
