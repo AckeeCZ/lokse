@@ -1,7 +1,5 @@
 {
-  "packages": [
-    "packages/*"
-  ],
+  "packages": ["packages/*"],
   "version": "1.6.0",
   "useWorkspaces": true,
   "npmClient": "yarn",
@@ -10,7 +8,8 @@
       "allowBranch": "master"
     },
     "publish": {
-      "allowBranch": "master"
+      "allowBranch": "master",
+      "verifyAccess": false
     }
   },
   "publishConfig": {
