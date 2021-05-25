@@ -21,7 +21,12 @@ const explorerSync = cosmiconfigSync(NAME, {
     `${NAME}.config.cjs`,
   ],
   loaders: {
-    ".ts": typeScriptLoader(),
+    ".ts": typeScriptLoader({
+      compilerOptions: {
+        target: "ES5",
+        module: "Commonjs",
+      },
+    }),
   },
 });
 
