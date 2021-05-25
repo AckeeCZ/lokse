@@ -12,7 +12,7 @@
     "publish": {
       "allowBranch": "master",
       "verifyAccess": false,
-      "dist-tag": "alpha"
+      "distTag": "alpha"
     }
   }
 }
