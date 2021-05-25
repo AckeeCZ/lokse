@@ -22,6 +22,7 @@
     "@types/update-notifier": "^5.0.0",
     "array.prototype.flat": "^1.2.4",
     "cosmiconfig": "^7.0.0",
+    "cosmiconfig-ts-loader": "^0.1.1",
     "dedent": "^0.7.0",
     "dotenv-flow": "^3.2.0",
     "open": "^7.2.1",

@@ -1,5 +1,5 @@
 import { cosmiconfigSync } from "cosmiconfig";
-import typeScriptLoader from "@endemolshinegroup/cosmiconfig-typescript-loader";
+import typeScriptLoader from "cosmiconfig-ts-loader";
 import { OutputFormat } from "@lokse/core";
 import type { SheetsFilter } from "@lokse/core";
 
@@ -21,7 +21,7 @@ const explorerSync = cosmiconfigSync(NAME, {
     `${NAME}.config.cjs`,
   ],
   loaders: {
-    ".ts": typeScriptLoader,
+    ".ts": typeScriptLoader(),
   },
 });
 
