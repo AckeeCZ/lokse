@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="1.7.0-alpha.2"></a>
+## 1.7.0-alpha.2 (2021-05-25)
+
+### Changed
+
+- ♻️ Change typescript loader package [[8ffb124](https://github.com/AckeeCZ/lokse/commit/8ffb124b8c22263e33e045fe9c8a502c053956f8)]
+
+
 <a name="1.7.0-alpha.1"></a>
 ## 1.7.0-alpha.1 (2021-05-25)
 
