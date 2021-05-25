@@ -1,7 +1,7 @@
 {
   "name": "lokse",
   "description": "Tool to efficient usage of translations stored in google spreadsheet",
-  "version": "1.7.0-alpha.0",
+  "version": "1.7.0-alpha.1",
   "author": {
     "name": "Lukas Horak",
     "email": "horaklukas@centrum.cz"
@@ -12,7 +12,7 @@
   "bugs": "https://github.com/AckeeCZ/lokse/issues",
   "dependencies": {
     "@endemolshinegroup/cosmiconfig-typescript-loader": "^3.0.2",
-    "@lokse/core": "^1.7.0-alpha.0",
+    "@lokse/core": "^1.7.0-alpha.1",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",

@@ -1,5 +1,14 @@
 # Changelog
 
+<a name="1.7.0-alpha.1"></a>
+## 1.7.0-alpha.1 (2021-05-25)
+
+### Changed
+
+- 🔧 Change casing of dist-tag config option [[73a4bca](https://github.com/AckeeCZ/lokse/commit/73a4bca40938da4fcf78c0357e14bd256590b379)]
+- ⬆️ Update dependencies in yarn.lock [[59fbd62](https://github.com/AckeeCZ/lokse/commit/59fbd624367dc6c0201aa72aac5ab93b68d40eaf)]
+
+
 <a name="1.7.0-alpha.0"></a>
 ## 1.7.0-alpha.0 (2021-05-25)
 
