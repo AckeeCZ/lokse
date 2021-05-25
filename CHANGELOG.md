@@ -1,5 +1,22 @@
 # Changelog
 
+<a name="1.7.0-alpha.0"></a>
+## 1.7.0-alpha.0 (2021-05-25)
+
+### Added
+
+- ✨ Add support for typescript config [[805d5fa](https://github.com/AckeeCZ/lokse/commit/805d5fa5f0fef6b6c5f1a3cb02b32cd0260d9194)]
+
+### Changed
+
+- 🔧 Move publishConfig configuration to the right place [[b46f856](https://github.com/AckeeCZ/lokse/commit/b46f856419e484f88a73d30c4870f2c106aed73f)]
+- 🔧 Don&#x27;t verify access when publishing with lerna [[d02279b](https://github.com/AckeeCZ/lokse/commit/d02279b5fca6eaf1d53dc27f53c9b1f9890e0cb7)]
+
+### Miscellaneous
+
+- 🙈 Add tsconfig and src folder into npmignore [[53978bf](https://github.com/AckeeCZ/lokse/commit/53978bf4c63eda1249f2fac0661b24b153fd4e90)]
+
+
 <a name="1.6.0"></a>
 ## 1.6.0 (2021-04-06)
 
