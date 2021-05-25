@@ -9,7 +9,8 @@
     },
     "publish": {
       "allowBranch": "master",
-      "verifyAccess": false
+      "verifyAccess": false,
+      "dist-tag": "alpha"
     }
   }
 }
