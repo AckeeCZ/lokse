@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="1.7.0"></a>
+## 1.7.0 (2021-05-25)
+
+### Changed
+
+- 🔧 Remove distTag alpha from lerna config [[55909ca](https://github.com/AckeeCZ/lokse/commit/55909ca0d5908b9c2c64553f65b7987445028662)]
+
+
 <a name="1.7.0-alpha.3"></a>
 ## 1.7.0-alpha.3 (2021-05-25)
 
