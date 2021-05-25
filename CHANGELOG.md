@@ -1,5 +1,16 @@
 # Changelog
 
+<a name="1.7.0-alpha.3"></a>
+## 1.7.0-alpha.3 (2021-05-25)
+
+### Changed
+
+- ⬆️ Update dependencies in yarn.lock [[6851aff](https://github.com/AckeeCZ/lokse/commit/6851affcf5d7d9504926f81753b1a1214bc3fb30)]
+
+### Fixed
+
+- 🐛 Set typescript loader compiler options [[c5e655a](https://github.com/AckeeCZ/lokse/commit/c5e655abe1fc004377a60d092d8d72ebcca8bedc)]
+
 <a name="1.7.0-alpha.2"></a>
 ## 1.7.0-alpha.2 (2021-05-25)
 
