@@ -1,11 +1,29 @@
 import { cosmiconfigSync } from "cosmiconfig";
+import typeScriptLoader from "@endemolshinegroup/cosmiconfig-typescript-loader";
 import { OutputFormat } from "@lokse/core";
 import type { SheetsFilter } from "@lokse/core";
 
 import { NAME } from "./constants";
 
 // TODO: use async API once custom oclif flags will be asynchronous
-const explorerSync = cosmiconfigSync(NAME);
+const explorerSync = cosmiconfigSync(NAME, {
+  searchPlaces: [
+    "package.json",
+    `.${NAME}rc`,
+    `.${NAME}rc.json`,
+    `.${NAME}rc.yaml`,
+    `.${NAME}rc.yml`,
+    `.${NAME}rc.ts`,
+    `.${NAME}rc.js`,
+    `.${NAME}rc.cjs`,
+    `${NAME}.config.ts`,
+    `${NAME}.config.js`,
+    `${NAME}.config.cjs`,
+  ],
+  loaders: {
+    ".ts": typeScriptLoader,
+  },
+});
 
 export type ConfigType = {
   sheetId?: string;
