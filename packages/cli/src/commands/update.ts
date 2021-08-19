@@ -1,5 +1,6 @@
 import * as path from "path";
 import { flags } from "@oclif/command";
+import { CLIError } from "@oclif/errors";
 import * as ora from "ora";
 import * as slugify from "@sindresorhus/slugify";
 import * as dedent from "dedent";
@@ -12,6 +13,7 @@ import {
   transformersByFormat,
   FileWriter,
   Line,
+  FatalError,
 } from "@lokse/core";
 import { WorksheetLinesByTitle } from "@lokse/core";
 
@@ -126,6 +128,7 @@ class Update extends Base {
     this.error("💥 Unknown error occured when splitting translations");
   }
 
+  // eslint-disable-next-line complexity
   async run() {
     const { flags } = this.parse(Update);
 
@@ -247,8 +250,11 @@ class Update extends Base {
       } catch (error) {
         spinner.fail(`Generating ${langName} translations failed.`);
 
-        this.error(error, {
-          exit: error?.oclif?.exit,
+        const normalizedError =
+          error instanceof FatalError ? new CLIError(error) : error;
+
+        this.error(normalizedError, {
+          exit: normalizedError?.oclif?.exit,
         });
       }
     }

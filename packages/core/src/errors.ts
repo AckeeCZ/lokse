@@ -1,7 +1,8 @@
-import { CLIError } from "@oclif/errors";
 import * as dedent from "dedent";
 
-export class MissingAuthError extends CLIError {
+export class FatalError extends Error {}
+
+export class MissingAuthError extends FatalError {
   public name: string;
 
   constructor() {

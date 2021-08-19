@@ -10,3 +10,5 @@ export { default as FileWriter } from "./writer";
 export { default as Line } from "./line";
 
 export { OutputFormat } from "./constants";
+
+export { FatalError } from "./errors";

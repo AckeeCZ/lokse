@@ -1,8 +1,7 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import { CLIError } from "@oclif/errors";
 
 import Line from "../line";
-import { MissingAuthError } from "../errors";
+import { MissingAuthError, FatalError } from "../errors";
 import WorksheetReader from "./worksheet-reader";
 import Worksheet from "./worksheet";
 import defaultLogger from "../logger";
@@ -64,7 +63,7 @@ export class SpreadsheetReader {
       try {
         await this.spreadsheet.loadInfo();
       } catch (error) {
-        throw new CLIError(error.message);
+        throw new FatalError(error.message);
       }
 
       this.worksheets = await this.sheetsReader.read(this.spreadsheet);
