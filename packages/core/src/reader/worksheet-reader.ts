@@ -1,12 +1,13 @@
 import { all } from "bluebird";
-import { warn } from "@oclif/errors";
 import { isPlainObject } from "lodash";
-import {
+import type {
   GoogleSpreadsheet,
   GoogleSpreadsheetWorksheet,
 } from "google-spreadsheet";
 import { forceArray, isEqualCaseInsensitive } from "../utils";
 import Worksheet from "./worksheet";
+import defaultLogger from "../logger";
+import type { Logger } from "../logger";
 
 export class InvalidFilterError extends Error {
   public filterStringified: string;
@@ -38,12 +39,23 @@ export type SheetsFilter =
       exclude?: string | SheetIndexOrTitle[];
     };
 
+interface WorksheetReaderOptions {
+  logger?: Logger;
+}
+
 class WorksheetReader {
   static ALL_SHEETS_FILTER = "*";
 
   public filter: SheetFilterComplex;
 
-  constructor(filter?: SheetsFilter | null) {
+  public logger: Logger;
+
+  constructor(
+    filter?: SheetsFilter | null,
+    options: WorksheetReaderOptions = {}
+  ) {
+    this.logger = options.logger || defaultLogger;
+
     this.filter = WorksheetReader.normalizeFilter(filter);
   }
 
@@ -133,7 +145,7 @@ class WorksheetReader {
 
       message += ` that match the filter ${filterStringified}. Existing sheets are ${existingSheets}`;
 
-      warn(`${message}. `);
+      this.logger.warn(`${message}. `);
     }
 
     const sheets = await all(worksheets.map(this.loadSheet));

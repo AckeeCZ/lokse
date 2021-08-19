@@ -16,6 +16,7 @@ import {
 import { WorksheetLinesByTitle } from "@lokse/core";
 
 import { NAME } from "../constants";
+import logger from "../logger";
 import Base from "../base";
 
 import * as cliFlags from "../flags";
@@ -156,7 +157,7 @@ class Update extends Base {
     let worksheetReader;
 
     try {
-      worksheetReader = new WorksheetReader(sheets);
+      worksheetReader = new WorksheetReader(sheets, { logger });
     } catch (error) {
       if (error instanceof InvalidFilterError) {
         throw new IncorrectFlagValue(error.message);
@@ -167,7 +168,9 @@ class Update extends Base {
 
     const outputTransformer = transformersByFormat[format];
 
-    const reader = new Reader(sheetId, worksheetReader);
+    const reader = new Reader(sheetId, worksheetReader, {
+      logger,
+    });
     const writer = new FileWriter();
 
     const outputDir = path.resolve(process.cwd(), dir);

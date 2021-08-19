@@ -2,6 +2,8 @@ export { Reader, WorksheetReader, InvalidFilterError } from "./reader";
 
 export type { WorksheetLinesByTitle, SheetsFilter } from "./reader";
 
+export type { Logger } from "./logger";
+
 export { transformersByFormat } from "./transformer";
 
 export { default as FileWriter } from "./writer";
