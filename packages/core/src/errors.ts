@@ -8,7 +8,7 @@ export class MissingAuthError extends CLIError {
     super(
       dedent`
           Cannot authenticate to fetch Spreadsheet data. 
-            Provide either Service account credentials or API key 🔑 See detail info at https://github.com/AckeeCZ/lokse/tree/master/packages/lokse#authentication
+            Provide either Service account credentials or API key 🔑 See detail info at https://github.com/AckeeCZ/lokse/tree/master/packages/core/doc/authentication.md
           `
     );
     this.name = "MissingAuthError";
