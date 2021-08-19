@@ -14,6 +14,11 @@ const GoogleSpreadsheetMock = GoogleSpreadsheet as jest.Mock;
 jest.mock("google-spreadsheet");
 
 describe("SpreadsheetReader", () => {
+  const testLogger = {
+    log: jest.fn(),
+    warn: jest.fn(),
+  };
+
   describe("authenticate", () => {
     beforeEach(() => {
       GoogleSpreadsheetMock.mockClear();
@@ -80,7 +85,6 @@ describe("SpreadsheetReader", () => {
   });
 
   describe("read", () => {
-    let consoleErrorBackup: typeof console.error;
     const makeFakeLine = (id: string) => {
       return ({ id: `line_${id}` } as unknown) as Line;
     };
@@ -103,14 +107,8 @@ describe("SpreadsheetReader", () => {
 
     const linesSet3 = [makeFakeLine("3_1")];
 
-    /* eslint-disable no-console */
     beforeEach(() => {
-      consoleErrorBackup = console.error;
-      console.error = jest.fn();
-    });
-
-    afterEach(() => {
-      console.error = consoleErrorBackup;
+      testLogger.warn.mockReset();
     });
 
     it("should return map of lines by sheet title", async () => {
@@ -124,7 +122,8 @@ describe("SpreadsheetReader", () => {
 
       const reader = new SpreadsheetReader(
         "test-sheet-id",
-        new WorksheetReader("*")
+        new WorksheetReader("*"),
+        { logger: testLogger }
       );
       jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
 
@@ -160,7 +159,8 @@ describe("SpreadsheetReader", () => {
 
       const reader = new SpreadsheetReader(
         "test-sheet-id",
-        new WorksheetReader("*")
+        new WorksheetReader("*"),
+        { logger: testLogger }
       );
       jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
 
@@ -168,12 +168,12 @@ describe("SpreadsheetReader", () => {
         fakeSheet1: linesSet1,
         fakeSheet4: linesSet3,
       });
-      expect(console.error).toHaveBeenCalledTimes(2);
-      expect(console.error).toHaveBeenNthCalledWith(
+      expect(testLogger.warn).toHaveBeenCalledTimes(2);
+      expect(testLogger.warn).toHaveBeenNthCalledWith(
         1,
         expect.stringContaining(mockLangColError.message)
       );
-      expect(console.error).toHaveBeenNthCalledWith(
+      expect(testLogger.warn).toHaveBeenNthCalledWith(
         2,
         expect.stringContaining(mockKeyColError.message)
       );
@@ -190,7 +190,8 @@ describe("SpreadsheetReader", () => {
 
       const reader = new SpreadsheetReader(
         "test-sheet-id",
-        new WorksheetReader("*")
+        new WorksheetReader("*"),
+        { logger: testLogger }
       );
       jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
 
@@ -198,8 +199,8 @@ describe("SpreadsheetReader", () => {
         fakeSheet1: linesSet1.concat(linesSet3),
         fakeSheet2: linesSet2,
       });
-      expect(console.error).toHaveBeenCalledTimes(1);
-      expect(console.error).toHaveBeenCalledWith(
+      expect(testLogger.warn).toHaveBeenCalledTimes(1);
+      expect(testLogger.warn).toHaveBeenCalledWith(
         expect.stringContaining(
           `🔀 Found two sheets with same title fakeSheet1`
         )

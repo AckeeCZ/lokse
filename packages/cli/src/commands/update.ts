@@ -1,5 +1,6 @@
 import * as path from "path";
 import { flags } from "@oclif/command";
+import { CLIError } from "@oclif/errors";
 import * as ora from "ora";
 import * as slugify from "@sindresorhus/slugify";
 import * as dedent from "dedent";
@@ -12,10 +13,12 @@ import {
   transformersByFormat,
   FileWriter,
   Line,
+  FatalError,
 } from "@lokse/core";
 import { WorksheetLinesByTitle } from "@lokse/core";
 
 import { NAME } from "../constants";
+import logger from "../logger";
 import Base from "../base";
 
 import * as cliFlags from "../flags";
@@ -125,6 +128,7 @@ class Update extends Base {
     this.error("💥 Unknown error occured when splitting translations");
   }
 
+  // eslint-disable-next-line complexity
   async run() {
     const { flags } = this.parse(Update);
 
@@ -156,7 +160,7 @@ class Update extends Base {
     let worksheetReader;
 
     try {
-      worksheetReader = new WorksheetReader(sheets);
+      worksheetReader = new WorksheetReader(sheets, { logger });
     } catch (error) {
       if (error instanceof InvalidFilterError) {
         throw new IncorrectFlagValue(error.message);
@@ -167,7 +171,9 @@ class Update extends Base {
 
     const outputTransformer = transformersByFormat[format];
 
-    const reader = new Reader(sheetId, worksheetReader);
+    const reader = new Reader(sheetId, worksheetReader, {
+      logger,
+    });
     const writer = new FileWriter();
 
     const outputDir = path.resolve(process.cwd(), dir);
@@ -244,8 +250,11 @@ class Update extends Base {
       } catch (error) {
         spinner.fail(`Generating ${langName} translations failed.`);
 
-        this.error(error, {
-          exit: error?.oclif?.exit,
+        const normalizedError =
+          error instanceof FatalError ? new CLIError(error) : error;
+
+        this.error(normalizedError, {
+          exit: normalizedError?.oclif?.exit,
         });
       }
     }

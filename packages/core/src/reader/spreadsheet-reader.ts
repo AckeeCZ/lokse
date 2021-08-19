@@ -1,15 +1,19 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import { CLIError, warn } from "@oclif/errors";
 
 import Line from "../line";
-import { MissingAuthError } from "../errors";
+import { MissingAuthError, FatalError } from "../errors";
 import WorksheetReader from "./worksheet-reader";
 import Worksheet from "./worksheet";
+import defaultLogger from "../logger";
+import type { Logger } from "../logger";
 
 export declare type WorksheetLinesByTitle = {
   [worksheetTitle: string]: Line[];
 };
 
+interface SpreadsheetReaderOptions {
+  logger?: Logger;
+}
 export class SpreadsheetReader {
   private spreadsheet: GoogleSpreadsheet;
 
@@ -17,7 +21,15 @@ export class SpreadsheetReader {
 
   private worksheets: Worksheet[] | null;
 
-  constructor(spreadsheetId: string, sheetsReader: WorksheetReader) {
+  public logger: Logger;
+
+  constructor(
+    spreadsheetId: string,
+    sheetsReader: WorksheetReader,
+    options: SpreadsheetReaderOptions = {}
+  ) {
+    this.logger = options.logger || defaultLogger;
+
     this.spreadsheet = new GoogleSpreadsheet(spreadsheetId);
     this.sheetsReader = sheetsReader;
 
@@ -51,7 +63,7 @@ export class SpreadsheetReader {
       try {
         await this.spreadsheet.loadInfo();
       } catch (error) {
-        throw new CLIError(error.message);
+        throw new FatalError(error.message);
       }
 
       this.worksheets = await this.sheetsReader.read(this.spreadsheet);
@@ -71,7 +83,7 @@ export class SpreadsheetReader {
           const lines = worksheet.extractLines(keyColumn, valueColumn);
 
           if (worksheetLines[title]) {
-            warn(
+            this.logger.warn(
               `🔀 Found two sheets with same title ${title}. We're gonna concat the data.`
             );
 
@@ -80,7 +92,7 @@ export class SpreadsheetReader {
             worksheetLines[title] = lines;
           }
         } catch (error) {
-          warn(error.message);
+          this.logger.warn(error.message);
         }
 
         return worksheetLines;
