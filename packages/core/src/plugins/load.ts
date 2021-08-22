@@ -36,19 +36,26 @@ function loadPlugin(
   }
 }
 
-type PluginName = string;
-interface PluginDefinition {
+export type PluginName = string;
+export interface PluginDefinition {
   name: PluginName;
   options: object;
 }
 
 export function loadPlugins(
-  plugins: (PluginName | PluginDefinition)[],
+  plugins: (PluginName | PluginDefinition)[] | unknown = [],
   options: GeneralPluginOptions
 ) {
-  const loadedPlugins = plugins
-    .map((plugin) => loadPlugin(plugin, options))
-    .filter((plugin: unknown): plugin is NamedLoksePlugin => Boolean(plugin));
+  let loadedPlugins: NamedLoksePlugin[];
+
+  if (Array.isArray(plugins)) {
+    loadedPlugins = plugins
+      .map((plugin) => loadPlugin(plugin, options))
+      .filter((plugin: unknown): plugin is NamedLoksePlugin => Boolean(plugin));
+  } else {
+    options.logger.warn(`Plugins list must be an array, got ${typeof plugins}`);
+    loadedPlugins = [];
+  }
 
   return new PluginsRunner(loadedPlugins, options);
 }

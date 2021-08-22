@@ -1,7 +1,7 @@
 import { cosmiconfigSync } from "cosmiconfig";
 import typeScriptLoader from "cosmiconfig-ts-loader";
 import { OutputFormat } from "@lokse/core";
-import type { SheetsFilter } from "@lokse/core";
+import type { PluginName, PluginDefinition, SheetsFilter } from "@lokse/core";
 
 import { NAME } from "./constants";
 
@@ -38,6 +38,7 @@ export type ConfigType = {
   format?: typeof OutputFormat;
   sheets?: SheetsFilter;
   splitTranslations?: boolean | string[];
+  plugins?: (PluginName | PluginDefinition)[];
 };
 
 export function get(): undefined | null | ConfigType {

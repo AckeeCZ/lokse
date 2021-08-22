@@ -120,6 +120,22 @@ You have two ways of how to split your translations:
 
 The `splitTranslations` option can be provided only through configuration not inline CLI parameter.
 
+### Plugins
+
+List of plugins to use. Plugin can be either name of plugin, or object containing name and options
+
+  ```json
+  plugins: [
+    "@lokse/plugin-prettify",
+    {
+      "name": "@lokse/plugin-transform-values",
+      "options": {
+        "uppercase": "true"
+      }
+    }
+  ],
+  ```
+
 ---
 
 ### Example of `.lokserc`
@@ -132,7 +148,8 @@ The `splitTranslations` option can be provided only through configuration not in
   "column": "key_web",
   "format": "json",
   "sheets": ["App translations", "Legal docs"],
-  "splitTranslations": ["news", "documents"]
+  "splitTranslations": ["news", "documents"],
+  "plugins": []
 }
 ```
 

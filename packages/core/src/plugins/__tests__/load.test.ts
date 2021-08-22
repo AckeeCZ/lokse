@@ -34,6 +34,13 @@ describe("loadPlugins", () => {
     generalOptions.logger.log.mockClear();
   });
 
+  it("should log error and return empty list when plugins is not an array", () => {
+    expect(loadPlugins("" as any, generalOptions).plugins).toEqual([]);
+    expect(generalOptions.logger.warn).toHaveBeenCalledWith(
+      expect.stringMatching("Plugins list must be an array")
+    );
+  });
+
   it("should load plugins by name", () => {
     const plugins = ["@lokse/plugin1", "@lokse/plugin2"];
 
