@@ -14,8 +14,9 @@ import {
   FileWriter,
   Line,
   FatalError,
+  loadPlugins,
 } from "@lokse/core";
-import { WorksheetLinesByTitle } from "@lokse/core";
+import type { WorksheetLinesByTitle } from "@lokse/core";
 
 import { NAME } from "../constants";
 import logger from "../logger";
@@ -125,7 +126,7 @@ class Update extends Base {
       );
     }
 
-    this.error("💥 Unknown error occured when splitting translations");
+    this.error("💥 Unknown error occurred when splitting translations");
   }
 
   // eslint-disable-next-line complexity
@@ -169,12 +170,12 @@ class Update extends Base {
       }
     }
 
+    const plugins = loadPlugins(this.conf?.plugins, { logger });
     const outputTransformer = transformersByFormat[format];
-
     const reader = new Reader(sheetId, worksheetReader, {
       logger,
     });
-    const writer = new FileWriter();
+    const writer = new FileWriter(plugins);
 
     const outputDir = path.resolve(process.cwd(), dir);
     const relativeOutputPath = path.relative(process.cwd(), outputDir);

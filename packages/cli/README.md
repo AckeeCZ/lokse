@@ -122,7 +122,11 @@ The `splitTranslations` option can be provided only through configuration not in
 
 ### Plugins
 
-List of plugins to use. Plugin can be either name of plugin, or object containing name and options
+List of plugins to use. Plugin can be either name of plugin, or object containing name and options. **You must install first.**
+
+  ```shell
+  $ yarn add -D @lokse/plugin-prettify @lokse/plugin-transform-values
+  ```
 
   ```json
   plugins: [
