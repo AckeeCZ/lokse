@@ -1,6 +1,5 @@
 import { EOL } from "os";
 import * as mkdirp from "mkdirp";
-import * as prettier from "prettier";
 
 const fs = {
   accessAsync: jest.fn().mockResolvedValue(undefined),
@@ -10,7 +9,6 @@ const fs = {
 
 jest.mock("fs");
 jest.mock("mkdirp");
-jest.mock("prettier");
 jest.doMock("bluebird", () => ({
   ...jest.requireActual("bluebird"),
   promisifyAll: jest.fn().mockReturnValue(fs),
@@ -36,9 +34,6 @@ const plugins = new PluginsRunner([plugin], { logger });
 
 describe("Writer", () => {
   beforeEach(() => {
-    (prettier.resolveConfigFile as unknown as jest.Mock).mockResolvedValue(
-      null
-    );
     plugin.transformFullOutput
       .mockReset()
       .mockImplementation((output) => output);
