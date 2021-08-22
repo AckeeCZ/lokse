@@ -12,3 +12,6 @@ export { default as Line } from "./line";
 export { OutputFormat } from "./constants";
 
 export { FatalError } from "./errors";
+
+export type { LoksePlugin, PluginOptions } from "./plugins";
+export { createPlugin, PluginsRunner, loadPlugins } from "./plugins";
