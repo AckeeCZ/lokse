@@ -5,6 +5,11 @@ import type {
 } from "./create";
 import { PluginsRunner } from "./runner";
 
+function interopRequire(path: string) {
+  const obj = require(path);
+  return obj && obj.__esModule ? obj.default : obj;
+}
+
 function loadPlugin(
   plugin: PluginName | PluginDefinition,
   options: GeneralPluginOptions
@@ -14,7 +19,7 @@ function loadPlugin(
     typeof plugin === "string" ? options : { ...options, ...plugin.options };
 
   try {
-    const pluginFactory: PluginFactory = require(pluginName);
+    const pluginFactory: PluginFactory = interopRequire(pluginName);
     const loadedPlugin = pluginFactory(pluginOptions);
 
     return {
