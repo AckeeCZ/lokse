@@ -10,21 +10,31 @@ Receives object of the type `Line` and must return `Line` too. On the line you c
 
 ```ts
 transformLine: async (line: Line) => {
-    line.setKey((key) => key.substr(0, 1));
-    line.setValue((value) => value.toUpperCase());
+  line.setKey((key) => key.substr(0, 1));
+  line.setValue((value) => value.toUpperCase());
 
-    return line;
+  return line;
 };
 ```
 
 ### `transformFullOutput`
 
-Receives composed output string that is about to write into a file. Like JSON object for json format type
+Receives composed output string that is about to write into a file . Like JSON object for json format type. As a second argument it receives meta information, which can be used for example to determine output type (`meta.transformer.outputFormat`)
 
 ```ts
-transformFullOutput: async (output: string) => {
-    return processOutput(output)
+import { OutputFormat } from "@lokse/core";
+
+interface MetaInfo {
+  transformer: Transformer;
 }
+
+transformFullOutput: async (output: string, meta: MetaInfo) => {
+  if (meta.transformer.outputFormat === OutputFormat.JSON) {
+    return processOutput(output);
+  }
+  
+  return output;
+};
 ```
 
 ## How to create plugin
@@ -33,7 +43,7 @@ transformFullOutput: async (output: string) => {
 
 Great, you have and idea for plugin. Give it a suitable NAME.
 
-### 2. Use template 
+### 2. Use template
 
 Run these commands where NAME is plugin name you invented in step 1.
 
@@ -43,16 +53,17 @@ $ cd lokse
 $ cp -r plugin-template packages/plugin-NAME
 ```
 
-### 3. Initialize the plugin 
-Set NAME of your plugin and its description in `package.json` fields and `README.md` description. 
+### 3. Initialize the plugin
+
+Set NAME of your plugin and its description in `package.json` fields and `README.md` description.
 
 Plugin's name should always start with `@lokse/plugin-`.
 
-### 4. Implement the plugin 
+### 4. Implement the plugin
 
 Implement plugin factory in `src/index.ts` by exporting default function returning plugin (it's already prepared for you) with any of hooks mentioned in section [What can plugin do](#what-can-plugin-do).
 
-All hooks are optional, you can implement any of them. Plugin factory receives `options` object which contains common options for all plugins  plus any other options user passed in config file.
+All hooks are optional, you can implement any of them. Plugin factory receives `options` object which contains common options for all plugins plus any other options user passed in config file.
 
 ```ts
 export default function (options: GeneralPluginOptions) {

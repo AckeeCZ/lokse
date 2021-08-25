@@ -33,7 +33,9 @@ class FileWriter {
     const valueToInsert = await this.getTransformedLines(lines, transformer);
 
     let output = await transformer.insert(fileContent, valueToInsert);
-    output = await this.plugins.runHook("transformFullOutput", output);
+    output = await this.plugins.runHook("transformFullOutput", output, {
+      transformer,
+    });
 
     const dirname = path.dirname(filePath);
     await mkdirp(dirname);

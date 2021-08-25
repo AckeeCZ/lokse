@@ -2,10 +2,15 @@ import { identity } from "lodash";
 
 import Line from "../line";
 import type { Logger } from "../logger";
+import type Transformer from "../transformer";
+
+interface TransformFullOutputMeta {
+  transformer: Transformer;
+}
 
 export interface LoksePlugin {
   transformLine: (line: Line) => Line | Promise<Line>;
-  transformFullOutput: (output: string) => string | Promise<string>;
+  transformFullOutput: (output: string, meta: TransformFullOutputMeta) => string | Promise<string>;
 }
 
 export interface NamedLoksePlugin extends LoksePlugin {
