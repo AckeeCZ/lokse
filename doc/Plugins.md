@@ -81,3 +81,9 @@ export default function (options: GeneralPluginOptions) {
 }
 
 ```
+
+### 5. Voilà - plugin is ready 🎉 
+
+Don't forget to add him into [Packages](https://github.com/AckeeCZ/lokse/#packages) list in main readme. 
+
+Create PR to add it into the repo, wait for code review and approval for adding it into ecosystem.
