@@ -16,7 +16,7 @@ export class PluginsRunner {
   async runHook<
     K extends keyof LoksePlugin,
     T extends Parameters<LoksePlugin[K]>[0],
-  >(hookName: K, unprocessedTarget: T, meta?: Parameters<LoksePlugin[K]>[1]): Promise<T> {
+  >(hookName: K, unprocessedTarget: T, meta: Parameters<LoksePlugin[K]>[1]): Promise<T> {
     const target = await reduce(
       this.plugins,
       async (target, plugin) => {

@@ -9,7 +9,12 @@ Plugin can hook into various transformation process steps and modify the final r
 Receives object of the type `Line` and must return `Line` too. On the line you can utilize `setKey` and `setValue` methods which accepts function with current key/value and returns modified key/value.
 
 ```ts
-transformLine: async (line: Line) => {
+interface MetaInfo {
+  language: string;
+  domain?: string;
+}
+
+transformLine: async (line: Line, meta: MetaInfo) => {
   line.setKey((key) => key.substr(0, 1));
   line.setValue((value) => value.toUpperCase());
 
@@ -19,13 +24,15 @@ transformLine: async (line: Line) => {
 
 ### `transformFullOutput`
 
-Receives composed output string that is about to write into a file . Like JSON object for json format type. As a second argument it receives meta information, which can be used for example to determine output type (`meta.transformer.outputFormat`)
+Receives composed output string that is about to write into a file . Like JSON object for json format type. As a second argument it receives meta information, which can be used for example to determine output type (using `meta.transformer.outputFormat`).
 
 ```ts
 import { OutputFormat } from "@lokse/core";
 
 interface MetaInfo {
   transformer: Transformer;
+  language: string;
+  domain?: string;
 }
 
 transformFullOutput: async (output: string, meta: MetaInfo) => {
