@@ -1,4 +1,5 @@
 import { EOL } from "os";
+import { OutputFormat } from "../constants";
 import { Transformer } from "./transformer";
 import * as prettier from "prettier";
 
@@ -28,6 +29,7 @@ async function format(output: string) {
 }
 
 const jsonTransformer: Transformer = {
+  outputFormat: OutputFormat.JSON,
   transformComment() {
     return "";
   },
