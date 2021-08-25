@@ -17,7 +17,10 @@ export interface TransformFullOutputMeta {
 
 export interface LoksePlugin {
   transformLine: (line: Line, meta: TransformLineMeta) => Line | Promise<Line>;
-  transformFullOutput: (output: string, meta: TransformFullOutputMeta) => string | Promise<string>;
+  transformFullOutput: (
+    output: string,
+    meta: TransformFullOutputMeta
+  ) => string | Promise<string>;
 }
 
 export interface NamedLoksePlugin extends LoksePlugin {

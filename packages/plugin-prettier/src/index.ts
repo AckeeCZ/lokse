@@ -1,7 +1,11 @@
 import * as prettier from "prettier";
 
 import { createPlugin, OutputFormat } from "@lokse/core";
-import type { GeneralPluginOptions, LoksePlugin } from "@lokse/core";
+import type {
+  GeneralPluginOptions,
+  LoksePlugin,
+  TransformFullOutputMeta,
+} from "@lokse/core";
 
 export default function (options: GeneralPluginOptions): LoksePlugin {
   async function format(output: string, parser: string) {
@@ -28,7 +32,10 @@ export default function (options: GeneralPluginOptions): LoksePlugin {
   }
 
   return createPlugin({
-    transformFullOutput: async (output: string, meta) => {
+    transformFullOutput: async (
+      output: string,
+      meta: TransformFullOutputMeta
+    ) => {
       if (meta.transformer.outputFormat === OutputFormat.JSON) {
         const formatted = await format(output, "json");
 
