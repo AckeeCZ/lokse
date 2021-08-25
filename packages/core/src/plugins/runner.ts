@@ -25,7 +25,7 @@ export class PluginsRunner {
         try {
           const transformedTarget = await hook(target);
           return transformedTarget;
-        } catch (error: any) {
+        } catch (error) {
           this.options.logger.warn(
             `Error when running hook ${hookName} of plugin ${plugin.pluginName}: ${error.message}`
           );
