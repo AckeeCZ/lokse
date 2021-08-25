@@ -29,7 +29,7 @@ function loadPlugin(
   } catch (error) {
     if (error.code === "MODULE_NOT_FOUND") {
       options.logger.warn(
-        `🔍 Unable to load plugin ${pluginName}. Is he installed?`
+        `🔍 Unable to load plugin ${pluginName}. Is it installed?`
       );
     } else {
       options.logger.warn(
