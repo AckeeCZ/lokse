@@ -7,11 +7,10 @@
     "email": ""
   },
   "bugs": "https://github.com/AckeeCZ/lokse/issues",
-  "dependencies": {},
-  "devDependencies": {},
-  "peerDependencies": {
+  "dependencies": {
     "@lokse/core": "^1.7.0"
   },
+  "devDependencies": {},
   "engines": {
     "node": ">=8.0.0"
   },
