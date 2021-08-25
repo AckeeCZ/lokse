@@ -1,6 +1,6 @@
 export type {
   LoksePlugin,
-  GeneralPluginOptions as PluginOptions,
+  GeneralPluginOptions,
 } from "./create";
 export { createPlugin } from "./create";
 

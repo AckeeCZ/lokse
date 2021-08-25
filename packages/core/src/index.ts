@@ -13,5 +13,5 @@ export { OutputFormat } from "./constants";
 
 export { FatalError } from "./errors";
 
-export type { LoksePlugin, PluginOptions, PluginName, PluginDefinition } from "./plugins";
+export type { LoksePlugin, GeneralPluginOptions, PluginName, PluginDefinition } from "./plugins";
 export { createPlugin, PluginsRunner, loadPlugins } from "./plugins";
