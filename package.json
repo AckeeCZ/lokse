@@ -9,7 +9,7 @@
     "bootstrap": "lerna bootstrap --use-workspaces",
     "build": "lerna run build",
     "clean": "lerna exec --ignore example -- rm -r lib",
-    "changelog": "yarn update-gitmoji-config && gitmoji-changelog --preset generic",
+    "changelog": "yarn update-gitmoji-config && npx gitmoji-changelog --preset generic",
     "lint": "eslint packages/*/src/ --ext .ts --config ./.eslintrc",
     "prettier": "prettier --write --config ./.prettierrc \"packages/*/(src|test)/**/*.(ts|tsx)\"",
     "publish:ci": "lerna publish from-package --yes",
@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "@types/jest": "^26.0.13",
-    "gitmoji-changelog": "^2.2.0",
     "jest": "^26.4.2",
     "lerna": "4",
     "ts-jest": "^26.3.0"
