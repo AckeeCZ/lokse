@@ -82,6 +82,8 @@ export default function (options: GeneralPluginOptions) {
 
 ```
 
+Now please write at least few tests for the plugin's feature 🙏 You'll practice you're testing skills and contribute to better project quality and maintainability.
+
 ### 5. Voilà - plugin is ready 🎉 
 
 Don't forget to add him into [Packages](https://github.com/AckeeCZ/lokse/#packages) list in main readme. 
