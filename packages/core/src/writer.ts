@@ -5,10 +5,14 @@ import * as mkdirp from "mkdirp";
 
 import Transformer from "./transformer";
 import Line from "./line";
+import { PluginsRunner } from "./plugins";
 
 const fs = promisifyAll(require("fs"));
 
 class FileWriter {
+  // eslint-disable-next-line no-useless-constructor
+  constructor(private plugins: PluginsRunner) {}
+
   async write(
     filePath: string,
     lines: Line[],
@@ -26,26 +30,31 @@ class FileWriter {
       // file doesnt exist yet
     }
 
-    const valueToInsert = this.getTransformedLines(lines, transformer);
-    const output = await transformer.insert(fileContent, valueToInsert);
+    const valueToInsert = await this.getTransformedLines(lines, transformer);
+
+    let output = await transformer.insert(fileContent, valueToInsert);
+    output = await this.plugins.runHook("transformFullOutput", output);
 
     const dirname = path.dirname(filePath);
     await mkdirp(dirname);
     await fs.writeFileAsync(filePath, output, encoding);
   }
 
-  getTransformedLines(lines: Line[], transformer: Transformer) {
+  async getTransformedLines(lines: Line[], transformer: Transformer) {
     let valueToInsert = "";
 
     const plurals: { [pluralKey: string]: Line[] } = {};
 
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
+      const unprocessedLine = lines[i];
       const isLastLine = i === lines.length - 1;
 
-      if (line.isEmpty()) {
+      if (unprocessedLine.isEmpty()) {
         continue;
       }
+
+      // eslint-disable-next-line no-await-in-loop
+      const line = await this.plugins.runHook("transformLine", unprocessedLine);
 
       if (line.isComment()) {
         valueToInsert += transformer.transformComment(line.getComment());

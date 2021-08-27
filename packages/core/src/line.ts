@@ -104,6 +104,15 @@ class Line {
   getPluralKey() {
     return this.pluralKey;
   }
+
+  setKey(nextKey: string | ((key: string) => string)) {
+    this.key = typeof nextKey === "function" ? nextKey(this.key) : nextKey;
+  }
+
+  setValue(nextValue: string | ((value: string) => string)) {
+    this.value =
+      typeof nextValue === "function" ? nextValue(this.value) : nextValue;
+  }
 }
 
 export default Line;
