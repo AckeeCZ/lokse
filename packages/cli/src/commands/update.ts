@@ -172,7 +172,7 @@ class Update extends Base {
 
     const plugins = loadPlugins(this.conf?.plugins, { logger });
     const outputTransformer = transformersByFormat[format];
-    const reader = new Reader(sheetId, worksheetReader, {
+    const reader = new Reader(sheetId, worksheetReader, plugins, {
       logger,
     });
     const writer = new FileWriter(plugins);

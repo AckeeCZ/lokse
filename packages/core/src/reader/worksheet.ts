@@ -3,6 +3,7 @@ import { GoogleSpreadsheetRow } from "google-spreadsheet";
 import Line from "../line";
 import { isEqualCaseInsensitive } from "../utils";
 import { KeyColumnNotFound, LangColumnNotFound } from "../errors";
+import type { PluginsRunner } from "../plugins";
 
 export default class Worksheet {
   public title: string;
@@ -17,7 +18,11 @@ export default class Worksheet {
     this.rows = rows;
   }
 
-  extractLines(keyColumn: string, langColumn: string) {
+  async extractLines(
+    keyColumn: string,
+    langColumn: string,
+    plugins: PluginsRunner
+  ) {
     let keyColumnId = "";
     let langColumnId = "";
 
@@ -38,8 +43,18 @@ export default class Worksheet {
       throw new LangColumnNotFound(langColumn, this.title);
     }
 
-    return this.rows.map(
-      (row) => new Line(row[keyColumnId], row[langColumnId])
-    );
+    const linesPromises = this.rows.map(async (row) => {
+      const unprocessedLine = new Line(row[keyColumnId], row[langColumnId]);
+
+      const line = await plugins.runHook("readTranslation", unprocessedLine, {
+        key: keyColumn,
+        language: langColumn,
+        row,
+      });
+      return line;
+    });
+    const lines = await Promise.all(linesPromises);
+
+    return lines;
   }
 }

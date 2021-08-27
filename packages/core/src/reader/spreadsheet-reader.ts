@@ -6,6 +6,7 @@ import WorksheetReader from "./worksheet-reader";
 import Worksheet from "./worksheet";
 import defaultLogger from "../logger";
 import type { Logger } from "../logger";
+import type { PluginsRunner } from "../plugins";
 
 export declare type WorksheetLinesByTitle = {
   [worksheetTitle: string]: Line[];
@@ -17,21 +18,19 @@ interface SpreadsheetReaderOptions {
 export class SpreadsheetReader {
   private spreadsheet: GoogleSpreadsheet;
 
-  private sheetsReader: WorksheetReader;
-
   private worksheets: Worksheet[] | null;
 
   public logger: Logger;
 
   constructor(
     spreadsheetId: string,
-    sheetsReader: WorksheetReader,
+    private sheetsReader: WorksheetReader,
+    private plugins: PluginsRunner,
     options: SpreadsheetReaderOptions = {}
   ) {
     this.logger = options.logger || defaultLogger;
 
     this.spreadsheet = new GoogleSpreadsheet(spreadsheetId);
-    this.sheetsReader = sheetsReader;
 
     this.worksheets = null;
   }
@@ -71,13 +70,24 @@ export class SpreadsheetReader {
 
   async read(keyColumn: string, valueColumn: string) {
     const worksheets = await this.fetchSheets();
+    const plugins = this.plugins;
 
-    return worksheets.reduce(
-      (worksheetLines: WorksheetLinesByTitle, worksheet) => {
+    const worksheetsLines = await worksheets.reduce<
+      Promise<WorksheetLinesByTitle>
+    >(
+      async (
+        worksheetLinesPromise: Promise<WorksheetLinesByTitle>,
+        worksheet
+      ) => {
+        const worksheetLines = await worksheetLinesPromise;
         const { title } = worksheet;
 
         try {
-          const lines = worksheet.extractLines(keyColumn, valueColumn);
+          const lines = await worksheet.extractLines(
+            keyColumn,
+            valueColumn,
+            plugins
+          );
 
           if (worksheetLines[title]) {
             this.logger.warn(
@@ -94,8 +104,10 @@ export class SpreadsheetReader {
 
         return worksheetLines;
       },
-      {}
+      Promise.resolve({})
     );
+
+    return worksheetsLines;
   }
 }
 

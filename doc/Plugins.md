@@ -4,7 +4,31 @@
 
 Plugin can hook into various transformation process steps and modify the final result of the operation. To transform the result use any of possible hooks listed below.
 
+### `readTranslation`
+
+Invoked when reading each individual translation from the spreadsheet.
+
+Receives object of the type `Line` which is just read translation and must return `Line` too. Second argument are meta information containing translation key, language and source row from which it was read.
+
+```ts
+interface MetaInfo {
+  key: string;
+  language: string;
+  row: GoogleSpreadsheetRow;
+}
+
+readTranslation: async (line: Line, meta: MetaInfo) => {
+  if (!line.value) {
+    line.setValue("🤷‍♂️");
+  }
+
+  return line;
+};
+```
+
 ### `transformLine`
+
+Invoked before writing the line into the final output string.
 
 Receives object of the type `Line` and must return `Line` too. On the line you can utilize `setKey` and `setValue` methods which accepts function with current key/value and returns modified key/value.
 
@@ -24,6 +48,8 @@ transformLine: async (line: Line, meta: MetaInfo) => {
 
 ### `transformFullOutput`
 
+Invoked just before writing the result output string into the file.
+
 Receives composed output string that is about to write into a file . Like JSON object for json format type. As a second argument it receives meta information, which can be used for example to determine output type (using `meta.transformer.outputFormat`).
 
 ```ts
@@ -39,7 +65,7 @@ transformFullOutput: async (output: string, meta: MetaInfo) => {
   if (meta.transformer.outputFormat === OutputFormat.JSON) {
     return processOutput(output);
   }
-  
+
   return output;
 };
 ```
@@ -84,8 +110,8 @@ export default function (options: GeneralPluginOptions) {
 
 Now please write at least few tests for the plugin's feature 🙏 You'll practice you're testing skills and contribute to better project quality and maintainability.
 
-### 5. Voilà - plugin is ready 🎉 
+### 5. Voilà - plugin is ready 🎉
 
-Don't forget to add him into [Packages](https://github.com/AckeeCZ/lokse/#packages) list in main readme. 
+Don't forget to add him into [Packages](https://github.com/AckeeCZ/lokse/#packages) list in main readme.
 
 Create PR to add it into the repo, wait for code review and approval for adding it into ecosystem.
