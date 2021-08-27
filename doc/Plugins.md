@@ -31,7 +31,7 @@ transformFullOutput: async (output: string) => {
 
 ### 1. Invent plugin
 
-Great, you have and idea for plugin. Invent him a suitable NAME.
+Great, you have and idea for plugin. Give it a suitable NAME.
 
 ### 2. Use template 
 
