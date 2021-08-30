@@ -1,27 +1,38 @@
 import { createPlugin } from "@lokse/core";
-import type { GeneralPluginOptions, LoksePlugin } from "@lokse/core";
+import type {
+  GeneralPluginOptions,
+  GeneralPluginMeta,
+  LoksePlugin,
+} from "@lokse/core";
 
 interface PluginOptions {
   defaultLanguage: string;
 }
 
 export default function (
-  options: GeneralPluginOptions & PluginOptions
+  { defaultLanguage, logger }: GeneralPluginOptions & PluginOptions,
+  { languages }: GeneralPluginMeta
 ): LoksePlugin {
-  if (!options.defaultLanguage) {
+  if (!defaultLanguage) {
     throw new Error("Fallback language requires default language to be passed");
   }
 
-  // TODO - check default language is from the list of available languages
+  if (!languages.includes(defaultLanguage)) {
+    throw new Error(
+      `Supplied default language ${defaultLanguage} is not available in list of languages ${languages.join(
+        ","
+      )}`
+    );
+  }
 
   return createPlugin({
     async readTranslation(line, meta) {
       if (!line.value) {
-        const fallbackLanguageValue = meta.row[options.defaultLanguage] ?? "";
+        const fallbackLanguageValue = meta.row[defaultLanguage] ?? "";
 
         // TODO - make this option driven
         if (!fallbackLanguageValue) {
-          options.logger.warn(`Fallback translation of ${meta.key} not found`);
+          logger.warn(`Fallback translation of ${meta.key} not found`);
         }
 
         line.setValue(fallbackLanguageValue);
