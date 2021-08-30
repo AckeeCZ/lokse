@@ -16,6 +16,7 @@ export { FatalError } from "./errors";
 export type {
   LoksePlugin,
   GeneralPluginOptions,
+  GeneralPluginMeta,
   PluginName,
   PluginDefinition,
   TransformLineMeta,

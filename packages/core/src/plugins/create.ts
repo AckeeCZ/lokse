@@ -42,7 +42,14 @@ export interface GeneralPluginOptions {
   logger: Logger;
 }
 
-export type PluginFactory = (options: GeneralPluginOptions) => LoksePlugin;
+export interface GeneralPluginMeta {
+  languages: string[];
+}
+
+export type PluginFactory = (
+  options: GeneralPluginOptions,
+  meta: GeneralPluginMeta
+) => LoksePlugin;
 
 const pluginDefaults: LoksePlugin = {
   transformLine: identity,

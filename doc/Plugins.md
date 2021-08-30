@@ -96,10 +96,10 @@ Plugin's name should always start with `@lokse/plugin-`.
 
 Implement plugin factory in `src/index.ts` by exporting default function returning plugin (it's already prepared for you) with any of hooks mentioned in section [What can plugin do](#what-can-plugin-do).
 
-All hooks are optional, you can implement any of them. Plugin factory receives `options` object which contains common options for all plugins plus any other options user passed in config file.
+All hooks are optional, you can implement any of them. Plugin factory receives `options` object which contains common options for all plugins plus any other options user passed in config file and also some meta information as a second argument
 
 ```ts
-export default function (options: GeneralPluginOptions) {
+export default function (options: GeneralPluginOptions, meta: GeneralPluginMeta) {
   return createPlugin({
       transformLine: ...
       transformFullOutput: ...
