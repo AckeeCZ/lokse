@@ -5,12 +5,12 @@ import type {
   LoksePlugin,
 } from "@lokse/core";
 
-interface PluginOptions {
+export interface PluginOptions extends GeneralPluginOptions {
   defaultLanguage: string;
 }
 
 export default function (
-  { defaultLanguage, logger }: GeneralPluginOptions & PluginOptions,
+  { defaultLanguage, logger }: PluginOptions,
   { languages }: GeneralPluginMeta
 ): LoksePlugin {
   if (!defaultLanguage) {
