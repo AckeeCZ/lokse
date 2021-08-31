@@ -16,7 +16,7 @@ describe("Fallback plugin", () => {
     const options = { logger } as unknown as PluginOptions;
 
     expect(() => fallbackPluginFactory(options, meta)).toThrow(
-      /requires default language/i
+      /default language must be supplied/i
     );
   });
 
@@ -65,7 +65,9 @@ describe("Fallback plugin", () => {
       );
       expect(logger.warn).toHaveBeenCalled();
       expect(logger.warn).toHaveBeenCalledWith(
-        expect.stringMatching(/fallback translation of test\.key not found/i)
+        expect.stringMatching(
+          'Fallback translation of key "test.key" not found'
+        )
       );
     });
 
@@ -75,6 +77,22 @@ describe("Fallback plugin", () => {
         key: "test.key",
         mng: "",
         cs: "Nejakej nesmysl",
+      } as unknown as GoogleSpreadsheetRow;
+      const meta = { row, key: line.key, language: "mng" };
+
+      await expect(plugin.readTranslation(line, meta)).resolves.toHaveProperty(
+        "value",
+        "Nejakej nesmysl"
+      );
+      expect(logger.warn).not.toHaveBeenCalled();
+    });
+
+    it("should fallback to default language case insensivly", async () => {
+      const line = new Line("test.key", "");
+      const row = {
+        key: "test.key",
+        MNG: "",
+        CS: "Nejakej nesmysl",
       } as unknown as GoogleSpreadsheetRow;
       const meta = { row, key: line.key, language: "mng" };
 

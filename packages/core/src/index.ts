@@ -14,3 +14,5 @@ export { OutputFormat } from "./constants";
 export { FatalError } from "./errors";
 
 export * from "./plugins";
+
+export * from "./utils";
