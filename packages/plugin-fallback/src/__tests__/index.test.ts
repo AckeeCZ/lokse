@@ -6,7 +6,7 @@ import type { PluginOptions } from "..";
 
 describe("Fallback plugin", () => {
   const logger = { warn: jest.fn(), log: jest.fn() };
-  const meta = { languages: ["cs", "mng"] };
+  const factoryMeta = { languages: ["cs", "mng"] };
 
   beforeEach(() => {
     logger.warn.mockReset();
@@ -15,7 +15,7 @@ describe("Fallback plugin", () => {
   it("should throw when default language not passed", () => {
     const options = { logger } as unknown as PluginOptions;
 
-    expect(() => fallbackPluginFactory(options, meta)).toThrow(
+    expect(() => fallbackPluginFactory(options, factoryMeta)).toThrow(
       /default language must be supplied/i
     );
   });
@@ -23,7 +23,7 @@ describe("Fallback plugin", () => {
   it("should throw when passed default language is not from list of languages", () => {
     const options = { logger, defaultLanguage: "sk" };
 
-    expect(() => fallbackPluginFactory(options, meta)).toThrow(
+    expect(() => fallbackPluginFactory(options, factoryMeta)).toThrow(
       /not available/i
     );
   });
@@ -31,7 +31,7 @@ describe("Fallback plugin", () => {
   describe("readTranslation hook", () => {
     const plugin = fallbackPluginFactory(
       { logger, defaultLanguage: "cs" },
-      meta
+      factoryMeta
     );
 
     it("should keep translation as it is when filled", async () => {
@@ -50,7 +50,7 @@ describe("Fallback plugin", () => {
       expect(logger.warn).not.toHaveBeenCalled();
     });
 
-    it("should log warning when fallback translation not available", async () => {
+    it("should log missing fallback translation in default", async () => {
       const line = new Line("test.key", "");
       const row = {
         key: "test.key",
@@ -69,6 +69,26 @@ describe("Fallback plugin", () => {
           'Fallback translation of key "test.key" not found'
         )
       );
+    });
+
+    it("should not log missing fallback translation when log disabled", async () => {
+      const plugin2 = fallbackPluginFactory(
+        { logger, defaultLanguage: "cs", logMissingFallback: false },
+        factoryMeta
+      );
+      const line = new Line("test.key", "");
+      const row = {
+        key: "test.key",
+        mng: "",
+        cs: "",
+      } as unknown as GoogleSpreadsheetRow;
+      const meta = { row, key: line.key, language: "mng" };
+
+      await expect(plugin2.readTranslation(line, meta)).resolves.toHaveProperty(
+        "value",
+        ""
+      );
+      expect(logger.warn).not.toHaveBeenCalled();
     });
 
     it("should fallback to default language translation when translation is empty", async () => {

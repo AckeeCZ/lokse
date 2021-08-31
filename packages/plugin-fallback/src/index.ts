@@ -7,14 +7,17 @@ import type {
 
 export interface PluginOptions extends GeneralPluginOptions {
   defaultLanguage: string;
+  logMissingFallback?: boolean;
 }
 
 const NOT_FOUND_KEY = "NOT_FOUND_KEY";
 
 export default function (
-  { defaultLanguage, logger }: PluginOptions,
+  options: PluginOptions,
   { languages }: GeneralPluginMeta
 ): LoksePlugin {
+  const { defaultLanguage } = options;
+
   if (!defaultLanguage) {
     throw new PluginError("Default language must be supplied");
   }
@@ -27,6 +30,8 @@ export default function (
     );
   }
 
+  const logMissingFallback = options.logMissingFallback ?? true;
+
   const isDefaultLang = (key: string) =>
     isEqualCaseInsensitive(key, defaultLanguage);
 
@@ -38,9 +43,10 @@ export default function (
 
         const fallbackLanguageValue = meta.row[defaultLanguageKey] ?? "";
 
-        // TODO - make this option driven
-        if (!fallbackLanguageValue) {
-          logger.warn(`Fallback translation of key "${meta.key}" not found`);
+        if (logMissingFallback && !fallbackLanguageValue) {
+          options.logger.warn(
+            `Fallback translation of key "${meta.key}" not found`
+          );
         }
 
         line.setValue(fallbackLanguageValue);
