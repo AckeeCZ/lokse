@@ -108,6 +108,20 @@ export default function (options: GeneralPluginOptions, meta: GeneralPluginMeta)
 
 ```
 
+If you find plugin misconfigured or any other problem, you can throw a `PluginError` which will be gracefuly handled when initializing plugin.
+
+```ts
+import { createPlugin, PluginError } from "@lokse/core";
+
+export default function (options: GeneralPluginOptions, meta: GeneralPluginMeta) {
+  if (...) {
+    throw new PluginError(`This is not a valid configuration`);
+  }
+
+  ...
+}
+```
+
 Now please write at least few tests for the plugin's feature 🙏 You'll practice you're testing skills and contribute to better project quality and maintainability.
 
 ### 5. Voilà - plugin is ready 🎉

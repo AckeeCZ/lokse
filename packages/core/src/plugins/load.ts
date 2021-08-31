@@ -6,6 +6,8 @@ import type {
 } from "./create";
 import { PluginsRunner } from "./runner";
 
+export class PluginError extends Error {}
+
 function interopRequire(path: string) {
   const obj = require(path);
   return obj && obj.__esModule ? obj.default : obj;
@@ -32,6 +34,10 @@ function loadPlugin(
     if (error.code === "MODULE_NOT_FOUND") {
       options.logger.warn(
         `🔍 Unable to load plugin ${pluginName}. Is it installed?`
+      );
+    } else if (error instanceof PluginError) {
+      options.logger.warn(
+        `🙅 Plugin ${pluginName} cannot been loaded: ${error.message}`
       );
     } else {
       options.logger.warn(
