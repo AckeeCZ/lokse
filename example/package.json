@@ -6,6 +6,7 @@
     "license": "MIT",
     "devDependencies": {
         "lokse": "*",
-        "@lokse/plugin-prettier": "*"
+        "@lokse/plugin-prettier": "*",
+        "@lokse/plugin-fallback": "*"
     }
 }
