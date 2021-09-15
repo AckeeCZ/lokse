@@ -19,7 +19,7 @@ jest.doMock("@lokse/plugin3", () => plugin3Factory, {
   virtual: true,
 });
 
-import { loadPlugins } from "../load";
+import { loadPlugins, PluginError } from "../load";
 
 describe("loadPlugins", () => {
   const generalMeta = { languages: [] };
@@ -128,7 +128,28 @@ describe("loadPlugins", () => {
     );
   });
 
-  it("should log errors that occurred during its initialization", () => {
+  it("should log known plugin errors that occurr during initialization", () => {
+    plugin1Factory.mockImplementation(() => {
+      throw new PluginError("Plugin 1 requires options");
+    });
+    plugin2Factory.mockImplementation(() => {
+      throw new PluginError("Plugin 2 contains error");
+    });
+    const plugins = ["@lokse/plugin1", "@lokse/plugin2", "@lokse/plugin3"];
+
+    expect(loadPlugins(plugins, generalOptions, generalMeta).plugins).toEqual([
+      plugin3Matcher,
+    ]);
+    expect(generalOptions.logger.warn).toHaveBeenCalledTimes(2);
+    expect(generalOptions.logger.warn).toHaveBeenCalledWith(
+      expect.stringMatching("cannot been loaded: Plugin 1 requires options")
+    );
+    expect(generalOptions.logger.warn).toHaveBeenCalledWith(
+      expect.stringMatching("cannot been loaded: Plugin 2 contains error")
+    );
+  });
+
+  it("should log unknown errors that occurred during its initialization", () => {
     plugin1Factory.mockImplementation(() => {
       throw new Error("Plugin 1 requires options");
     });
@@ -142,10 +163,14 @@ describe("loadPlugins", () => {
     ]);
     expect(generalOptions.logger.warn).toHaveBeenCalledTimes(2);
     expect(generalOptions.logger.warn).toHaveBeenCalledWith(
-      expect.stringMatching("Plugin 1 requires options")
+      expect.stringMatching(
+        "Unexpected error occurred when loading plugin @lokse/plugin1:\nPlugin 1 requires options"
+      )
     );
     expect(generalOptions.logger.warn).toHaveBeenCalledWith(
-      expect.stringMatching("Plugin 2 contains error")
+      expect.stringMatching(
+        "Unexpected error occurred when loading plugin @lokse/plugin2:\nPlugin 2 contains error"
+      )
     );
   });
 

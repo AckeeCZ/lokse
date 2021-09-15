@@ -44,10 +44,11 @@ export default class Worksheet {
     }
 
     const linesPromises = this.rows.map(async (row) => {
-      const unprocessedLine = new Line(row[keyColumnId], row[langColumnId]);
+      const key = row[keyColumnId];
+      const unprocessedLine = new Line(key, row[langColumnId]);
 
       const line = await plugins.runHook("readTranslation", unprocessedLine, {
-        key: keyColumn,
+        key,
         language: langColumn,
         row,
       });

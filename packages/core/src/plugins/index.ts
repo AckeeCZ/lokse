@@ -10,4 +10,4 @@ export { createPlugin } from "./create";
 export { PluginsRunner } from "./runner";
 
 export type { PluginName, PluginDefinition } from "./load";
-export { loadPlugins } from "./load";
+export { loadPlugins, PluginError } from "./load";

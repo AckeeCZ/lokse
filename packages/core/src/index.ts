@@ -13,13 +13,6 @@ export { OutputFormat } from "./constants";
 
 export { FatalError } from "./errors";
 
-export type {
-  LoksePlugin,
-  GeneralPluginOptions,
-  GeneralPluginMeta,
-  PluginName,
-  PluginDefinition,
-  TransformLineMeta,
-  TransformFullOutputMeta,
-} from "./plugins";
-export { createPlugin, PluginsRunner, loadPlugins } from "./plugins";
+export * from "./plugins";
+
+export * from "./utils";
