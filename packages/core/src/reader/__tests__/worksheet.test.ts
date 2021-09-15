@@ -1,8 +1,12 @@
 import { GoogleSpreadsheetRow } from "google-spreadsheet";
 import { KeyColumnNotFound, LangColumnNotFound } from "../../errors";
-import Worksheet from "..//worksheet";
+import { PluginsRunner } from "../../plugins";
+import Worksheet from "../worksheet";
 
 describe("Worksheet", () => {
+  const logger = { warn: jest.fn(), log: jest.fn() };
+  const noPlugins = new PluginsRunner([], { logger });
+
   const createRow = (rowIndex: number, values: { [key: string]: any }) =>
     ({
       rowIndex,
@@ -11,7 +15,7 @@ describe("Worksheet", () => {
       delete: () => null,
     } as unknown as GoogleSpreadsheetRow);
 
-  it("should extract lines", () => {
+  it("should extract lines", async () => {
     const worksheet = new Worksheet(
       "Worksheet1",
       ["Key", "Value_fr", "Value_nl"],
@@ -33,7 +37,7 @@ describe("Worksheet", () => {
       ]
     );
 
-    const lines = worksheet.extractLines("Key", "Value_fr");
+    const lines = await worksheet.extractLines("Key", "Value_fr", noPlugins);
 
     expect(lines.length).toEqual(6);
     expect(lines[0].key).toEqual("MaClé1");
@@ -43,7 +47,7 @@ describe("Worksheet", () => {
     expect(lines[4].isEmpty()).toEqual(true);
   });
 
-  it("should throw when key column doesnt exist ", () => {
+  it("should throw when key column doesnt exist ", async () => {
     const worksheet = new Worksheet(
       "Worksheet2",
       ["Key", "Value_fr", "Value_nl"],
@@ -56,12 +60,12 @@ describe("Worksheet", () => {
       ]
     );
 
-    expect(() => worksheet.extractLines("Wrong_Key", "Value_fr")).toThrow(
-      new KeyColumnNotFound("Wrong_Key", "Worksheet2").message
-    );
+    await expect(() =>
+      worksheet.extractLines("Wrong_Key", "Value_fr", noPlugins)
+    ).rejects.toThrow(new KeyColumnNotFound("Wrong_Key", "Worksheet2").message);
   });
 
-  it("should throw when lang column doesnt exist ", () => {
+  it("should throw when lang column doesnt exist ", async () => {
     const worksheet = new Worksheet(
       "Worksheet2",
       ["Key", "Value_fr", "Value_nl"],
@@ -74,12 +78,12 @@ describe("Worksheet", () => {
       ]
     );
 
-    expect(() => worksheet.extractLines("Key", "NotExist")).toThrow(
-      new LangColumnNotFound("NotExist", "Worksheet2").message
-    );
+    await expect(() =>
+      worksheet.extractLines("Key", "NotExist", noPlugins)
+    ).rejects.toThrow(new LangColumnNotFound("NotExist", "Worksheet2").message);
   });
 
-  it("should keep empty lines", () => {
+  it("should keep empty lines", async () => {
     const worksheet = new Worksheet(
       "Worksheet3",
       ["Key", "Value_fr", "Value_nl"],
@@ -93,21 +97,21 @@ describe("Worksheet", () => {
       ]
     );
 
-    const result = worksheet.extractLines("Key", "Value_fr");
+    const result = await worksheet.extractLines("Key", "Value_fr", noPlugins);
 
     expect(result.length).toEqual(2);
     expect(result[0].isEmpty()).toEqual(true);
     expect(result[1].isEmpty()).toEqual(false);
   });
 
-  it("should match column names case insensitively", () => {
+  it("should match column names case insensitively", async () => {
     let worksheet = new Worksheet(
       "Worksheet4",
       ["Key", "Value_FR"],
       [createRow(1, { Key: "MaClé1", Value_FR: "La valeur 1" })]
     );
 
-    let result = worksheet.extractLines("key", "value_fr");
+    let result = await worksheet.extractLines("key", "value_fr", noPlugins);
 
     expect(result.length).toEqual(1);
     expect(result[0].key).toEqual("MaClé1");
@@ -119,7 +123,7 @@ describe("Worksheet", () => {
       [createRow(1, { key: "MaClé2", value_fr: "La valeur 2" })]
     );
 
-    result = worksheet.extractLines("Key", "VALUE_FR");
+    result = await worksheet.extractLines("Key", "VALUE_FR", noPlugins);
 
     expect(result.length).toEqual(1);
     expect(result[0].key).toEqual("MaClé2");

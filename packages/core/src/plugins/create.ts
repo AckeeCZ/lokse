@@ -1,3 +1,4 @@
+import type { GoogleSpreadsheetRow } from "google-spreadsheet";
 import { identity } from "lodash";
 
 import Line from "../line";
@@ -15,12 +16,22 @@ export interface TransformFullOutputMeta {
   domain?: string;
 }
 
+export interface ReadTranslationMeta {
+  key: string;
+  language: string;
+  row: GoogleSpreadsheetRow;
+}
+
 export interface LoksePlugin {
   transformLine: (line: Line, meta: TransformLineMeta) => Line | Promise<Line>;
   transformFullOutput: (
     output: string,
     meta: TransformFullOutputMeta
   ) => string | Promise<string>;
+  readTranslation: (
+    line: Line,
+    meta: ReadTranslationMeta
+  ) => Line | Promise<Line>;
 }
 
 export interface NamedLoksePlugin extends LoksePlugin {
@@ -31,11 +42,19 @@ export interface GeneralPluginOptions {
   logger: Logger;
 }
 
-export type PluginFactory = (options: GeneralPluginOptions) => LoksePlugin;
+export interface GeneralPluginMeta {
+  languages: string[];
+}
+
+export type PluginFactory = (
+  options: GeneralPluginOptions,
+  meta: GeneralPluginMeta
+) => LoksePlugin;
 
 const pluginDefaults: LoksePlugin = {
   transformLine: identity,
   transformFullOutput: identity,
+  readTranslation: identity,
 };
 
 export function createPlugin(plugin: Partial<LoksePlugin>) {

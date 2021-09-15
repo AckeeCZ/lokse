@@ -22,6 +22,7 @@ jest.doMock("@lokse/plugin3", () => plugin3Factory, {
 import { loadPlugins } from "../load";
 
 describe("loadPlugins", () => {
+  const generalMeta = { languages: [] };
   const plugin1Matcher = expect.objectContaining({ id: "plugin1" });
   const plugin2Matcher = expect.objectContaining({ id: "plugin2" });
   const plugin3Matcher = expect.objectContaining({ id: "plugin3" });
@@ -35,7 +36,9 @@ describe("loadPlugins", () => {
   });
 
   it("should log error and return empty list when plugins is not an array", () => {
-    expect(loadPlugins("" as any, generalOptions).plugins).toEqual([]);
+    expect(loadPlugins("" as any, generalOptions, generalMeta).plugins).toEqual(
+      []
+    );
     expect(generalOptions.logger.warn).toHaveBeenCalledWith(
       expect.stringMatching("Plugins list must be an array")
     );
@@ -44,14 +47,14 @@ describe("loadPlugins", () => {
   it("should load plugins by name", () => {
     const plugins = ["@lokse/plugin1", "@lokse/plugin2"];
 
-    expect(loadPlugins(plugins, generalOptions).plugins).toEqual([
+    expect(loadPlugins(plugins, generalOptions, generalMeta).plugins).toEqual([
       plugin1Matcher,
       plugin2Matcher,
     ]);
     expect(plugin1Factory).toHaveBeenCalled();
-    expect(plugin1Factory).toHaveBeenCalledWith(generalOptions);
+    expect(plugin1Factory).toHaveBeenCalledWith(generalOptions, generalMeta);
     expect(plugin2Factory).toHaveBeenCalled();
-    expect(plugin2Factory).toHaveBeenCalledWith(generalOptions);
+    expect(plugin2Factory).toHaveBeenCalledWith(generalOptions, generalMeta);
   });
 
   it("should load plugins by full definition", () => {
@@ -62,20 +65,26 @@ describe("loadPlugins", () => {
       { name: "@lokse/plugin3", options: plugin3Options },
     ];
 
-    expect(loadPlugins(plugins, generalOptions).plugins).toEqual([
+    expect(loadPlugins(plugins, generalOptions, generalMeta).plugins).toEqual([
       plugin2Matcher,
       plugin3Matcher,
     ]);
     expect(plugin2Factory).toHaveBeenCalled();
-    expect(plugin2Factory).toHaveBeenCalledWith({
-      ...generalOptions,
-      ...plugin2Options,
-    });
+    expect(plugin2Factory).toHaveBeenCalledWith(
+      {
+        ...generalOptions,
+        ...plugin2Options,
+      },
+      generalMeta
+    );
     expect(plugin3Factory).toHaveBeenCalled();
-    expect(plugin3Factory).toHaveBeenCalledWith({
-      ...generalOptions,
-      ...plugin3Options,
-    });
+    expect(plugin3Factory).toHaveBeenCalledWith(
+      {
+        ...generalOptions,
+        ...plugin3Options,
+      },
+      generalMeta
+    );
   });
 
   it("should load all plugins mixed names and definitions", () => {
@@ -85,17 +94,20 @@ describe("loadPlugins", () => {
       "@lokse/plugin3",
     ];
 
-    expect(loadPlugins(plugins, generalOptions).plugins).toEqual([
+    expect(loadPlugins(plugins, generalOptions, generalMeta).plugins).toEqual([
       plugin1Matcher,
       plugin3Matcher,
     ]);
     expect(plugin1Factory).toHaveBeenCalled();
-    expect(plugin1Factory).toHaveBeenCalledWith({
-      ...generalOptions,
-      ...pluginOptions,
-    });
+    expect(plugin1Factory).toHaveBeenCalledWith(
+      {
+        ...generalOptions,
+        ...pluginOptions,
+      },
+      generalMeta
+    );
     expect(plugin3Factory).toHaveBeenCalled();
-    expect(plugin3Factory).toHaveBeenCalledWith(generalOptions);
+    expect(plugin3Factory).toHaveBeenCalledWith(generalOptions, generalMeta);
   });
 
   it("should log plugins that were unable to find and load others", () => {
@@ -106,7 +118,7 @@ describe("loadPlugins", () => {
       "@lokse/plugin4",
     ];
 
-    expect(loadPlugins(plugins, generalOptions).plugins).toEqual([
+    expect(loadPlugins(plugins, generalOptions, generalMeta).plugins).toEqual([
       plugin1Matcher,
       plugin2Matcher,
     ]);
@@ -125,7 +137,7 @@ describe("loadPlugins", () => {
     });
     const plugins = ["@lokse/plugin1", "@lokse/plugin2", "@lokse/plugin3"];
 
-    expect(loadPlugins(plugins, generalOptions).plugins).toEqual([
+    expect(loadPlugins(plugins, generalOptions, generalMeta).plugins).toEqual([
       plugin3Matcher,
     ]);
     expect(generalOptions.logger.warn).toHaveBeenCalledTimes(2);
@@ -140,7 +152,11 @@ describe("loadPlugins", () => {
   it("assign name to every loaded plugin", () => {
     const plugins = ["@lokse/plugin1", { name: "@lokse/plugin2", options: {} }];
 
-    const { plugins: loadedPlugins } = loadPlugins(plugins, generalOptions);
+    const { plugins: loadedPlugins } = loadPlugins(
+      plugins,
+      generalOptions,
+      generalMeta
+    );
 
     expect(loadedPlugins[0]).toHaveProperty("pluginName", "@lokse/plugin1");
     expect(loadedPlugins[1]).toHaveProperty("pluginName", "@lokse/plugin2");

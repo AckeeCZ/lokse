@@ -1,12 +1,16 @@
 import { createPlugin } from "@lokse/core";
-import type { GeneralPluginOptions, LoksePlugin } from "@lokse/core";
+import type { GeneralPluginOptions, GeneralPluginMeta, LoksePlugin } from "@lokse/core";
 
 export default function (
   /**
-   * Your plugin will receive common options for all plugins 
+   * Your plugin will receive common options for all plugins
    * plus any other options user pass in config file.
    */
-  options: GeneralPluginOptions
+  options: GeneralPluginOptions,
+  /**
+   * Second argument are some meta information
+   */
+  meta: GeneralPluginMeta
 ): LoksePlugin {
   return createPlugin({
     /**

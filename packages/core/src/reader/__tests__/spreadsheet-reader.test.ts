@@ -8,6 +8,7 @@ import {
 } from "../../errors";
 import Line from "../../line";
 import Worksheet from "../worksheet";
+import { PluginsRunner } from "../../plugins";
 
 const GoogleSpreadsheetMock = GoogleSpreadsheet as jest.Mock;
 
@@ -18,6 +19,7 @@ describe("SpreadsheetReader", () => {
     log: jest.fn(),
     warn: jest.fn(),
   };
+  const noPlugins = new PluginsRunner([], { logger: testLogger });
 
   describe("authenticate", () => {
     beforeEach(() => {
@@ -39,7 +41,8 @@ describe("SpreadsheetReader", () => {
 
       const reader = new SpreadsheetReader(
         "test-sheet-id",
-        new WorksheetReader("*")
+        new WorksheetReader("*"),
+        noPlugins
       );
       await reader.authenticate();
 
@@ -59,7 +62,8 @@ describe("SpreadsheetReader", () => {
 
       const reader = new SpreadsheetReader(
         "test-sheet-id",
-        new WorksheetReader("*")
+        new WorksheetReader("*"),
+        noPlugins
       );
       await reader.authenticate();
 
@@ -74,7 +78,8 @@ describe("SpreadsheetReader", () => {
 
       const reader = new SpreadsheetReader(
         "test-sheet-id",
-        new WorksheetReader("*")
+        new WorksheetReader("*"),
+        noPlugins
       );
 
       await expect(reader.authenticate()).rejects.toHaveProperty(
@@ -123,6 +128,7 @@ describe("SpreadsheetReader", () => {
       const reader = new SpreadsheetReader(
         "test-sheet-id",
         new WorksheetReader("*"),
+        noPlugins,
         { logger: testLogger }
       );
       jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
@@ -160,6 +166,7 @@ describe("SpreadsheetReader", () => {
       const reader = new SpreadsheetReader(
         "test-sheet-id",
         new WorksheetReader("*"),
+        noPlugins,
         { logger: testLogger }
       );
       jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
@@ -191,6 +198,7 @@ describe("SpreadsheetReader", () => {
       const reader = new SpreadsheetReader(
         "test-sheet-id",
         new WorksheetReader("*"),
+        noPlugins,
         { logger: testLogger }
       );
       jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);

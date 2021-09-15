@@ -2,6 +2,7 @@ import type {
   NamedLoksePlugin,
   PluginFactory,
   GeneralPluginOptions,
+  GeneralPluginMeta,
 } from "./create";
 import { PluginsRunner } from "./runner";
 
@@ -12,7 +13,8 @@ function interopRequire(path: string) {
 
 function loadPlugin(
   plugin: PluginName | PluginDefinition,
-  options: GeneralPluginOptions
+  options: GeneralPluginOptions,
+  meta: GeneralPluginMeta
 ): NamedLoksePlugin | null {
   const pluginName = typeof plugin === "string" ? plugin : plugin.name;
   const pluginOptions =
@@ -20,7 +22,7 @@ function loadPlugin(
 
   try {
     const pluginFactory: PluginFactory = interopRequire(pluginName);
-    const loadedPlugin = pluginFactory(pluginOptions);
+    const loadedPlugin = pluginFactory(pluginOptions, meta);
 
     return {
       ...loadedPlugin,
@@ -49,13 +51,14 @@ export interface PluginDefinition {
 
 export function loadPlugins(
   plugins: (PluginName | PluginDefinition)[] | unknown = [],
-  options: GeneralPluginOptions
+  options: GeneralPluginOptions,
+  meta: GeneralPluginMeta
 ) {
   let loadedPlugins: NamedLoksePlugin[];
 
   if (Array.isArray(plugins)) {
     loadedPlugins = plugins
-      .map((plugin) => loadPlugin(plugin, options))
+      .map((plugin) => loadPlugin(plugin, options, meta))
       .filter((plugin: unknown): plugin is NamedLoksePlugin => Boolean(plugin));
   } else {
     options.logger.warn(`Plugins list must be an array, got ${typeof plugins}`);
