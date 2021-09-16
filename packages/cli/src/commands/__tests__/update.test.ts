@@ -910,6 +910,53 @@ describe("update command", () => {
         }
       );
 
+    test
+      .setupMocks()
+      .do(() => {
+        mockRead.mockReturnValue({
+          "sheet1 Title": [{ key: "sheet.1.line" }, { key: "sheet.1.line" }],
+          "sheet2 Title": [{ key: "sheet.2.line" }, { key: "sheet.2.line" }],
+        });
+        explorerMock.search.mockReturnValue({
+          config: { splitTranslations: ["sheet.1", "sheet.2"] },
+        });
+      })
+      .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
+      .command([
+        "update",
+        ...Object.values(params),
+        `--languages=${languages[0]}`,
+      ])
+      .it("should split correctly when domain contains dot", () => {
+        expect(mockWrite).toHaveBeenCalledTimes(2);
+        expect(mockOraInstance.succeed).toHaveBeenCalledTimes(1);
+
+        expect(mockWrite).toHaveBeenCalledWith(
+          {
+            outputDir: `/ROOT_PKG_PATH/${translationsDir}`,
+            language: languages[0],
+            domain: "sheet.1",
+          },
+          [{ key: "sheet.1.line" }, { key: "sheet.1.line" }],
+          expect.anything()
+        );
+        expect(mockWrite).toHaveBeenCalledWith(
+          {
+            outputDir: `/ROOT_PKG_PATH/${translationsDir}`,
+            language: languages[0],
+            domain: "sheet.2",
+          },
+          [{ key: "sheet.2.line" }, { key: "sheet.2.line" }],
+          expect.anything()
+        );
+
+        expect(mockOraInstance.succeed).toHaveBeenNthCalledWith(
+          1,
+          dedent`All ${languages[0]} translations saved into ${translationsDir}
+                  Splitted to sheet.1, sheet.2`
+        );
+      });
+
     // TODO - warn if there is sheets filter turned
     // on and so not all sheets are included in processing
   });
