@@ -1,5 +1,47 @@
 # Changelog
 
+<a name="2.0.0"></a>
+## 2.0.0 (2021-09-16)
+
+### Added
+
+- ✨ Add runtime code for creating and loading plugins [[1b899d0](https://github.com/AckeeCZ/lokse/commit/1b899d0411d2b8ee74f8e42a42dcb62c90654582)]
+- ✨ Support plugins in output writer [[c1945d3](https://github.com/AckeeCZ/lokse/commit/c1945d3bd085a4ea8346f620f951aac260373426)]
+- ✨ Add support for plugins in config file [[1ac7faf](https://github.com/AckeeCZ/lokse/commit/1ac7fafe28d079ed8e3ff0bb1e7c018bdc5ae1d6]
+- ✨ Load and use plugins in update command [[2ff4835](https://github.com/AckeeCZ/lokse/commit/2ff483539f0be9c51d4390726ea54f749426c6b5)]
+- ✨ Add handling of known plugin errors [[e308a5d](https://github.com/AckeeCZ/lokse/commit/e308a5d8a85d74c7b97a40d97a9746bee2f295aa)]
+- ✨ Add fallback language plugin [[66736a3](https://github.com/AckeeCZ/lokse/commit/66736a31ee5d5ffc86a30260042b6547babb7874)]
+- ✨ Add new plugin hook readTranslation [[8dafcbd](https://github.com/AckeeCZ/lokse/commit/8dafcbdecf55ae63a9761a6c4372738b218e279d)]
+- ✨ Extract formatting by prettier into plugin-prettier [[7c04006](https://github.com/AckeeCZ/lokse/commit/7c04006686c3ac5130328467ea9557087c969632)]
+- ✨ Add outputFormat property on Transformer object [[9e62808](https://github.com/AckeeCZ/lokse/commit/9e62808aeb198d944366159611be90e10679b193)]
+- ✨ Pass general meta info into the plugins runner [[4070869](https://github.com/AckeeCZ/lokse/commit/40708691420753b371d78ad0b2ba0bce6e8d9f61)]
+- ✨ Pass meta information into transformLine hook [[cd8601b](https://github.com/AckeeCZ/lokse/commit/cd8601ba9f5e1cbf2d29c7c849cbe9f71ded0dbd)]
+- ✨ Add meta info as a 2nd argument to transformFullOuput [[a5d4b98](https://github.com/AckeeCZ/lokse/commit/a5d4b983ef33af94cb7eb7d2e3bd1f951519477f)]
+- ✨ Add plugins template [[3ddd4d7](https://github.com/AckeeCZ/lokse/commit/3ddd4d790dec05b2d00f23d6fb79a1eef93ccf49)]
+
+### Changed
+
+- ♻️ Get rid of oclif dependency in core package [[7aa59ca](https://github.com/AckeeCZ/lokse/commit/7aa59ca37b099c58c33e57bd0453763a8aba9db2)]
+- ♻️ Allow optionally passing logger into worksheet and spreadsheet reader [[94b2f90](https://github.com/AckeeCZ/lokse/commit/94b2f90bde00c39df261cbc0ed4cadeee4fe556e)]
+- ♻️ Make lokse/core from peer a regular dependency [[d0a85eb](https://github.com/AckeeCZ/lokse/commit/d0a85eba09c5b7e50a9ab0165c76b7ee032bbc8f)]
+- 🔧 Set preserveSymlinks TS compiler flag [[a137958](https://github.com/AckeeCZ/lokse/commit/a137958f0d83484464464d26fe115ae3a4aabe3f)]
+- 💬 Change text of error message a bit [[569ee22](https://github.com/AckeeCZ/lokse/commit/569ee223e8f3caa857e23b0e1f6f6dcb6fc9a3b7)]
+- ⬆️ Run instant yarn upgrade to fix vulnerabilities [[4018428](https://github.com/AckeeCZ/lokse/commit/40184283b18a32d32852a86f1f7ad6ca3018f9f7)]
+- ⬆️ Bump axios from 0.21.1 to 0.21.4 [[63845a9](https://github.com/AckeeCZ/lokse/commit/63845a91543e74346f5aaf70b6cc364c9f57364f)]
+- ⬆️ Bump ssri from 6.0.1 to 6.0.2 [[d935efb](https://github.com/AckeeCZ/lokse/commit/d935efbeeba42b253ae444cbfe2b437ba1b5b9c8)]
+- ⬆️ Bump browserslist from 4.16.3 to 4.16.6 [[fa4a77d](https://github.com/AckeeCZ/lokse/commit/fa4a77dcc26a7b42983721cf9e323dc48a418199)]
+- 🔧 Disable automatic creating of GH release [[3e10ab9](https://github.com/AckeeCZ/lokse/commit/3e10ab96dddb81d4539aafe288335d48530de7ba)]
+- 📝 Add @lokse/core into the list of packages in readme [[1d93566](https://github.com/AckeeCZ/lokse/commit/1d935667540fa9126c6f5ec69b0c4c54b82e04e2)]
+- 📝 Add plugins documentation [[c5558e6](https://github.com/AckeeCZ/lokse/commit/c5558e6179e458c4bf7d858b1409addfcad0a16d)]
+- 📝 Extract authentication into standalone document [[a0e7b6d](https://github.com/AckeeCZ/lokse/commit/a0e7b6dfc90d3479cf3e4d2b49605ed976e05730)]
+- 🏷️ Remove type of error from catch in runner [[4ada757](https://github.com/AckeeCZ/lokse/commit/4ada757bce296f8b271efff3064e7cb68f6e7208)]
+
+### Removed
+
+- 🔥 Remove duplicated config in example [[3ffd7c0](https://github.com/AckeeCZ/lokse/commit/3ffd7c078b58854260010a58e46577feb0a4d731)]
+- ➖ Use npx to execute gitmoji-changelog, remove it from deps [[a64529e](https://github.com/AckeeCZ/lokse/commit/a64529e9a4c5cfc3319a55e4b519471fb5d07602)]
+
+
 <a name="1.7.0"></a>
 ## 1.7.0 (2021-05-25)
 

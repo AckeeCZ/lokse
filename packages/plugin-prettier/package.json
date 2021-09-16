@@ -1,17 +1,16 @@
 {
   "name": "@lokse/plugin-prettier",
   "description": "Lokse plugin used to format output translations file using prettier",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": {
     "name": "Lukas Horak",
     "email": "horaklukas@centrum.cz"
   },
   "bugs": "https://github.com/AckeeCZ/lokse/issues",
   "dependencies": {
-    "prettier": "^2.1.2",
-    "@lokse/core": "^1.7.0"
+    "@lokse/core": "^2.0.0",
+    "prettier": "^2.1.2"
   },
-  "devDependencies": {},
   "engines": {
     "node": ">=8.0.0"
   },

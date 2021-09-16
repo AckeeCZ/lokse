@@ -1,16 +1,15 @@
 {
   "name": "@lokse/plugin-fallback",
   "description": "Plugin for fallbacking missing translations to the default language translation",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": {
     "name": "Lukáš Horák",
     "email": "horaklukas@centrum.cz"
   },
   "bugs": "https://github.com/AckeeCZ/lokse/issues",
   "dependencies": {
-    "@lokse/core": "^1.7.0"
+    "@lokse/core": "^2.0.0"
   },
-  "devDependencies": {},
   "engines": {
     "node": ">=8.0.0"
   },
