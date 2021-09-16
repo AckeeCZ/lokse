@@ -19,6 +19,7 @@ Maybe it was an inspiration. But the truth is, it's a little pun. The has evolve
 * [`lokse`](./packages/cli) - CLI tool for updating project's translations from Google spreadsheet
 * [`@lokse/core`](./packages/core) - Core functionality handling fetch of sheet, extracting, parsing data and writing in output format.
 * [`@lokse/plugin-prettier`](./packages/plugin-prettier) - Plugin used to format output translations file using Prettier.
+* [`@lokse/plugin-fallback`](./packages/plugin-fallback) - Plugin for fallbacking missing translations to the default language translation.
 	
 ## Credits
 
