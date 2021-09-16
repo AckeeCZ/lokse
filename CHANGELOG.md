@@ -1,5 +1,18 @@
 # Changelog
 
+<a name="2.0.1"></a>
+## 2.0.1 (2021-09-16)
+
+### Fixed
+
+- 🐛 Fix splitting translations by domain that contains dot char [[8c444a7](https://github.com/AckeeCZ/lokse/commit/8c444a72755cd7a8cc560d180b7b4f3d164b03ea)]
+- 💚 Fix release step by running build before release [[6dd70bf](https://github.com/AckeeCZ/lokse/commit/6dd70bf4076eb73f4beb72615b33ea1b1ba58736)]
+
+### Changed
+
+- 📝 Add fallback plugin into the list of plugins [[ad72a06](https://github.com/AckeeCZ/lokse/commit/ad72a06c49ddad658178071d0d686d25a60f651e)]
+
+
 <a name="2.0.0"></a>
 ## 2.0.0 (2021-09-16)
 

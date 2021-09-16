@@ -1,12 +1,12 @@
 {
     "name": "example",
     "private": true,
-    "version": "2.0.0",
+    "version": "2.0.1",
     "main": "index.js",
     "license": "MIT",
     "devDependencies": {
         "@lokse/plugin-fallback": "^2.0.0",
         "@lokse/plugin-prettier": "^2.0.0",
-        "lokse": "^2.0.0"
+        "lokse": "^2.0.1"
     }
 }
