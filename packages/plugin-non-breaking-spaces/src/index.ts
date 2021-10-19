@@ -5,7 +5,7 @@ interface Patterns {
   [key: string]: RegExp;
 }
 
-const czechPatterns: Patterns = {
+const defaultPatterns: Patterns = {
   cs: /(\s|^)(a|i|k|o|s|u|v|z)(\s+)/gim,
   "cs-cz": /(\s|^)(a|i|k|o|s|u|v|z)(\s+)/gim,
 };
@@ -17,7 +17,7 @@ export interface PluginOptions extends GeneralPluginOptions {
 
 export default function (options: PluginOptions): LoksePlugin {
   const patterns: Patterns = {
-    ...czechPatterns,
+    ...defaultPatterns,
     ...options.customPatterns,
   };
 
