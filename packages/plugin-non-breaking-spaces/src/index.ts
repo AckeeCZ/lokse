@@ -15,10 +15,20 @@ export interface PluginOptions extends GeneralPluginOptions {
   customPatterns?: Patterns;
 }
 
+const lowercaseKeys = (obj: Patterns) =>
+  Object.keys(obj).reduce((prev, current) => {
+    prev[current.toLowerCase()] = obj[current];
+    return prev;
+  }, {} as Patterns);
+
 export default function (options: PluginOptions): LoksePlugin {
+  const lowerCasedCustomPatterns = options.customPatterns
+    ? lowercaseKeys(options.customPatterns)
+    : null;
+
   const patterns: Patterns = {
     ...defaultPatterns,
-    ...options.customPatterns,
+    ...lowerCasedCustomPatterns,
   };
 
   return createPlugin({
