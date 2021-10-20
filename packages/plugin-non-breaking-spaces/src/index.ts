@@ -20,7 +20,7 @@ export interface PluginOptions extends GeneralPluginOptions {
   customPatterns?: CustomPatterns;
 }
 
-// We have to do thi in order to process the custom patterns from JSON plugin settings
+// We have to do this in order to process the custom patterns from JSON plugin settings
 const normalizeCustomPatterns = (patterns: CustomPatterns) => {
   const lowerCasedCustomPatterns = lowerCaseKeys(patterns);
   const regexifiedValues = regexifyValues(lowerCasedCustomPatterns);
