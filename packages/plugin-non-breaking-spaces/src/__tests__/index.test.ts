@@ -2,7 +2,7 @@ import { Line } from "@lokse/core";
 
 import nonBreakingSpacesPlugin from "..";
 
-describe("Fallback plugin", () => {
+describe("Non-breaking spaces plugin", () => {
   const logger = { warn: jest.fn(), log: jest.fn() };
 
   beforeEach(() => {
