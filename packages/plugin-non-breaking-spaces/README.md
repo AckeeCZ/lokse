@@ -18,6 +18,12 @@ $ yarn add -D @lokse/plugin-non-breaking-spaces
 
 Add it into plugins section of lokse config
 
+### Options 
+
+`useNbsp` — Replacese adds HTML entity for non-breking space instead regular non-breaking white space
+
+`customPatterns` — Adds the possibility to extend the default patterns with custom language patterns
+
 ```json
 {
     "plugins": [
