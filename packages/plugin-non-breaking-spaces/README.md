@@ -29,6 +29,7 @@ Add it into plugins section of lokse config
                 customPatterns: {
                     // provide custom regex patter without flags
                     // default flag is gim
+                    // use the language code as key (has to be the same as your lang in the spreadsheet)
                     "ad-HD": "(\\s|^)(a|i|k|o|s|u|v|z)(\\s+)"
                 }
             }
