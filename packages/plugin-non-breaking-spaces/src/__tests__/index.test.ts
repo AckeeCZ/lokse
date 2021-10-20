@@ -10,7 +10,7 @@ describe("Fallback plugin", () => {
   });
 
   describe("transformLine hook", () => {
-    it("should replace white spaces after single letter chars with non-breaking spaces", async () => {
+    it("should replace white spaces after single letter chars with non-breaking spaces in CS lang", async () => {
       const plugin = nonBreakingSpacesPlugin({ logger });
 
       const initialValue =
@@ -29,10 +29,10 @@ describe("Fallback plugin", () => {
       expect(logger.warn).not.toHaveBeenCalled();
     });
 
-    it("should work with custom pattern provided", async () => {
+    it("should work with custom pattern and lang provided", async () => {
       const plugin = nonBreakingSpacesPlugin({
         logger,
-        customPatterns: { "ad-HD": /(\s|^)(a|i|k|o|s|u|v|z)(\s+)/gim },
+        customPatterns: { "ad-HD": "(\\s|^)(a|i|k|o|s|u|v|z)(\\s+)" },
       });
 
       const initialValue =

@@ -2,7 +2,10 @@ import { createPlugin } from "@lokse/core";
 import type { GeneralPluginOptions, LoksePlugin } from "@lokse/core";
 
 interface Patterns {
-  [key: string]: RegExp;
+  [key: string]: RegExp | string;
+}
+interface CustomPatterns {
+  [key: string]: string;
 }
 
 const defaultPatterns: Patterns = {
@@ -12,23 +15,41 @@ const defaultPatterns: Patterns = {
 
 export interface PluginOptions extends GeneralPluginOptions {
   useNbsp?: boolean;
-  customPatterns?: Patterns;
+  customPatterns?: CustomPatterns;
 }
 
-const lowercaseKeys = (obj: Patterns) =>
-  Object.keys(obj).reduce((prev, current) => {
-    prev[current.toLowerCase()] = obj[current];
+const lowerCaseKeys = (patterns: CustomPatterns) =>
+  Object.keys(patterns).reduce((prev, current) => {
+    prev[current.toLowerCase()] = patterns[current];
     return prev;
-  }, {} as Patterns);
+  }, {} as CustomPatterns);
+
+const convertStringToRegex = (string: string) => new RegExp(string, "gim");
+
+const regexifyValues = (patterns: CustomPatterns) => {
+  const regexified: Patterns = {};
+
+  Object.keys(patterns).forEach((key) => {
+    regexified[key] = convertStringToRegex(patterns[key]);
+  });
+
+  return regexified;
+};
+
+// We have to do thi in order to process the custom patterns from JSON plugin settings
+const normalizeCustomPatterns = (patterns: CustomPatterns) => {
+  const lowerCasedCustomPatterns = lowerCaseKeys(patterns);
+  const regexifiedValues = regexifyValues(lowerCasedCustomPatterns);
+
+  return regexifiedValues;
+};
 
 export default function (options: PluginOptions): LoksePlugin {
-  const lowerCasedCustomPatterns = options.customPatterns
-    ? lowercaseKeys(options.customPatterns)
-    : null;
-
   const patterns: Patterns = {
     ...defaultPatterns,
-    ...lowerCasedCustomPatterns,
+    ...(options.customPatterns
+      ? normalizeCustomPatterns(options.customPatterns)
+      : {}),
   };
 
   return createPlugin({
@@ -36,10 +57,11 @@ export default function (options: PluginOptions): LoksePlugin {
       const { language } = meta;
 
       if (Object.keys(patterns).includes(language.toLowerCase())) {
-        const replaced = line.value.replace(
-          patterns[meta.language.toLowerCase()],
-          options.useNbsp ? "$1$2&nbsp;" : "$1$2\u00A0"
-        );
+        const pattern = patterns[language.toLowerCase()];
+        const replacement = options.useNbsp ? "$1$2&nbsp;" : "$1$2\u00A0";
+
+        const replaced = line.value.replace(pattern, replacement);
+
         line.setValue(replaced);
       } else {
         options.logger.warn(
