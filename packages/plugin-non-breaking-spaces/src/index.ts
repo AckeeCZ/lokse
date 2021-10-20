@@ -1,10 +1,12 @@
 import { createPlugin } from "@lokse/core";
 import type { GeneralPluginOptions, LoksePlugin } from "@lokse/core";
 
-interface Patterns {
+import { lowerCaseKeys, regexifyValues } from "./utils";
+
+export interface Patterns {
   [key: string]: RegExp | string;
 }
-interface CustomPatterns {
+export interface CustomPatterns {
   [key: string]: string;
 }
 
@@ -17,24 +19,6 @@ export interface PluginOptions extends GeneralPluginOptions {
   useNbsp?: boolean;
   customPatterns?: CustomPatterns;
 }
-
-const lowerCaseKeys = (patterns: CustomPatterns) =>
-  Object.keys(patterns).reduce((prev, current) => {
-    prev[current.toLowerCase()] = patterns[current];
-    return prev;
-  }, {} as CustomPatterns);
-
-const convertStringToRegex = (string: string) => new RegExp(string, "gim");
-
-const regexifyValues = (patterns: CustomPatterns) => {
-  const regexified: Patterns = {};
-
-  Object.keys(patterns).forEach((key) => {
-    regexified[key] = convertStringToRegex(patterns[key]);
-  });
-
-  return regexified;
-};
 
 // We have to do thi in order to process the custom patterns from JSON plugin settings
 const normalizeCustomPatterns = (patterns: CustomPatterns) => {
