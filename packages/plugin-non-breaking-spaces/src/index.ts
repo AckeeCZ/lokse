@@ -20,12 +20,6 @@ export interface PluginOptions extends GeneralPluginOptions {
   customPatterns?: CustomPatterns;
 }
 
-interface MetaInfo {
-  transformer: Transformer;
-  language: string;
-  domain?: string;
-}
-
 // We have to do this in order to process the custom patterns from JSON plugin settings
 const normalizeCustomPatterns = (patterns: CustomPatterns) => {
   const lowerCasedCustomPatterns = lowerCaseKeys(patterns);
