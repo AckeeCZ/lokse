@@ -18,6 +18,22 @@ $ yarn add -D @lokse/plugin-non-breaking-spaces
 
 Add it into plugins section of lokse config
 
+### Default patterns
+
+This plugin is using regex patterns to find whitespaces before single-letter and other characters.
+
+Patterns names are matching languages defined in your google sheet. Keys are being lowercased by the plugin so even if you provide language `cs-CZ` it will result in `cs-cs`
+
+We currently provide these patterns as default:
+
+(Feel free to contribute with more)
+
+```js
+{
+    cs: /(\s|^)(a|i|k|o|s|u|v|z)(\s+)/gim,
+    "cs-cz": /(\s|^)(a|i|k|o|s|u|v|z)(\s+)/gim,
+}
+```
 ### Options 
 
 `useNbsp` — Replacese adds HTML entity for non-breking space instead regular non-breaking white space
