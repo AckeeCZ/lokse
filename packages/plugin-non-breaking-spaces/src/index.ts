@@ -44,9 +44,7 @@ export default function (options: PluginOptions): LoksePlugin {
         const pattern = patterns[language.toLowerCase()];
         const replacement = options.useNbsp ? "$1$2&nbsp;" : "$1$2\u00A0";
 
-        const replaced = line.value.replace(pattern, replacement);
-
-        line.setValue(replaced);
+        line.setValue((value) => value.replace(pattern, replacement));
       } else {
         options.logger.warn(
           `Pattern for current language ${language} was not found`
