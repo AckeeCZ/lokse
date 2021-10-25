@@ -52,7 +52,7 @@ describe("Non-breaking spaces plugin", () => {
     it("should work with custom pattern and lang provided", async () => {
       const plugin = nonBreakingSpacesPlugin({
         logger,
-        customPatterns: { "ad-HD": "(\\s|^)(a|i|k|o|s|u|v|z)(\\s+)" },
+        customPatterns: { "ad-HD": "(a|i|k|o|s|u|v|z)" },
       });
 
       const initialValue =

@@ -38,7 +38,7 @@ We currently provide these patterns as default:
 
 `useNbsp` — Replacese adds HTML entity for non-breking space instead regular non-breaking white space
 
-`customPatterns` — Adds the possibility to extend the default patterns with custom language patterns
+`customPatterns` — Adds the possibility to extend the default patterns with custom language patterns, please notice you dont have to pass space matching `(\\s|^)` and `(\\s+)` as it is included in the plugin by default. 
 
 ```json
 {
@@ -52,7 +52,7 @@ We currently provide these patterns as default:
                     // provide custom regex patter without flags
                     // default flag is gim
                     // use the language code as key (has to be the same as your lang in the spreadsheet)
-                    "ad-HD": "(\\s|^)(a|i|k|o|s|u|v|z)(\\s+)"
+                    "ad-HD": "(a|i|k|o|s|u|v|z)"
                 }
             }
         }
