@@ -2,11 +2,31 @@ import { Line } from "@lokse/core";
 
 import nonBreakingSpacesPlugin from "..";
 
+import Transformer from "../../../core/lib/transformer/json";
+
 describe("Non-breaking spaces plugin", () => {
   const logger = { warn: jest.fn(), log: jest.fn() };
 
   beforeEach(() => {
     logger.warn.mockReset();
+  });
+
+  describe("transformFullOutput hook", () => {
+    it("should warn if language pattern is missing", async () => {
+      const plugin = nonBreakingSpacesPlugin({ logger });
+
+      const language = "ad-HD";
+
+      const meta = { transformer: Transformer, language };
+
+      await plugin.transformFullOutput("some string", meta);
+
+      expect(logger.warn).toHaveBeenCalledWith(
+        expect.stringMatching(
+          `Pattern for current language ${language} was not found`
+        )
+      );
+    });
   });
 
   describe("transformLine hook", () => {
@@ -51,24 +71,6 @@ describe("Non-breaking spaces plugin", () => {
       expect(transformedLine.value).toBe(targetValue);
 
       expect(logger.warn).not.toHaveBeenCalled();
-    });
-
-    it("should warn if language pattern is missing", async () => {
-      const plugin = nonBreakingSpacesPlugin({ logger });
-
-      const language = "ad-HD";
-
-      const line = new Line("test.key", "Záhada alobalu");
-
-      const meta = { key: line.key, language };
-
-      await plugin.transformLine(line, meta);
-
-      expect(logger.warn).toHaveBeenCalledWith(
-        expect.stringMatching(
-          `Pattern for current language ${language} was not found`
-        )
-      );
     });
 
     it("should replace white spaces after single letter chars with &nbsp;  HTML entity", async () => {

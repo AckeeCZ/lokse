@@ -20,6 +20,12 @@ export interface PluginOptions extends GeneralPluginOptions {
   customPatterns?: CustomPatterns;
 }
 
+interface MetaInfo {
+  transformer: Transformer;
+  language: string;
+  domain?: string;
+}
+
 // We have to do this in order to process the custom patterns from JSON plugin settings
 const normalizeCustomPatterns = (patterns: CustomPatterns) => {
   const lowerCasedCustomPatterns = lowerCaseKeys(patterns);
@@ -37,18 +43,27 @@ export default function (options: PluginOptions): LoksePlugin {
   };
 
   return createPlugin({
-    transformLine: (line, meta) => {
+    transformFullOutput: async (output, meta) => {
       const { language } = meta;
 
-      if (Object.keys(patterns).includes(language.toLowerCase())) {
-        const pattern = patterns[language.toLowerCase()];
-        const replacement = options.useNbsp ? "$1$2&nbsp;" : "$1$2\u00A0";
+      const pattern = patterns[language.toLowerCase()];
 
-        line.setValue((value) => value.replace(pattern, replacement));
-      } else {
+      if (!pattern) {
         options.logger.warn(
           `Pattern for current language ${language} was not found`
         );
+      }
+
+      return output;
+    },
+    transformLine: (line, meta) => {
+      const { language } = meta;
+
+      const pattern = patterns[language.toLowerCase()];
+
+      if (pattern) {
+        const replacement = options.useNbsp ? "$1$2&nbsp;" : "$1$2\u00A0";
+        line.setValue((value) => value.replace(pattern, replacement));
       }
 
       return line;
