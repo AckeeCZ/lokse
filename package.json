@@ -16,6 +16,7 @@
     "release": "lerna version $1",
     "version": "yarn changelog && code --wait CHANGELOG.md && git add CHANGELOG.md .gitmoji-changelogrc",
     "test": "jest",
+    "test:watch": "jest --watchAll",
     "update-gitmoji-config": "node ./scripts/update-gitmoji-config.js"
   },
   "devDependencies": {
