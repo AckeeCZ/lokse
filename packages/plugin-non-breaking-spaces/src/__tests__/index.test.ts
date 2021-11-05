@@ -1,8 +1,8 @@
-import { Line } from "@lokse/core";
+import { Line, transformersByFormat, OutputFormat } from "@lokse/core";
 
 import nonBreakingSpacesPlugin from "..";
 
-import Transformer from "../../../core/lib/transformer/json";
+const Transformer = transformersByFormat[OutputFormat.JSON];
 
 describe("Non-breaking spaces plugin", () => {
   const logger = { warn: jest.fn(), log: jest.fn() };
