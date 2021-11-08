@@ -1,5 +1,39 @@
 # Changelog
 
+<a name="2.1.0"></a>
+## 2.1.0 (2021-11-05)
+
+### Added
+
+- ✨ Add test command with watch option [[0bfb12b](https://github.com/AckeeCZ/lokse/commit/0bfb12bf3210d3ac7282e83076ec1d9934fbfacd)]
+- ✨ Add non-breking spaces plugin [[31c06cb](https://github.com/AckeeCZ/lokse/commit/31c06cb21f0717a218db247533c8e3cd49f57013)]
+
+### Changed
+
+- ♻️ Fix transformer import [[d1be30f](https://github.com/AckeeCZ/lokse/commit/d1be30feb2d5b4b82fd802bcdb9f73099f2e4d6a)]
+- ♻️ Add space matching to all patterns by default [[afe0141](https://github.com/AckeeCZ/lokse/commit/afe01410456ee68d295cae57a7156f2be98539dd)]
+- ♻️ Warn on missing pattern only once [[18f1c88](https://github.com/AckeeCZ/lokse/commit/18f1c88d197e57e5aa33675dfec89367b888360b)]
+- ♻️ Refactor to value.replace() [[860673d](https://github.com/AckeeCZ/lokse/commit/860673da47691744a209213e911fe626d02a5d7a)]
+- ♻️ Move utils to utils file [[a42ec5e](https://github.com/AckeeCZ/lokse/commit/a42ec5eaa52b161e42872ae2d4a2dc807cbf56fe)]
+- ♻️ Refactor to make sure all patterns keys alre lowercased [[ec91cc7](https://github.com/AckeeCZ/lokse/commit/ec91cc791bf516803c9f892d5d4e48dc497aa0c9)]
+- ♻️ Rename czechPatterns to default patterns [[1c41276](https://github.com/AckeeCZ/lokse/commit/1c4127644e3f43cfe25ab04f8b5966b1dc514e2f)]
+
+### Fixed
+
+- 🐛 Debug custom patterns passed as string from json [[294a74b](https://github.com/AckeeCZ/lokse/commit/294a74b20d2ad9ca335a5f9498d6c366539a413f)]
+- 🐛 Set version supporting plugin types in plugin template [[0cf1f6f](https://github.com/AckeeCZ/lokse/commit/0cf1f6fc7e8a026aec207f6b74731e9d65f77b4a)]
+
+### Miscellaneous
+
+- 📝 Document on default patterns [[5911d14](https://github.com/AckeeCZ/lokse/commit/5911d14915e1bcd096efd2c14b955301a3f93431)]
+- 📝 Write docs on options [[7434060](https://github.com/AckeeCZ/lokse/commit/7434060f700168f12354c96f25d36618644fe08f)]
+- 📝 Update code doc [[c44d623](https://github.com/AckeeCZ/lokse/commit/c44d6233cf2fc67c9598ea12ad4315e7153dd190)]
+- 📝 Add more doc [[80a72a6](https://github.com/AckeeCZ/lokse/commit/80a72a6da8e7d3109b91fdbd8dcd5839a038b0a5)]
+- 📝 Write docs on options [[dd4e71d](https://github.com/AckeeCZ/lokse/commit/dd4e71d02b20f33a47b4c1de2d6439dc62c71825)]
+-  Bump tmpl from 1.0.4 to 1.0.5 [[71f3a09](https://github.com/AckeeCZ/lokse/commit/71f3a09f42e3eb03775f89efea6c6839779eaf43)]
+-  Bump semver-regex from 3.1.2 to 3.1.3 [[33022d6](https://github.com/AckeeCZ/lokse/commit/33022d60a423c2062b9613cf7302a767acc7b555)]
+
+
 <a name="2.0.1"></a>
 ## 2.0.1 (2021-09-16)
 

@@ -1,16 +1,15 @@
 {
   "name": "@lokse/plugin-non-breaking-spaces",
   "description": "",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "author": {
     "name": "Filip Kubík",
     "email": "filip.kubik.dev@gmail.com"
   },
   "bugs": "https://github.com/AckeeCZ/lokse/issues",
   "dependencies": {
-    "@lokse/core": "^2.0.0"
+    "@lokse/core": "^2.1.0"
   },
-  "devDependencies": {},
   "engines": {
     "node": ">=8.0.0"
   },
