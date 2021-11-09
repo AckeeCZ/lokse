@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="2.1.1"></a>
+## 2.1.1 (2021-11-09)
+
+### Miscellaneous
+
+- 📝 Fix typos and improve doc on plugin-non-breaking-spaces [[8090d47](https://github.com/AckeeCZ/lokse/commit/8090d47b244945cb3cb14cb81002b6a977ad6913)]
+
+
 <a name="2.1.0"></a>
 ## 2.1.0 (2021-11-05)
 
