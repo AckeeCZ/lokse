@@ -93,7 +93,7 @@ class Update extends Base {
       const linesByDomain = allWorksheetLines.reduce(
         (domainLines: { [domain: string]: Line[] }, line: Line) => {
           const domain =
-            domains.find((d) => line.key.startsWith(d)) || OTHER_DOMAIN;
+            domains.find((d) => line.key.startsWith(`${d}.`)) || OTHER_DOMAIN;
 
           domainLines[domain] = domainLines[domain] ?? [];
           domainLines[domain].push(line);
