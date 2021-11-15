@@ -20,6 +20,7 @@ Maybe it was an inspiration. But the truth is, it's a little pun. The has evolve
 * [`@lokse/core`](./packages/core) - Core functionality handling fetch of sheet, extracting, parsing data and writing in output format.
 * [`@lokse/plugin-prettier`](./packages/plugin-prettier) - Plugin used to format output translations file using Prettier.
 * [`@lokse/plugin-fallback`](./packages/plugin-fallback) - Plugin for fallbacking missing translations to the default language translation.
+* [`@lokse/plugin-non-breaking-spaces`](./packages/plugin-non-breaking-spaces) - Plugin for replacing white spaces after single letter characters with non-breking space.
 	
 ## Credits
 
