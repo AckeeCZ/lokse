@@ -1,7 +1,7 @@
 {
   "name": "lokse",
   "description": "Tool to efficient usage of translations stored in google spreadsheet",
-  "version": "2.1.0",
+  "version": "2.1.2",
   "author": {
     "name": "Lukas Horak",
     "email": "horaklukas@centrum.cz"
