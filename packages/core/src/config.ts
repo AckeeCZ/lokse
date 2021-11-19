@@ -30,7 +30,7 @@ const explorerSync = cosmiconfigSync(NAME, {
   },
 });
 
-export type ConfigType = {
+export type LokseConfig = {
   sheetId?: string;
   dir?: string;
   languages?: string[];
@@ -41,9 +41,9 @@ export type ConfigType = {
   plugins?: (PluginName | PluginDefinition)[];
 };
 
-export function getConfig(
+export function get(
   searchFrom: string | undefined = process.env.LOKSE_CONFIG_PATH
-): undefined | null | ConfigType {
+): undefined | null | LokseConfig {
   const result = explorerSync.search(searchFrom);
   return result?.config;
 }

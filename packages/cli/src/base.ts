@@ -2,12 +2,12 @@ import { Command } from "@oclif/command";
 import * as updateNotifier from "update-notifier";
 
 import { getConfig } from "@lokse/core";
-import type { ConfigType } from "@lokse/core";
+import type { LokseConfig } from "@lokse/core";
 
 const pkg = require("../package.json");
 
 export default abstract class Base extends Command {
-  protected conf: undefined | null | ConfigType;
+  protected conf: undefined | null | LokseConfig;
 
   async init(): Promise<void> {
     const notifier = updateNotifier({
