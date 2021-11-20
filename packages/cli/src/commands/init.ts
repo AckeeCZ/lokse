@@ -30,16 +30,18 @@ class Init extends Base {
       return;
     }
 
-    // TODO check if package.json availalble - ensure we're in project root
-
     const rootDir = process.cwd();
 
+    const choices = Object.entries(configTypes).map(([type, templateName]) => ({
+      name: `${type} (${templateName.replace(".tmpl", "")})`,
+      value: type,
+    }));
     const answer = await prompt<{ type: keyof typeof configTypes }>([
       {
         type: "list",
         name: "type",
         message: "What kind of config do you wish?",
-        choices: Object.keys(configTypes),
+        choices,
         default: "typescript",
       },
     ]);
@@ -50,15 +52,43 @@ class Init extends Base {
     const configTemplate = await fs.readFileAsync(templatePath);
     const createConfig = template(configTemplate);
 
-    // TODO - prompt for values
-    const initValues = {
-      sheetId: "",
-      outDir: "",
-      languages: [],
-      column: "",
-    };
+    const initValues = await prompt<{
+      sheetId: string;
+      outDir: string;
+      languagesString: string;
+      column: string;
+    }>([
+      {
+        type: "input",
+        name: "sheetId",
+        message: "What is the sheet id?",
+        default: "",
+      },
+      {
+        type: "input",
+        name: "outDir",
+        message: "What's the target dir for translations?",
+        default: "",
+      },
+      {
+        type: "input",
+        name: "languagesString",
+        message: "What are supported languages? (comma separated)",
+        default: null,
+      },
+      {
+        type: "input",
+        name: "column",
+        message: "What is the name of column holding keys?",
+        default: "",
+      },
+    ]);
 
-    const config = createConfig(initValues);
+    const languages = initValues.languagesString?.split(",") ?? [];
+    const config = createConfig({
+      ...initValues,
+      languages,
+    });
     const configFilename = templateName.replace(".tmpl", "");
 
     await fs.writeFileAsync(path.resolve(rootDir, configFilename), config);

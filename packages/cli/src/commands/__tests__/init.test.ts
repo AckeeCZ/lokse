@@ -48,6 +48,7 @@ describe("init command", () => {
       expect(logMock).toHaveBeenCalledWith(
         expect.stringMatching(/already exists/)
       );
+      expect(promptMock).not.toHaveBeenCalled();
       expect(writeFileAsyncMock).not.toHaveBeenCalled();
     });
 
@@ -55,7 +56,14 @@ describe("init command", () => {
     .setupMocks()
     .do(() => {
       explorerMock.search.mockReturnValue(null);
-      promptMock.mockReturnValue({ type: "typescript" });
+      promptMock
+        .mockReturnValueOnce({ type: "typescript" })
+        .mockReturnValueOnce({
+          sheetId: "",
+          outDir: "",
+          languagesString: null,
+          column: "",
+        });
     })
     .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
     .command(["init"])
@@ -86,7 +94,14 @@ describe("init command", () => {
     .setupMocks()
     .do(() => {
       explorerMock.search.mockReturnValue(null);
-      promptMock.mockReturnValue({ type: "javascript" });
+      promptMock
+        .mockReturnValueOnce({ type: "javascript" })
+        .mockReturnValueOnce({
+          sheetId: "",
+          outDir: "",
+          languagesString: null,
+          column: "",
+        });
     })
     .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
     .command(["init"])
@@ -113,4 +128,47 @@ describe("init command", () => {
         );
       }
     );
+
+  test
+    .setupMocks()
+    .do(() => {
+      explorerMock.search.mockReturnValue(null);
+      promptMock
+        .mockReturnValueOnce({ type: "typescript" })
+        .mockReturnValueOnce({
+          sheetId: "fake-sheet-id",
+          outDir: "localesDir",
+          languagesString: "cs,en",
+          column: "web",
+        });
+    })
+    .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
+    .command(["init"])
+    .it("use all inputed values to create config", () => {
+      expect(promptMock).toHaveBeenCalledWith([
+        expect.objectContaining({
+          choices: [
+            { name: "typescript (lokse.config.ts)", value: "typescript" },
+            { name: "javascript (lokse.config.js)", value: "javascript" },
+          ],
+        }),
+      ]);
+      expect(writeFileAsyncMock).toHaveBeenCalledWith(
+        `/ROOT_PKG_PATH/lokse.config.ts`,
+        dedent`import type { LokseConfig } from "lokse";
+        
+        const config: LokseConfig = {
+            sheetId: "fake-sheet-id",
+            dir: "localesDir",
+            languages: ["cs","en"],
+            column: "web",
+        };
+
+        export default config;`
+      );
+      expect(logMock).toHaveBeenCalledTimes(1);
+      expect(logMock).toHaveBeenCalledWith(
+        expect.stringMatching(/generated config/i)
+      );
+    });
 });
