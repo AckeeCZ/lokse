@@ -1,0 +1,11 @@
+/**
+ * @type {import('lokse').LokseConfig}
+ */
+const config = {
+    sheetId: "<%= sheetId %>",
+    dir: "<%= outDir %>",
+    languages: <%= JSON.stringify(languages) %>,
+    column: "<%= column %>",
+};
+
+module.exports = config;
