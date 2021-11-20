@@ -13,6 +13,7 @@ import logger from "../logger";
 const configTypes = {
   typescript: "lokse.config.ts.tmpl",
   javascript: "lokse.config.js.tmpl",
+  "rc file": ".lokserc.tmpl",
 } as const;
 
 class Init extends Base {

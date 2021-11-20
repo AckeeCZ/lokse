@@ -133,6 +133,35 @@ describe("init command", () => {
     .setupMocks()
     .do(() => {
       explorerMock.search.mockReturnValue(null);
+      promptMock.mockReturnValueOnce({ type: "rc file" }).mockReturnValueOnce({
+        sheetId: "",
+        outDir: "",
+        languagesString: null,
+        column: "",
+      });
+    })
+    .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
+    .command(["init"])
+    .it("creates rc config when selected rc file config type", () => {
+      expect(writeFileAsyncMock).toHaveBeenCalledWith(
+        `/ROOT_PKG_PATH/.lokserc`,
+        dedent`{
+            "sheetId": "",
+            "dir": "",
+            "languages": [],
+            "column": ""
+        }`
+      );
+      expect(logMock).toHaveBeenCalledTimes(1);
+      expect(logMock).toHaveBeenCalledWith(
+        expect.stringMatching(/generated config/i)
+      );
+    });
+
+  test
+    .setupMocks()
+    .do(() => {
+      explorerMock.search.mockReturnValue(null);
       promptMock
         .mockReturnValueOnce({ type: "typescript" })
         .mockReturnValueOnce({
@@ -150,6 +179,7 @@ describe("init command", () => {
           choices: [
             { name: "typescript (lokse.config.ts)", value: "typescript" },
             { name: "javascript (lokse.config.js)", value: "javascript" },
+            { name: "rc file (.lokserc)", value: "rc file" },
           ],
         }),
       ]);
