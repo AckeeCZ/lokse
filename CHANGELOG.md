@@ -1,5 +1,18 @@
 # Changelog
 
+<a name="2.1.4"></a>
+## 2.1.4 (2022-01-13)
+
+### Changed
+
+- ⬆️ Upgrade eslint packages [[7c17834](https://github.com/AckeeCZ/lokse/commit/7c17834b78944091a446bcf80d0496a352966842)]
+- ♻️ Fix linter errors/warnings after eslint upgrade [[131a0ce](https://github.com/AckeeCZ/lokse/commit/131a0cee46add54788b4836cb33b1ec42d06020f)]
+
+### Miscellaneous
+
+- 🤡 Fix mock of write sheet service in update command tests [[e9f82fc](https://github.com/AckeeCZ/lokse/commit/e9f82fc68eaa1f27b214745b6568a7bfd7c3a09c)]
+
+
 <a name="2.1.3"></a>
 ## 2.1.3 (2022-01-13)
 

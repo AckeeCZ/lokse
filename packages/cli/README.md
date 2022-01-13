@@ -20,7 +20,7 @@ $ npm install -g lokse
 $ lokse COMMAND
 running command...
 $ lokse (-v|--version|version)
-lokse/2.1.3 darwin-x64 node-v14.18.0
+lokse/2.1.4 darwin-x64 node-v14.18.0
 $ lokse --help [COMMAND]
 USAGE
   $ lokse COMMAND
@@ -197,7 +197,7 @@ EXAMPLE
   $ lokse open -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk
 ```
 
-_See code: [lib/commands/open.js](https://github.com/AckeeCZ/lokse/blob/v2.1.3/lib/commands/open.js)_
+_See code: [lib/commands/open.js](https://github.com/AckeeCZ/lokse/blob/v2.1.4/lib/commands/open.js)_
 
 ## `lokse update`
 
@@ -225,5 +225,5 @@ EXAMPLES
   $ lokse update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web
 ```
 
-_See code: [lib/commands/update.js](https://github.com/AckeeCZ/lokse/blob/v2.1.3/lib/commands/update.js)_
+_See code: [lib/commands/update.js](https://github.com/AckeeCZ/lokse/blob/v2.1.4/lib/commands/update.js)_
 <!-- commandsstop -->
