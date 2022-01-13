@@ -1,4 +1,4 @@
-import { GoogleSpreadsheetRow } from "google-spreadsheet";
+import type { GoogleSpreadsheetRow } from "google-spreadsheet";
 import { Line } from "@lokse/core";
 
 import fallbackPluginFactory from "..";

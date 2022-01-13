@@ -8,7 +8,7 @@ const pkg = require("../package.json");
 export default abstract class Base extends Command {
   protected conf: undefined | null | ConfigType;
 
-  async init() {
+  async init(): Promise<void> {
     const notifier = updateNotifier({
       pkg,
       updateCheckInterval: 1000,

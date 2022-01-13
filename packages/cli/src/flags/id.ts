@@ -14,7 +14,7 @@ export const flag = flags.build({
   },
 });
 
-export const invariant = (id?: string) => {
+export const invariant = (id?: string): void => {
   if (!id) {
     throw new MissingFlagValue("Sheet id");
   }

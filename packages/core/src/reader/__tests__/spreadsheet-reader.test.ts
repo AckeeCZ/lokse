@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import SpreadsheetReader from "../spreadsheet-reader";
 import WorksheetReader from "../worksheet-reader";
@@ -13,6 +14,18 @@ import { PluginsRunner } from "../../plugins";
 const GoogleSpreadsheetMock = GoogleSpreadsheet as jest.Mock;
 
 jest.mock("google-spreadsheet");
+
+const makeFakeLine = (id: string) => {
+  return { id: `line_${id}` } as unknown as Line;
+};
+
+const makeFakeWorksheet = (title: string, lines: Line[]) => {
+  const fakeWorksheet = {
+    title,
+    extractLines: jest.fn().mockReturnValue(lines),
+  };
+  return fakeWorksheet as unknown as Worksheet;
+};
 
 describe("SpreadsheetReader", () => {
   const testLogger = {
@@ -90,18 +103,6 @@ describe("SpreadsheetReader", () => {
   });
 
   describe("read", () => {
-    const makeFakeLine = (id: string) => {
-      return { id: `line_${id}` } as unknown as Line;
-    };
-
-    const makeFakeWorksheet = (title: string, lines: Line[]) => {
-      const fakeWorksheet = {
-        title,
-        extractLines: jest.fn().mockReturnValue(lines),
-      };
-      return fakeWorksheet as unknown as Worksheet;
-    };
-
     const linesSet1 = [makeFakeLine("1_1"), makeFakeLine("1_2")];
 
     const linesSet2 = [
@@ -204,7 +205,7 @@ describe("SpreadsheetReader", () => {
       jest.spyOn(reader, "fetchSheets").mockResolvedValue(sheetsList);
 
       await expect(reader.read("key", "en-gb")).resolves.toEqual({
-        fakeSheet1: linesSet1.concat(linesSet3),
+        fakeSheet1: [...linesSet1, ...linesSet3],
         fakeSheet2: linesSet2,
       });
       expect(testLogger.warn).toHaveBeenCalledTimes(1);

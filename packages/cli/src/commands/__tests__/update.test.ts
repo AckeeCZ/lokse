@@ -78,7 +78,6 @@ describe("update command", () => {
   const mockSheetLines3 = [{ key: "sheet3.line_1" }, { key: "sheet3.line_2" }];
 
   const test = oclifTest.register("setupMocks", () => ({
-    /* eslint-disable no-console */
     run() {
       ReaderMock.mockClear();
       WorksheetReaderMock.mockClear();

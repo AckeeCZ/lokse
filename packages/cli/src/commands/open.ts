@@ -17,7 +17,7 @@ class Open extends Base {
     id: cliFlags.id.flag(),
   };
 
-  async run() {
+  async run(): Promise<void> {
     const { flags } = this.parse(Open);
 
     const sheetId = flags.id;

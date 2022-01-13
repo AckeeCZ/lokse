@@ -11,8 +11,8 @@ export interface CustomPatterns {
 }
 
 const defaultPatterns: Patterns = {
-  cs: /(\s|^)(a|i|k|o|s|u|v|z)(\s+)/gim,
-  "cs-cz": /(\s|^)(a|i|k|o|s|u|v|z)(\s+)/gim,
+  cs: /(\s|^)([aikosuvz])(\s+)/gim,
+  "cs-cz": /(\s|^)([aikosuvz])(\s+)/gim,
 };
 
 export interface PluginOptions extends GeneralPluginOptions {

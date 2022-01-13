@@ -52,14 +52,14 @@ function loadPlugin(
 export type PluginName = string;
 export interface PluginDefinition {
   name: PluginName;
-  options: object;
+  options: Record<string, any>;
 }
 
 export function loadPlugins(
-  plugins: (PluginName | PluginDefinition)[] | unknown = [],
+  plugins: (PluginName | PluginDefinition)[] | unknown,
   options: GeneralPluginOptions,
   meta: GeneralPluginMeta
-) {
+): PluginsRunner {
   let loadedPlugins: NamedLoksePlugin[];
 
   if (Array.isArray(plugins)) {

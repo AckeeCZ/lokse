@@ -57,7 +57,7 @@ const pluginDefaults: LoksePlugin = {
   readTranslation: identity,
 };
 
-export function createPlugin(plugin: Partial<LoksePlugin>) {
+export function createPlugin(plugin: Partial<LoksePlugin>): LoksePlugin {
   return {
     ...pluginDefaults,
     ...plugin,

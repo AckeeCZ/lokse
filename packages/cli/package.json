@@ -36,7 +36,9 @@
   "devDependencies": {
     "@oclif/dev-cli": "^1",
     "@oclif/test": "^1",
-    "@types/node": "^10"
+    "@types/node": "^10",
+    "@types/jest-when": "^2.7.2",
+    "jest-when": "^3.0.1"
   },
   "engines": {
     "node": ">=8.0.0"

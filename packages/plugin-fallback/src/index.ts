@@ -16,7 +16,7 @@ export default function (
   options: PluginOptions,
   { languages }: GeneralPluginMeta
 ): LoksePlugin {
-  const { defaultLanguage } = options;
+  const { defaultLanguage, logger } = options;
 
   if (!defaultLanguage) {
     throw new PluginError("Default language must be supplied");
@@ -39,14 +39,13 @@ export default function (
     async readTranslation(line, meta) {
       if (line.key && !line.value) {
         const defaultLanguageKey =
-          Object.keys(meta.row).find(isDefaultLang) ?? NOT_FOUND_KEY;
+          Object.keys(meta.row).find((key) => isDefaultLang(key)) ??
+          NOT_FOUND_KEY;
 
         const fallbackLanguageValue = meta.row[defaultLanguageKey] ?? "";
 
         if (logMissingFallback && !fallbackLanguageValue) {
-          options.logger.warn(
-            `Fallback translation of key "${meta.key}" not found`
-          );
+          logger.warn(`Fallback translation of key "${meta.key}" not found`);
         }
 
         line.setValue(fallbackLanguageValue);

@@ -12,7 +12,7 @@ import type { Logger } from "../logger";
 export class InvalidFilterError extends Error {
   public filterStringified: string;
 
-  constructor(filter: any) {
+  constructor(filter: unknown) {
     const filterStringified = JSON.stringify(filter);
     super(
       `💥 Invalid sheets filter provided: ${filterStringified}. Look at the supported filter format reference.`
@@ -89,7 +89,7 @@ class WorksheetReader {
   static isSheetInTheList(
     worksheet: GoogleSpreadsheetWorksheet,
     list: SheetIndexOrTitle[]
-  ) {
+  ): boolean {
     return list.some((sheetFilter: string | number) => {
       if (sheetFilter === WorksheetReader.ALL_SHEETS_FILTER) {
         return true;
@@ -119,13 +119,13 @@ class WorksheetReader {
     return isIncluded && !isExcluded;
   }
 
-  async loadSheet(worksheet: GoogleSpreadsheetWorksheet) {
+  async loadSheet(worksheet: GoogleSpreadsheetWorksheet): Promise<Worksheet> {
     const rows = await worksheet.getRows();
 
     return new Worksheet(worksheet.title, worksheet.headerValues, rows);
   }
 
-  async read(spreadsheet: GoogleSpreadsheet) {
+  async read(spreadsheet: GoogleSpreadsheet): Promise<Worksheet[]> {
     const worksheets = spreadsheet.sheetsByIndex.filter((worksheet) =>
       this.shouldUseWorksheet(worksheet)
     );
@@ -148,7 +148,9 @@ class WorksheetReader {
       this.logger.warn(`${message}. `);
     }
 
-    const sheets = await all(worksheets.map(this.loadSheet));
+    const sheets = await all(
+      worksheets.map((worksheet) => this.loadSheet(worksheet))
+    );
 
     return sheets;
   }

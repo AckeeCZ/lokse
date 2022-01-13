@@ -90,26 +90,23 @@ class Update extends Base {
       const allWorksheetLines = Object.values(linesByWorkshet).flat();
       const OTHER_DOMAIN = "__other__";
 
-      const linesByDomain = allWorksheetLines.reduce(
-        (domainLines: { [domain: string]: Line[] }, line: Line) => {
-          const domain =
-            domains.find((d) => line.key.startsWith(`${d}.`)) || OTHER_DOMAIN;
+      const linesByDomain: { [domain: string]: Line[] } = {};
 
-          domainLines[domain] = domainLines[domain] ?? [];
-          domainLines[domain].push(line);
+      for (const line of allWorksheetLines) {
+        const domain =
+          domains.find((d) => line.key.startsWith(`${d}.`)) || OTHER_DOMAIN;
 
-          return domainLines;
-        },
-        {}
-      );
+        linesByDomain[domain] = linesByDomain[domain] ?? [];
+        linesByDomain[domain].push(line);
+      }
 
-      domains
-        .filter((domain) => linesByDomain[domain].length === 0)
-        .forEach((domain) => {
+      for (const domain of domains) {
+        if (linesByDomain[domain].length === 0) {
           this.warn(
             `😐 Received no lines for language ${langName} and domain ${domain}`
           );
-        });
+        }
+      }
 
       return (
         Object.keys(linesByDomain)
@@ -128,7 +125,7 @@ class Update extends Base {
   }
 
   // eslint-disable-next-line complexity
-  async run() {
+  async run(): Promise<void> {
     const { flags } = this.parse(Update);
 
     const sheetId = flags.id ?? "";
@@ -161,14 +158,19 @@ class Update extends Base {
     try {
       worksheetReader = new WorksheetReader(sheets, { logger });
     } catch (error) {
-      if (error instanceof InvalidFilterError) {
-        throw new IncorrectFlagValue(error.message);
-      } else {
-        throw error;
-      }
+      const normalizedError =
+        error instanceof InvalidFilterError
+          ? new IncorrectFlagValue(error.message)
+          : error;
+
+      throw normalizedError;
     }
 
-    const plugins = loadPlugins(this.conf?.plugins, { logger }, { languages });
+    const plugins = loadPlugins(
+      this.conf?.plugins ?? [],
+      { logger },
+      { languages }
+    );
     const outputTransformer = transformersByFormat[format];
     const reader = new Reader(sheetId, worksheetReader, plugins, {
       logger,

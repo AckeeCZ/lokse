@@ -24,7 +24,7 @@ class FileWriter {
     lines: Line[],
     transformer: Transformer,
     encoding = "utf8"
-  ) {
+  ): Promise<string> {
     let fileContent = "";
     const { language, domain, outputDir } = fileInfo;
     const fileName = transformer.getFileName(language, domain);
@@ -62,7 +62,7 @@ class FileWriter {
     lines: Line[],
     transformer: Transformer,
     meta: TransformLineMeta
-  ) {
+  ): Promise<string> {
     let valueToInsert = "";
 
     const plurals: { [pluralKey: string]: Line[] } = {};
@@ -88,6 +88,7 @@ class FileWriter {
         if (!plurals[line.key]) {
           plurals[line.key] = [];
         }
+
         plurals[line.key].push(line);
       } else {
         valueToInsert += transformer.transformKeyValue(line.key, line.value);
@@ -106,6 +107,7 @@ class FileWriter {
         if (typeof transformer.transformPluralsValues === "function") {
           return transformer.transformPluralsValues(key, plural);
         }
+
         return "";
       })
       .join(EOL);

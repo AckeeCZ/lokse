@@ -22,7 +22,7 @@ export default class Worksheet {
     keyColumn: string,
     langColumn: string,
     plugins: PluginsRunner
-  ) {
+  ): Promise<Line[]> {
     let keyColumnId = "";
     let langColumnId = "";
 
@@ -30,6 +30,7 @@ export default class Worksheet {
       if (isEqualCaseInsensitive(headerKey, keyColumn)) {
         keyColumnId = headerKey;
       }
+
       if (isEqualCaseInsensitive(headerKey, langColumn)) {
         langColumnId = headerKey;
       }

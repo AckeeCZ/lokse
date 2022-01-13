@@ -1,7 +1,22 @@
 {
-  "extends": [
-    "oclif",
-    "oclif-typescript",
-    "prettier"
-  ]
+  "extends": ["oclif", "oclif-typescript", "prettier"],
+  "rules": {
+    "unicorn/prefer-node-protocol": "off",
+    "node/no-extraneous-import": "off",
+    "unicorn/prefer-module": "off",
+    "unicorn/import-style": [
+      "error",
+      {
+        "styles": {
+          "path": {
+            "namespace": true
+          }
+        }
+      }
+    ],
+    "no-warning-comments": [
+      "warn",
+      { "terms": ["fixme", "xxx"], "location": "start" }
+    ]
+  }
 }

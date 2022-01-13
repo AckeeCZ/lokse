@@ -2,9 +2,9 @@ import { EOL } from "os";
 import * as mkdirp from "mkdirp";
 
 const fs = {
-  accessAsync: jest.fn().mockResolvedValue(undefined),
+  accessAsync: jest.fn(),
   readFileAsync: jest.fn().mockResolvedValue(""),
-  writeFileAsync: jest.fn().mockResolvedValue(undefined),
+  writeFileAsync: jest.fn(),
 };
 
 jest.mock("fs");
@@ -29,6 +29,7 @@ const plugin = {
   pluginName: "test",
   transformFullOutput: jest.fn(),
   transformLine: jest.fn(),
+  readTranslation: jest.fn(),
 };
 const plugins = new PluginsRunner([plugin], { logger });
 

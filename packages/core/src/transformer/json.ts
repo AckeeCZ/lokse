@@ -18,7 +18,7 @@ const jsonTransformer: Transformer = {
     return `  "${key}" : "${normalizedValue}",`;
   },
   async insert(_, newValues) {
-    newValues = newValues.substring(0, newValues.length - 1);
+    newValues = newValues.slice(0, -1);
 
     return `${EOL}{${EOL}${newValues}${EOL}}`;
   },
