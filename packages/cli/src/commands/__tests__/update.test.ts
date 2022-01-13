@@ -746,7 +746,11 @@ describe("update command", () => {
 
         when(mockWrite)
           .calledWith(
-            `/ROOT_PKG_PATH/${translationsDir}/sheet2-title.${languages[0]}.json`,
+            {
+              language: languages[0],
+              domain: "sheet2-title",
+              outputDir: `/ROOT_PKG_PATH/${translationsDir}`,
+            },
             mockSheetLines2,
             jsonTransformer
           )
@@ -755,7 +759,11 @@ describe("update command", () => {
           });
         when(mockWrite)
           .calledWith(
-            `/ROOT_PKG_PATH/${translationsDir}/sheet1-title.${languages[1]}.json`,
+            {
+              language: languages[1],
+              domain: "sheet1-title",
+              outputDir: `/ROOT_PKG_PATH/${translationsDir}`,
+            },
             mockSheetLines,
             jsonTransformer
           )
