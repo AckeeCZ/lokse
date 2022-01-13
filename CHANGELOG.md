@@ -1,5 +1,14 @@
 # Changelog
 
+<a name="2.1.3"></a>
+## 2.1.3 (2022-01-13)
+
+### Changed
+
+- ⬆️ Upgrade google-spreadsheet to v 3.2.0 [[73f4425](https://github.com/AckeeCZ/lokse/commit/73f442520b66e53fcc7db05759dd77d002b8b99e)]
+- ⬆️ Upgrade dependencies globally with yarn upgrade [[8397d3c](https://github.com/AckeeCZ/lokse/commit/8397d3c5647073695e52f60a58aa8265cf2c8c62)]
+
+
 <a name="2.1.2"></a>
 ## 2.1.2 (2021-11-15)
 
