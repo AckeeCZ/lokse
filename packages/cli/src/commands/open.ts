@@ -1,7 +1,7 @@
 import { flags } from "@oclif/command";
 import * as open from "open";
 
-import { NAME } from "../constants";
+import { NAME } from "@lokse/core";
 import Base from "../base";
 import * as cliFlags from "../flags";
 

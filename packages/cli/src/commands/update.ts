@@ -15,10 +15,10 @@ import {
   Line,
   FatalError,
   loadPlugins,
+  NAME,
 } from "@lokse/core";
 import type { WorksheetLinesByTitle } from "@lokse/core";
 
-import { NAME } from "../constants";
 import logger from "../logger";
 import Base from "../base";
 

@@ -1,9 +1,9 @@
 import { cosmiconfigSync } from "cosmiconfig";
 import typeScriptLoader from "cosmiconfig-ts-loader";
-import { OutputFormat } from "@lokse/core";
-import type { PluginName, PluginDefinition, SheetsFilter } from "@lokse/core";
 
-import { NAME } from "./constants";
+import { OutputFormat, NAME } from "./constants";
+import type { PluginDefinition, PluginName } from "./plugins";
+import type { SheetsFilter } from "./reader";
 
 // TODO: use async API once custom oclif flags will be asynchronous
 const explorerSync = cosmiconfigSync(NAME, {
@@ -41,7 +41,7 @@ export type ConfigType = {
   plugins?: (PluginName | PluginDefinition)[];
 };
 
-export function get(): undefined | null | ConfigType {
+export function getConfig(): undefined | null | ConfigType {
   const result = explorerSync.search();
   return result?.config;
 }

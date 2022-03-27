@@ -1,13 +1,13 @@
 import { flags } from "@oclif/command";
+import { getConfig } from "@lokse/core";
 import { MissingFlagValue } from "./errors";
-import * as config from "../config";
 
 export const flag = flags.build({
   char: "i",
   description: "spreadsheet id",
 
   default: ({ flags }) => {
-    const conf = config.get();
+    const conf = getConfig();
     const id = process.env.SPREADSHEET_ID ?? flags.id ?? conf?.sheetId;
 
     return id;
