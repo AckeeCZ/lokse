@@ -22,7 +22,7 @@ import type { WorksheetLinesByTitle } from "@lokse/core";
 import logger from "../logger";
 import Base from "../base";
 
-import * as cliFlags from "../flags";
+import { id as idFlag } from "../flags";
 import { MissingFlagValue, IncorrectFlagValue } from "../flags/errors";
 
 flat.shim();
@@ -40,7 +40,7 @@ class Update extends Base {
 
   static flags = {
     help: flags.help({ char: "h" }),
-    id: cliFlags.id.flag(),
+    id: idFlag.flag(),
     dir: flags.string({ char: "d", name: "dir", description: "output folder" }),
     languages: flags.string({
       char: "l",
@@ -137,7 +137,7 @@ class Update extends Base {
     const splitTranslations: boolean | string[] =
       this.conf?.splitTranslations ?? false;
 
-    cliFlags.id.invariant(sheetId);
+    idFlag.invariant(sheetId);
 
     if (!dir) {
       throw new MissingFlagValue("Output directory");

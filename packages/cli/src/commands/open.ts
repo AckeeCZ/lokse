@@ -1,9 +1,9 @@
 import { flags } from "@oclif/command";
 import * as open from "open";
 
-import { NAME } from "@lokse/core";
+import { NAME, createSheetUrl } from "@lokse/core";
 import Base from "../base";
-import * as cliFlags from "../flags";
+import { id as idFlag } from "../flags";
 
 class Open extends Base {
   static description = "open localization spreadsheet in default browser";
@@ -14,7 +14,7 @@ class Open extends Base {
 
   static flags = {
     help: flags.help({ char: "h" }),
-    id: cliFlags.id.flag(),
+    id: idFlag.flag(),
   };
 
   async run(): Promise<void> {
@@ -22,9 +22,9 @@ class Open extends Base {
 
     const sheetId = flags.id;
 
-    cliFlags.id.invariant(sheetId);
+    idFlag.invariant(sheetId);
 
-    await open(`https://docs.google.com/spreadsheets/d/${sheetId}`);
+    await open(createSheetUrl(sheetId));
   }
 }
 
