@@ -41,7 +41,9 @@ export type ConfigType = {
   plugins?: (PluginName | PluginDefinition)[];
 };
 
-export function getConfig(): undefined | null | ConfigType {
-  const result = explorerSync.search();
+export function getConfig(
+  searchFrom: string | undefined = process.env.LOKSE_CONFIG_PATH
+): undefined | null | ConfigType {
+  const result = explorerSync.search(searchFrom);
   return result?.config;
 }
