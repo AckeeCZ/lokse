@@ -22,7 +22,7 @@ class Open extends Base {
 
     const sheetId = flags.id;
 
-    idFlag.invariant(sheetId);
+    idFlag.invariant(sheetId, "open");
 
     await open(createSheetUrl(sheetId));
   }

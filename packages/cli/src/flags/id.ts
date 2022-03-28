@@ -1,6 +1,7 @@
 import { flags } from "@oclif/command";
 import { getConfig } from "@lokse/core";
 import { MissingFlagValue } from "./errors";
+import type { Action } from "./errors";
 
 export const flag = flags.build({
   char: "i",
@@ -14,8 +15,11 @@ export const flag = flags.build({
   },
 });
 
-export function invariant(id: string | undefined): asserts id is string {
+export function invariant(
+  id: string | undefined,
+  action: Action
+): asserts id is string {
   if (!id) {
-    throw new MissingFlagValue("Sheet id");
+    throw new MissingFlagValue("Sheet id", action);
   }
 }

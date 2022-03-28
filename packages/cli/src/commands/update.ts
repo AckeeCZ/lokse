@@ -137,14 +137,14 @@ class Update extends Base {
     const splitTranslations: boolean | string[] =
       this.conf?.splitTranslations ?? false;
 
-    idFlag.invariant(sheetId);
+    idFlag.invariant(sheetId, "update");
 
     if (!dir) {
-      throw new MissingFlagValue("Output directory");
+      throw new MissingFlagValue("Output directory", "update");
     }
 
     if (!column) {
-      throw new MissingFlagValue(`Keys column`);
+      throw new MissingFlagValue(`Keys column`, "update");
     }
 
     if (!Array.isArray(languages)) {
