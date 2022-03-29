@@ -2,7 +2,7 @@
   "name": "lokse",
   "displayName": "Lokse",
   "description": "Run Lokse commands from VsCode",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "license": "MIT",
   "repository": "https://github.com/AckeeCZ/lokse",
   "engines": {
