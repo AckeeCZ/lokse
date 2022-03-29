@@ -1,7 +1,8 @@
 import { Command } from "@oclif/command";
 import * as updateNotifier from "update-notifier";
 
-import { get as getConfig, ConfigType } from "./config";
+import { getConfig } from "@lokse/core";
+import type { ConfigType } from "@lokse/core";
 
 const pkg = require("../package.json");
 

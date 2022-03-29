@@ -8,3 +8,6 @@ export const isEqualCaseInsensitive = (
   string1: string,
   string2: string
 ): boolean => string1.toLowerCase() === string2.toLowerCase();
+
+export const createSheetUrl = (sheetId: string): string =>
+  `https://docs.google.com/spreadsheets/d/${sheetId}`;
