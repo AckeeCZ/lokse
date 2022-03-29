@@ -35,7 +35,8 @@
     "pretest": "yarn compile && yarn lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
-    "deploy": "vsce publish --yarn"
+    "deploy": "vsce publish --yarn",
+    "release": "yarn version"
   },
   "dependencies": {
     "execa": "^5.1.0"
