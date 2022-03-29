@@ -17,7 +17,7 @@ describe("open command", () => {
     .command(["open"])
     .catch((error) => {
       expect(error.message).toEqual(
-        `💥 Sheet id is required for updating translations`
+        `💥 Sheet id is required for open of translations`
       );
     })
     .it("throws when id not provided");

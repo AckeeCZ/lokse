@@ -15,11 +15,17 @@ import { noExitCliInvariant } from "../../invariants";
 
 const jsonTransformer = transformersByFormat[OutputFormat.JSON];
 
-jest.mock("cosmiconfig");
-const explorerMock = {
-  search: jest.fn(),
-};
-(cosmiconfigSync as jest.Mock).mockReturnValue(explorerMock);
+jest.mock("cosmiconfig", () => {
+  const mockExplorer = {
+    search: jest.fn(),
+  };
+
+  return {
+    cosmiconfigSync: jest.fn().mockReturnValue(mockExplorer),
+  };
+});
+
+jest.mock("cosmiconfig-ts-loader");
 
 const mockOraInstance = {
   start: jest.fn(),
@@ -30,7 +36,7 @@ const mockOraInstance = {
 jest.mock("ora", () => jest.fn().mockReturnValue(mockOraInstance));
 
 jest.mock("@lokse/core", () => ({
-  ...jest.requireActual("@lokse/core"),
+  ...(jest.requireActual("@lokse/core") as typeof import("@lokse/core")),
   FileWriter: jest.fn(),
   Reader: jest.fn(),
   WorksheetReader: jest.fn(),
@@ -60,6 +66,8 @@ WorksheetReaderMock.mockReturnValue({
 const outputFormats = Object.values(OutputFormat).join(", ");
 
 describe("update command", () => {
+  const searchMock = cosmiconfigSync("foo").search as jest.Mock;
+
   let consoleErrorBackup: typeof console.error;
   const fakeSpreadsheetId = "fake-spreadsheet-id";
   const keyColumn = "web";
@@ -94,7 +102,7 @@ describe("update command", () => {
       mockOraInstance.succeed.mockClear();
       mockOraInstance.fail.mockClear();
 
-      explorerMock.search.mockReset();
+      searchMock.mockReset();
       /**
        * Mocking error output with https://www.npmjs.com/package/fancy-test#stdoutstderr-mocking
        * doesn't work as Jest somehow wraps error output by itself. Therefore we need to mock
@@ -112,7 +120,7 @@ describe("update command", () => {
     .command(["update"])
     .catch((error) => {
       expect(error.message).toEqual(
-        `💥 Sheet id is required for updating translations`
+        `💥 Sheet id is required for update of translations`
       );
     })
     .it("throws when id not provided");
@@ -121,7 +129,7 @@ describe("update command", () => {
     .command(["update", params.id])
     .catch((error) => {
       expect(error.message).toEqual(
-        `💥 Output directory is required for updating translations`
+        `💥 Output directory is required for update of translations`
       );
     })
     .it("throws when output directory not provided");
@@ -130,7 +138,7 @@ describe("update command", () => {
     .command(["update", params.id, params.dir])
     .catch((error) => {
       expect(error.message).toEqual(
-        `💥 Keys column is required for updating translations`
+        `💥 Keys column is required for update of translations`
       );
     })
     .it("throws when keys column not provided");
@@ -146,7 +154,7 @@ describe("update command", () => {
 
   test
     .do(() =>
-      explorerMock.search.mockReturnValue({
+      searchMock.mockReturnValue({
         config: { languages: "cs,en" },
       })
     )
@@ -211,7 +219,7 @@ describe("update command", () => {
     test
       .setupMocks()
       .do(() => {
-        explorerMock.search.mockReturnValue({ config: { sheets: true } });
+        searchMock.mockReturnValue({ config: { sheets: true } });
 
         WorksheetReaderMock.mockImplementationOnce(() => {
           throw new InvalidFilterError(true);
@@ -229,7 +237,7 @@ describe("update command", () => {
     test
       .setupMocks()
       .do(() =>
-        explorerMock.search.mockReturnValue({
+        searchMock.mockReturnValue({
           config: { sheets: "Secondary translations" },
         })
       )
@@ -245,7 +253,7 @@ describe("update command", () => {
     test
       .setupMocks()
       .do(() =>
-        explorerMock.search.mockReturnValue({
+        searchMock.mockReturnValue({
           config: { sheets: ["Main translations", "Secondary translations"] },
         })
       )
@@ -262,7 +270,7 @@ describe("update command", () => {
     test
       .setupMocks()
       .do(() =>
-        explorerMock.search.mockReturnValue({
+        searchMock.mockReturnValue({
           config: {
             sheets: {
               include: ["Main translations", "Other translations"],
@@ -282,7 +290,7 @@ describe("update command", () => {
     test
       .setupMocks()
       .do(() =>
-        explorerMock.search.mockReturnValue({
+        searchMock.mockReturnValue({
           config: {
             sheets: {
               exclude: ["Main translations", "Other translations"],
@@ -301,7 +309,7 @@ describe("update command", () => {
     test
       .setupMocks()
       .do(() =>
-        explorerMock.search.mockReturnValue({
+        searchMock.mockReturnValue({
           config: {
             sheets: {
               include: "Main translations",
@@ -486,7 +494,7 @@ describe("update command", () => {
       .setupMocks()
       .do(() => {
         mockRead.mockReturnValue(threeSheets);
-        explorerMock.search.mockReturnValue({
+        searchMock.mockReturnValue({
           config: { splitTranslations: true },
         });
         mockWrite
@@ -551,7 +559,7 @@ describe("update command", () => {
       .stub(process, "cwd", jest.fn().mockReturnValue("/ROOT_PKG_PATH"))
       .do(() => {
         mockRead.mockReturnValue(threeSheets);
-        explorerMock.search.mockReturnValue({
+        searchMock.mockReturnValue({
           config: { splitTranslations: true },
         });
       })
@@ -617,7 +625,7 @@ describe("update command", () => {
       .setupMocks()
       .do(() => {
         mockRead.mockReturnValue({ "Sheet 1": mockSheetLines });
-        explorerMock.search.mockReturnValue({
+        searchMock.mockReturnValue({
           config: { splitTranslations: true },
         });
       })
@@ -656,7 +664,7 @@ describe("update command", () => {
       .setupMocks()
       .do(() => {
         mockRead.mockReturnValue(threeSheets);
-        explorerMock.search.mockReturnValue({
+        searchMock.mockReturnValue({
           config: { splitTranslations: ["sheet1", "sheet3"] },
         });
       })
@@ -770,7 +778,7 @@ describe("update command", () => {
             throw new Error(`Write error 2`);
           });
 
-        explorerMock.search.mockReturnValue({
+        searchMock.mockReturnValue({
           config: { splitTranslations: true },
         });
       })
@@ -853,7 +861,7 @@ describe("update command", () => {
           "sheet1 Title": mockSheetLines,
           "sheet2 Title": mockSheetLines2,
         });
-        explorerMock.search.mockReturnValue({
+        searchMock.mockReturnValue({
           config: { splitTranslations: ["sheet1", "sheet2"] },
         });
       })
@@ -924,7 +932,7 @@ describe("update command", () => {
           "sheet1 Title": [{ key: "sheet.1.line" }, { key: "sheet.1.line" }],
           "sheet2 Title": [{ key: "sheet.2.line" }, { key: "sheet.2.line" }],
         });
-        explorerMock.search.mockReturnValue({
+        searchMock.mockReturnValue({
           config: { splitTranslations: ["sheet.1", "sheet.2"] },
         });
       })
@@ -975,7 +983,7 @@ describe("update command", () => {
             { key: "sheet12.line" },
           ],
         });
-        explorerMock.search.mockReturnValue({
+        searchMock.mockReturnValue({
           config: { splitTranslations: ["sheet1", "sheet12"] },
         });
       })
