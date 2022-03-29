@@ -25,4 +25,4 @@ jobs:
         run: yarn deploy
         working-directory: ./vscode-extension
         env:
-          VSCE_PATH: ${{ secrets.VSCODE_SECRET }}
+          VSCE_PAT: ${{ secrets.VSCODE_SECRET }}
