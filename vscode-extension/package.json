@@ -4,6 +4,7 @@
   "description": "Run Lokse commands from VsCode",
   "version": "0.1.1",
   "license": "MIT",
+  "publisher": "ackee",
   "repository": "https://github.com/AckeeCZ/lokse",
   "engines": {
     "vscode": "^1.65.0"
