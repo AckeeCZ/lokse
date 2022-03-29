@@ -4,7 +4,7 @@ Run [Lokse](https://github.com/AckeeCZ/lokse) commands from VsCode environment a
 
 ## Features
 
-Open [command pallete](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette), then select of following commands:
+Open [command pallete](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette), then select one of following commands:
 
 `Lokse: Open` - Opens translation sheet in your default browser
 
@@ -14,7 +14,7 @@ More commands coming soon...
 
 ## Requirements
 
-You must have [`lokse`](https://github.com/AckeeCZ/lokse) installed in you project along with [lokse config](https://github.com/AckeeCZ/lokse/tree/master/packages/cli#-configuration).
+You must have [`lokse`](https://github.com/AckeeCZ/lokse) installed in you project and [lokse config](https://github.com/AckeeCZ/lokse/tree/master/packages/cli#-configuration) with correct sheet id must be available there.
 
 ## Extension Settings
 
