@@ -12,9 +12,9 @@ This is a multi package repository of the **lokse** project. The project's goal 
 ## The name meaning
 
 You're maybe curious what the name means. Some people can pronounce it as Lokše which is a name for [Slovak potato flatbread](https://www.google.com/search?q=lok%C5%A1e+recipe&oq=lok%C5%A1e+recipe&aqs=chrome..69i57j0l7.2201j0j7&sourceid=chrome&ie=UTF-8).  
-Maybe it was an inspiration. But the truth is, it's a little pun. The has evolved by abbreaviating the term localization sheet and transcripting Czech pronounciation:
+Maybe it was an inspiration. But the truth is, it's a little pun. The name has evolved by abbreaviating the term localization sheet and transcripting Czech pronounciation:
 
-**Loc**alization **She**t ➡ **LocShe** ➡ **LokShe** ("c" is pronounced as "k" in Czech) ➡ **LokŠe** ("sh" is pronounced as "š") ➡ **Lokse** 🤓
+**Loc**alization **She**et ➡ **LocShe** ➡ **LokShe** ("c" is pronounced as "k" in Czech) ➡ **LokŠe** ("sh" is pronounced as "š") ➡ **Lokse** 🤓
 
 ## Packages
 
