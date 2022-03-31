@@ -3,6 +3,7 @@
   "displayName": "Lokse",
   "description": "Run Lokse commands from VsCode",
   "version": "0.1.3",
+  "icon": "../images/lokse256.png",
   "license": "MIT",
   "publisher": "ackee",
   "repository": "https://github.com/AckeeCZ/lokse",
@@ -37,7 +38,8 @@
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
     "deploy": "vsce publish --yarn",
-    "release": "yarn version"
+    "release": "yarn version",
+    "version": "code CHANGELOG.md --wait && code README.md --wait && git add CHANGELOG.md README.md"
   },
   "dependencies": {
     "execa": "^5.1.0"
