@@ -3,7 +3,7 @@
   "displayName": "Lokse",
   "description": "Run Lokse commands from VsCode",
   "version": "0.1.4",
-  "icon": "../images/lokse256.png",
+  "icon": "./images/icon.png",
   "license": "MIT",
   "publisher": "ackee",
   "repository": "https://github.com/AckeeCZ/lokse",
@@ -31,8 +31,9 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "yarn compile",
+    "vscode:prepublish": "yarn copy-icon && yarn compile",
     "compile": "tsc -p ./",
+    "copy-icon": "cp ../images/lokse256.png ./images/icon.png",
     "watch": "tsc -watch -p ./",
     "pretest": "yarn compile && yarn lint",
     "lint": "eslint src --ext ts",
