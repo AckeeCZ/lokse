@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.1.4]
 
+- Setup copying icon into extension folder
+
+## [0.1.4]
+
 - Add icon
 
 ## [0.1.0]
