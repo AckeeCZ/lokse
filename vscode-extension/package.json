@@ -33,7 +33,7 @@
   "scripts": {
     "vscode:prepublish": "yarn copy-icon && yarn compile",
     "compile": "tsc -p ./",
-    "copy-icon": "cp ../images/lokse256.png ./images/icon.png",
+    "copy-icon": "mkdir -p images && cp ../images/lokse256.png ./images/icon.png",
     "watch": "tsc -watch -p ./",
     "pretest": "yarn compile && yarn lint",
     "lint": "eslint src --ext ts",
