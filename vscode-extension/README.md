@@ -26,6 +26,10 @@ Extension has currently no known issues
 
 ## Release Notes
 
+### 0.1.4
+
+Add extension icon
+
 ### 0.1.0
 
 First usable version released
