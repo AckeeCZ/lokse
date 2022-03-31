@@ -1,4 +1,12 @@
-# lokse
+<p align="center">
+  <img width="150" src="./images/lokse256.png">
+</p>
+<h1 align="center"> Lokse </h1>
+<p align="center">
+    <b>Localize your app from spreadsheet</b>
+</p>
+
+## Description
 
 This is a multi package repository of the **lokse** project. The project's goal is to faciliate the work with translations held in Google spreadsheet.
 
@@ -37,6 +45,6 @@ Fork of <a href="https://github.com/xavierha/localize-with-spreadsheet" target="
 
 ## License
 
-Lokse is licensed under the MIT License.
-Documentation is licensed under Creative Commons License.
+Lokse is licensed under the MIT License.  
+Documentation is licensed under Creative Commons License.  
 Created with ♥ by [@horaklukas](https://github.com/horaklukas) and all the great contributors.
