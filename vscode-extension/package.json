@@ -2,7 +2,7 @@
   "name": "lokse",
   "displayName": "Lokse",
   "description": "Run Lokse commands from VsCode",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "icon": "images/icon.png",
   "license": "MIT",
   "publisher": "ackee",
