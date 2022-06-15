@@ -39,6 +39,7 @@
   "resolutions": {
     "yargs-parser": "^20.2.4",
     "mem": "<=4",
-    "npm-registry-fetch": "<=4"
+    "npm-registry-fetch": "<=4",
+    "rxjs": "6"
   }
 }
