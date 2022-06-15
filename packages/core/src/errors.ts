@@ -1,4 +1,24 @@
 import * as dedent from "dedent";
+import defaultLogger from "./logger";
+import type { Logger } from "./logger";
+
+export function warnUnrecognizedError(
+  error: unknown,
+  logger: Logger = defaultLogger
+): void {
+  logger.warn(
+    `Unrecgnized error ${typeof error}: ${(error as any)?.toString()}`
+  );
+}
+
+interface ErrorWithCode {
+  code: string;
+}
+
+export const isErrorWithCode = (
+  error: unknown,
+  code: string
+): error is ErrorWithCode => (error as ErrorWithCode)?.code === code;
 
 export class FatalError extends Error {}
 

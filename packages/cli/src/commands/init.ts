@@ -1,4 +1,4 @@
-import { flags } from "@oclif/command";
+import { Flags } from "@oclif/core";
 import { promisifyAll } from "bluebird";
 import { template } from "lodash";
 import * as path from "path";
@@ -22,7 +22,7 @@ class Init extends Base {
   static examples = [`$ ${NAME} init`];
 
   static flags = {
-    help: flags.help({ char: "h" }),
+    help: Flags.help({ char: "h" }),
   };
 
   async run(): Promise<void> {
