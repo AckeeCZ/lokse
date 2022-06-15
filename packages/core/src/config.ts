@@ -41,7 +41,7 @@ export type LokseConfig = {
   plugins?: (PluginName | PluginDefinition)[];
 };
 
-export function get(
+export function getConfig(
   searchFrom: string | undefined = process.env.LOKSE_CONFIG_PATH
 ): undefined | null | LokseConfig {
   const result = explorerSync.search(searchFrom);

@@ -6,7 +6,7 @@ import { prompt } from "inquirer";
 
 const fs = promisifyAll(require("fs"));
 
-import { NAME } from "../constants";
+import { NAME } from "@lokse/core";
 import Base from "../base";
 import logger from "../logger";
 
@@ -25,7 +25,7 @@ class Init extends Base {
     help: flags.help({ char: "h" }),
   };
 
-  async run() {
+  async run(): Promise<void> {
     if (this.conf) {
       logger.log(`🤷‍♂️ Lokse config already exists, skipping init.`);
       return;
