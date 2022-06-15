@@ -1,4 +1,5 @@
 import { reduce } from "bluebird";
+import { warnUnrecognizedError } from "../errors";
 
 import type {
   LoksePlugin,
@@ -30,9 +31,14 @@ export class PluginsRunner {
           const transformedTarget = await hook(target, meta);
           return transformedTarget;
         } catch (error) {
-          this.options.logger.warn(
-            `Error when running hook ${hookName} of plugin ${plugin.pluginName}: ${error.message}`
-          );
+          if (error instanceof Error) {
+            this.options.logger.warn(
+              `Error when running hook ${hookName} of plugin ${plugin.pluginName}: ${error.message}`
+            );
+          } else {
+            warnUnrecognizedError(error, this.options.logger);
+          }
+
           return target;
         }
       },

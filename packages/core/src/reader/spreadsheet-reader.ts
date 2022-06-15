@@ -1,7 +1,7 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 
 import Line from "../line";
-import { MissingAuthError, FatalError } from "../errors";
+import { MissingAuthError, FatalError, warnUnrecognizedError } from "../errors";
 import WorksheetReader from "./worksheet-reader";
 import Worksheet from "./worksheet";
 import defaultLogger from "../logger";
@@ -61,7 +61,11 @@ export class SpreadsheetReader {
       try {
         await this.spreadsheet.loadInfo();
       } catch (error) {
-        throw new FatalError(error.message);
+        if (error instanceof Error) {
+          throw new FatalError(error.message);
+        } else {
+          warnUnrecognizedError(error, this.logger);
+        }
       }
 
       this.worksheets = await this.sheetsReader.read(this.spreadsheet);
@@ -98,7 +102,11 @@ export class SpreadsheetReader {
           worksheetsLines[title] = lines;
         }
       } catch (error) {
-        this.logger.warn(error.message);
+        if (error instanceof Error) {
+          this.logger.warn(error.message);
+        } else {
+          warnUnrecognizedError(error, this.logger);
+        }
       }
     });
 
