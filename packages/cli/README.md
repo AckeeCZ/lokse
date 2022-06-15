@@ -20,7 +20,7 @@ $ npm install -g lokse
 $ lokse COMMAND
 running command...
 $ lokse (-v|--version|version)
-lokse/2.1.4 darwin-x64 node-v14.18.0
+lokse/2.2.0 darwin-x64 node-v14.18.0
 $ lokse --help [COMMAND]
 USAGE
   $ lokse COMMAND
@@ -161,6 +161,7 @@ List of plugins to use. Plugin can be either name of plugin, or object containin
 
 <!-- commands -->
 * [`lokse help [COMMAND]`](#lokse-help-command)
+* [`lokse init`](#lokse-init)
 * [`lokse open`](#lokse-open)
 * [`lokse update`](#lokse-update)
 
@@ -181,6 +182,23 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.3.1/src/commands/help.ts)_
 
+## `lokse init`
+
+create a new config file
+
+```
+USAGE
+  $ lokse init
+
+OPTIONS
+  -h, --help  show CLI help
+
+EXAMPLE
+  $ lokse init
+```
+
+_See code: [lib/commands/init.js](https://github.com/AckeeCZ/lokse/blob/v2.2.0/lib/commands/init.js)_
+
 ## `lokse open`
 
 open localization spreadsheet in default browser
@@ -197,7 +215,7 @@ EXAMPLE
   $ lokse open -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk
 ```
 
-_See code: [lib/commands/open.js](https://github.com/AckeeCZ/lokse/blob/v2.1.4/lib/commands/open.js)_
+_See code: [lib/commands/open.js](https://github.com/AckeeCZ/lokse/blob/v2.2.0/lib/commands/open.js)_
 
 ## `lokse update`
 
@@ -208,22 +226,22 @@ USAGE
   $ lokse update
 
 OPTIONS
-  -c, --col=col                         column containing translations keys. For example key_web.
-  -d, --dir=dir                         output folder
-  -f, --format=(json|android|ios|yaml)  output format. Default is json.
-  -h, --help                            show CLI help
-  -i, --id=id                           spreadsheet id
+  -c, --col=col                    column containing translations keys. For example key_web.
+  -d, --dir=dir                    output folder
+  -f, --format=(json|android|ios)  output format. Default is json.
+  -h, --help                       show CLI help
+  -i, --id=id                      spreadsheet id
 
-  -l, --languages=languages             translation columns languages. Multiple values are comma separated. For example
-                                        cs,en,fr
+  -l, --languages=languages        translation columns languages. Multiple values are comma separated. For example
+                                   cs,en,fr
 
-  -s, --sheets=sheets                   sheets to get translations from. Name or list of names, comma separated. For
-                                        example Translations1,Translations2
+  -s, --sheets=sheets              sheets to get translations from. Name or list of names, comma separated. For example
+                                   Translations1,Translations2
 
 EXAMPLES
   $ lokse update
   $ lokse update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web
 ```
 
-_See code: [lib/commands/update.js](https://github.com/AckeeCZ/lokse/blob/v2.1.4/lib/commands/update.js)_
+_See code: [lib/commands/update.js](https://github.com/AckeeCZ/lokse/blob/v2.2.0/lib/commands/update.js)_
 <!-- commandsstop -->

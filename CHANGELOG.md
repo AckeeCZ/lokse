@@ -1,6 +1,37 @@
 # Changelog
 
+<a name="2.2.0"></a>
+
+## 2.2.0 (2022-06-15)
+
+### Added
+
+- ✨ Add rc file as a template config [[0466da5](https://github.com/AckeeCZ/lokse/commit/0466da56f8ebe01cb61e196fb00405fb941ee2d3)]
+- ✨ Add init config to generate JS or TS config [[04921aa](https://github.com/AckeeCZ/lokse/commit/04921aa0b7d39b252ca44aa88f74c0d500258b4b)]
+- ✨ Add Lokše icon into main readme [[380b22f](https://github.com/AckeeCZ/lokse/commit/380b22f100f5ac57fb9a2c5f239cbba2ed695198)]
+- ✨ Add initial version of vscode extension [[195c5c7](https://github.com/AckeeCZ/lokse/commit/195c5c74a3395f8d45457c57f3c2636feab07b0c)]
+- ✨ Allow supplying custom config path via variable [[c24539c](https://github.com/AckeeCZ/lokse/commit/c24539c863217754c5a26c39cb714fb125e005e6)]
+
+### Changed
+
+- 📌 Pin @types/prettier to v2.6.0 [[dc66088](https://github.com/AckeeCZ/lokse/commit/dc6608888e0076647f582bb7ef34a653d55e5c3b)]
+- 📌 Pin rxjs to v6 [[d7c3105](https://github.com/AckeeCZ/lokse/commit/d7c3105dec86c43a6a9e38bd4948c0394ff96e45)]
+- ♻️ Improve missing flag value to reflect correct action [[afe2aae](https://github.com/AckeeCZ/lokse/commit/afe2aaef6b546e15d486bb0e8ec6ab73cd12e147)]
+- ♻️ Add createSheetUrl utility [[69c5f57](https://github.com/AckeeCZ/lokse/commit/69c5f578843b9797107f7cf74da6922ffd098a05)]
+- ♻️ Extract getConfig into the core package [[1d14110](https://github.com/AckeeCZ/lokse/commit/1d14110affb8af0b60e02f6725c01b01918569fd)]
+- ⬆️ Run yarn upgrade to fix vulnerabilities [[ed9be46](https://github.com/AckeeCZ/lokse/commit/ed9be460311726f8e3712399de4e5e2f972ddc27)]
+
+### Removed
+
+- ➖ Remove obsolete dependency resolutions [[48b9491](https://github.com/AckeeCZ/lokse/commit/48b949124dc7cb811679b12e79c85435c2e3ef16)]
+
+### Miscellaneous
+
+- 🏷️ Export LokseConfig type from cli package [[ae22486](https://github.com/AckeeCZ/lokse/commit/ae22486d6cd3721047985d2a86814416c1dd31c8)]
+- 📝 Fix small grammar mistakes in main readme [[77d5379](https://github.com/AckeeCZ/lokse/commit/77d5379226f223a62d3a7934ef8f45fbe7833e18)]
+
 <a name="2.1.4"></a>
+
 ## 2.1.4 (2022-01-13)
 
 ### Changed
@@ -12,8 +43,8 @@
 
 - 🤡 Fix mock of write sheet service in update command tests [[e9f82fc](https://github.com/AckeeCZ/lokse/commit/e9f82fc68eaa1f27b214745b6568a7bfd7c3a09c)]
 
-
 <a name="2.1.3"></a>
+
 ## 2.1.3 (2022-01-13)
 
 ### Changed
@@ -21,8 +52,8 @@
 - ⬆️ Upgrade google-spreadsheet to v 3.2.0 [[73f4425](https://github.com/AckeeCZ/lokse/commit/73f442520b66e53fcc7db05759dd77d002b8b99e)]
 - ⬆️ Upgrade dependencies globally with yarn upgrade [[8397d3c](https://github.com/AckeeCZ/lokse/commit/8397d3c5647073695e52f60a58aa8265cf2c8c62)]
 
-
 <a name="2.1.2"></a>
+
 ## 2.1.2 (2021-11-15)
 
 ### Fixed
@@ -33,16 +64,16 @@
 
 - 📝 Add non breaking spaces plugin into the plugins list [[10c829e](https://github.com/AckeeCZ/lokse/commit/10c829eb4622270347d70f44d8b513ac0243dfd7)]
 
-
 <a name="2.1.1"></a>
+
 ## 2.1.1 (2021-11-09)
 
 ### Miscellaneous
 
 - 📝 Fix typos and improve doc on plugin-non-breaking-spaces [[8090d47](https://github.com/AckeeCZ/lokse/commit/8090d47b244945cb3cb14cb81002b6a977ad6913)]
 
-
 <a name="2.1.0"></a>
+
 ## 2.1.0 (2021-11-05)
 
 ### Added
@@ -56,11 +87,11 @@
 
 ### Miscellaneous
 
--  Bump tmpl from 1.0.4 to 1.0.5 [[71f3a09](https://github.com/AckeeCZ/lokse/commit/71f3a09f42e3eb03775f89efea6c6839779eaf43)]
--  Bump semver-regex from 3.1.2 to 3.1.3 [[33022d6](https://github.com/AckeeCZ/lokse/commit/33022d60a423c2062b9613cf7302a767acc7b555)]
-
+- Bump tmpl from 1.0.4 to 1.0.5 [[71f3a09](https://github.com/AckeeCZ/lokse/commit/71f3a09f42e3eb03775f89efea6c6839779eaf43)]
+- Bump semver-regex from 3.1.2 to 3.1.3 [[33022d6](https://github.com/AckeeCZ/lokse/commit/33022d60a423c2062b9613cf7302a767acc7b555)]
 
 <a name="2.0.1"></a>
+
 ## 2.0.1 (2021-09-16)
 
 ### Fixed
@@ -72,8 +103,8 @@
 
 - 📝 Add fallback plugin into the list of plugins [[ad72a06](https://github.com/AckeeCZ/lokse/commit/ad72a06c49ddad658178071d0d686d25a60f651e)]
 
-
 <a name="2.0.0"></a>
+
 ## 2.0.0 (2021-09-16)
 
 ### Added
@@ -114,16 +145,16 @@
 - 🔥 Remove duplicated config in example [[3ffd7c0](https://github.com/AckeeCZ/lokse/commit/3ffd7c078b58854260010a58e46577feb0a4d731)]
 - ➖ Use npx to execute gitmoji-changelog, remove it from deps [[a64529e](https://github.com/AckeeCZ/lokse/commit/a64529e9a4c5cfc3319a55e4b519471fb5d07602)]
 
-
 <a name="1.7.0"></a>
+
 ## 1.7.0 (2021-05-25)
 
 ### Changed
 
 - 🔧 Remove distTag alpha from lerna config [[55909ca](https://github.com/AckeeCZ/lokse/commit/55909ca0d5908b9c2c64553f65b7987445028662)]
 
-
 <a name="1.7.0-alpha.3"></a>
+
 ## 1.7.0-alpha.3 (2021-05-25)
 
 ### Changed
@@ -135,14 +166,15 @@
 - 🐛 Set typescript loader compiler options [[c5e655a](https://github.com/AckeeCZ/lokse/commit/c5e655abe1fc004377a60d092d8d72ebcca8bedc)]
 
 <a name="1.7.0-alpha.2"></a>
+
 ## 1.7.0-alpha.2 (2021-05-25)
 
 ### Changed
 
 - ♻️ Change typescript loader package [[8ffb124](https://github.com/AckeeCZ/lokse/commit/8ffb124b8c22263e33e045fe9c8a502c053956f8)]
 
-
 <a name="1.7.0-alpha.1"></a>
+
 ## 1.7.0-alpha.1 (2021-05-25)
 
 ### Changed
@@ -150,8 +182,8 @@
 - 🔧 Change casing of dist-tag config option [[73a4bca](https://github.com/AckeeCZ/lokse/commit/73a4bca40938da4fcf78c0357e14bd256590b379)]
 - ⬆️ Update dependencies in yarn.lock [[59fbd62](https://github.com/AckeeCZ/lokse/commit/59fbd624367dc6c0201aa72aac5ab93b68d40eaf)]
 
-
 <a name="1.7.0-alpha.0"></a>
+
 ## 1.7.0-alpha.0 (2021-05-25)
 
 ### Added
@@ -167,32 +199,32 @@
 
 - 🙈 Add tsconfig and src folder into npmignore [[53978bf](https://github.com/AckeeCZ/lokse/commit/53978bf4c63eda1249f2fac0661b24b153fd4e90)]
 
-
 <a name="1.6.0"></a>
+
 ## 1.6.0 (2021-04-06)
 
 ### Changed
 
 - ♻️ Extract core from cli into standalone package [[24aa5ac](https://github.com/AckeeCZ/lokse/commit/24aa5ac68b863353fceb103356069b46f66e5c03)]
 
-
 <a name="1.5.2"></a>
+
 ## 1.5.2 (2021-04-03)
 
 ### Fixed
 
 - 🐛 Fix casing of line.ts import in writer [[e592808](https://github.com/AckeeCZ/lokse/commit/e5928087185a5b7987262ea927fbc4dc62607dfc)]
 
-
 <a name="1.5.1"></a>
+
 ## 1.5.1 (2021-03-02)
 
 ### Changed
 
 - ⬆️ Bumb update-notifier version to v5.1.0 [[08f934a](https://github.com/AckeeCZ/lokse/commit/08f934adb03d979f5f926427441ab9d3b574984d)]
 
-
 <a name="1.5.0"></a>
+
 ## 1.5.0 (2021-03-02)
 
 ### Added
@@ -204,8 +236,8 @@
 - 🔧 Turn off diagnostics in lokse tests [[8ab49fe](https://github.com/AckeeCZ/lokse/commit/8ab49fecaecfca8bc55a8caa8568fb8f2d2ae265)]
 - ♻️ Inject worksheet reader instance into spreadsheet reader [[36b7c93](https://github.com/AckeeCZ/lokse/commit/36b7c938664d79bdf7011c9d92458730c6400377)]
 
-
 <a name="1.4.1"></a>
+
 ## 1.4.1 (2021-02-28)
 
 ### Changed
@@ -215,8 +247,8 @@
 - ⬆️ Bump node-notifier from 8.0.0 to 8.0.1 [[0afd2c9](https://github.com/AckeeCZ/lokse/commit/0afd2c954bb96812ee951eeba8020dffaedc9679)]
 - ⬆️ Bump ini from 1.3.5 to 1.3.8 [[fbc4309](https://github.com/AckeeCZ/lokse/commit/fbc43098d65f9284a027c5becdb0f7691680413b)]
 
-
 <a name="1.4.0"></a>
+
 ## 1.4.0 (2021-02-04)
 
 ### Changed
@@ -227,8 +259,8 @@
 
 - 🐛 Take in account editorconfig when resolving prettier configuration [[02fbfa8](https://github.com/AckeeCZ/lokse/commit/02fbfa8de9a913e206fbb4f83dd5187506217e99)]
 
-
 <a name="1.3.1"></a>
+
 ## 1.3.1 (2020-11-23)
 
 ### Added
@@ -239,8 +271,8 @@
 
 - 📝 Fix TOC in package readme [[4ef1c8d](https://github.com/AckeeCZ/lokse/commit/4ef1c8d19a34a9a1b8c5969ba6e30a3767e1e6a0)]
 
-
 <a name="1.3.0"></a>
+
 ## 1.3.0 (2020-11-12)
 
 ### Added
@@ -256,8 +288,8 @@
 
 - 🔥 Remove name from flag definitions, it&#x27;s useless there [[2dbe4a0](https://github.com/AckeeCZ/lokse/commit/2dbe4a0cc279c009f81a2dca7f7222a81a073287)]
 
-
 <a name="1.2.0"></a>
+
 ## 1.2.0 (2020-11-03)
 
 ### Added
@@ -274,23 +306,23 @@
 - ♻️ Handle failed extraction of sheet data in spreadsheet reader [[c26149d](https://github.com/AckeeCZ/lokse/commit/c26149dd02017987631ac8520d5b9de5ece13761)]
 - ♻️ Move worksheet extraction into the worksheet class [[196ebbb](https://github.com/AckeeCZ/lokse/commit/196ebbb6653af758a148592a8f5d4051fb03081a)]
 - 🔨 Move lint and prettier scripts to the root [[fa36c40](https://github.com/AckeeCZ/lokse/commit/fa36c40444c8a952bc33729ca879dd14e793f8a0)]
-- 🚚 Move tests to the src/**/__tests__ folder [[122c66f](https://github.com/AckeeCZ/lokse/commit/122c66fa1daca3aa2cbc313a046a0d394bc51dc6)]
+- 🚚 Move tests to the src/\*\*/**tests** folder [[122c66f](https://github.com/AckeeCZ/lokse/commit/122c66fa1daca3aa2cbc313a046a0d394bc51dc6)]
 
 ### Removed
 
 - 🔥 Remove known output format check [[7adc4d0](https://github.com/AckeeCZ/lokse/commit/7adc4d0e82fbfb906ba4acc8ed987d62c735a677)]
 - 🔥 Remove different tsconfig for tests [[48b2d37](https://github.com/AckeeCZ/lokse/commit/48b2d37f10c8dd0eebd00dd4b832ed900f243a1d)]
 
-
 <a name="1.1.1"></a>
+
 ## 1.1.1 (2020-10-23)
 
 ### Fixed
 
 - 🐛 Only warn, don&#x27;t throw, when key column not found in worksheet [[649dc00](https://github.com/AckeeCZ/lokse/commit/649dc00a03815410f01dfe7638e2a777f0cfbe01)]
 
-
 <a name="1.1.0"></a>
+
 ## 1.1.0 (2020-10-22)
 
 ### Added
@@ -301,8 +333,8 @@
 
 - 📝 Decrease README heading level by one level [[28e2b69](https://github.com/AckeeCZ/lokse/commit/28e2b69f9fa08255038d1dcc761d8a5ad0b7b09d)]
 
-
 <a name="1.0.0"></a>
+
 ## 1.0.0 (2020-10-22)
 
 ### Added
@@ -317,38 +349,39 @@
 - 🐛 Fix accessing exit property of error [[a390014](https://github.com/AckeeCZ/lokse/commit/a39001413f9f0d4206ae3983b1cc30ca7890d8b1)]
 
 <a name="1.0.0-beta.7"></a>
+
 ## 1.0.0-beta.7 (2020-10-05)
 
 ### Added
 
 - ✨ Add formatting json output with prettier [[eeb505b](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/eeb505bf958b7d39eefbc57f4a0d405c4705715a)]
 
-
 <a name="1.0.0-beta.6"></a>
+
 ## 1.0.0-beta.6 (2020-10-02)
 
 ### Fixed
 
 - 🐛 Fix throwing cli errors with exit code from update command [[c21a41f](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/c21a41ff25f25a3ee769b490c433be6195d5405f)]
 
-
 <a name="1.0.0-beta.5"></a>
+
 ## 1.0.0-beta.5 (2020-10-02)
 
 ### Added
 
 - ✨ Set exit code 1 for missing api key error [[d851326](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/d851326a5d5986f69b65f108d8b04fa24b02ad96)]
 
-
 <a name="1.0.0-beta.4"></a>
+
 ## 1.0.0-beta.4 (2020-10-02)
 
 ### Added
 
 - ✨ Support loading API key from .env.local [[e4f91ae](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/e4f91ae53d2f2b1a07aa869c4e2e811ea143dafc)]
 
-
 <a name="1.0.0-beta.3"></a>
+
 ## 1.0.0-beta.3 (2020-10-02)
 
 ### Changed
@@ -360,8 +393,8 @@
 
 - ✏️ Fix typo in readme [[548cb30](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/548cb300359e10acfa67e79fd1bfaf34eb8d2a52)]
 
-
 <a name="1.0.0-beta.2"></a>
+
 ## 1.0.0-beta.2 (2020-10-01)
 
 ### Changed
@@ -375,14 +408,15 @@
 - 📝 Fix possible config names in readme [[a2d5f09](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/a2d5f0952058fda588b6b6029992b9b62761bc45)]
 
 <a name="1.0.0-beta.1"></a>
+
 ## 1.0.0-beta.1 (2020-09-30)
 
 ### Changed
 
 - 💬 Fix name of variable in MissingApiKeyError msg [[dd4e03b](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/dd4e03b95d3b9891d1221ef1b9e9981dc9af6855)]
 
-
 <a name="1.0.0-beta.0"></a>
+
 ## 1.0.0-beta.0 (2020-09-30)
 
 ### Added
@@ -419,4 +453,3 @@
 - 🔨 Add script for patching gitmoji-changelog [[65e8214](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/65e8214d7e80882b76f99b41a1b3ce8e48d5f013)]
 - 🔨 Add release script for CLI [[fea58ce](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/fea58ce6060c2e4d7e0052e6714c5e6f70e6f62e)]
 - 🔨 Setup changelog script for lokse package [[d8bf186](https://github.com/AckeeCZ/localize-with-spreadsheet/commit/d8bf18648cbb6b3a9d365e1104ec3bb88a050406)]
-
