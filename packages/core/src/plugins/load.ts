@@ -1,3 +1,4 @@
+import { isErrorWithCode, warnUnrecognizedError } from "../errors";
 import type {
   NamedLoksePlugin,
   PluginFactory,
@@ -31,7 +32,7 @@ function loadPlugin(
       pluginName,
     };
   } catch (error) {
-    if (error.code === "MODULE_NOT_FOUND") {
+    if (isErrorWithCode(error, "MODULE_NOT_FOUND")) {
       options.logger.warn(
         `🔍 Unable to load plugin ${pluginName}. Is it installed?`
       );
@@ -39,10 +40,12 @@ function loadPlugin(
       options.logger.warn(
         `🙅 Plugin ${pluginName} cannot been loaded: ${error.message}`
       );
-    } else {
+    } else if (error instanceof Error) {
       options.logger.warn(
         `💥 Unexpected error occurred when loading plugin ${pluginName}:\n${error.message}`
       );
+    } else {
+      warnUnrecognizedError(error, options.logger);
     }
 
     return null;

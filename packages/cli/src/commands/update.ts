@@ -1,5 +1,5 @@
 import * as path from "path";
-import { flags } from "@oclif/command";
+import { Flags } from "@oclif/core";
 import { CLIError } from "@oclif/errors";
 import * as ora from "ora";
 import * as slugify from "@sindresorhus/slugify";
@@ -16,6 +16,7 @@ import {
   FatalError,
   loadPlugins,
   NAME,
+  warnUnrecognizedError,
 } from "@lokse/core";
 import type { WorksheetLinesByTitle } from "@lokse/core";
 
@@ -39,24 +40,24 @@ class Update extends Base {
   ];
 
   static flags = {
-    help: flags.help({ char: "h" }),
+    help: Flags.help({ char: "h" }),
     id: idFlag.flag(),
-    dir: flags.string({ char: "d", name: "dir", description: "output folder" }),
-    languages: flags.string({
+    dir: Flags.string({ char: "d", name: "dir", description: "output folder" }),
+    languages: Flags.string({
       char: "l",
       description:
         "translation columns languages. Multiple values are comma separated. For example cs,en,fr",
     }),
-    col: flags.string({
+    col: Flags.string({
       char: "c",
       description: "column containing translations keys. For example key_web.",
     }),
-    format: flags.enum({
+    format: Flags.enum({
       char: "f",
       options: outputFormats,
       description: `output format. Default is ${defaultFormat}.`,
     }),
-    sheets: flags.string({
+    sheets: Flags.string({
       char: "s",
       description:
         "sheets to get translations from. Name or list of names, comma separated. For example Translations1,Translations2",
@@ -126,7 +127,7 @@ class Update extends Base {
 
   // eslint-disable-next-line complexity
   async run(): Promise<void> {
-    const { flags } = this.parse(Update);
+    const { flags } = await this.parse(Update);
 
     const sheetId = flags.id ?? "";
     const dir = flags.dir ?? this.conf?.dir;
@@ -259,9 +260,16 @@ class Update extends Base {
         const normalizedError =
           error instanceof FatalError ? new CLIError(error) : error;
 
-        this.error(normalizedError, {
-          exit: normalizedError?.oclif?.exit,
-        });
+        if (normalizedError instanceof CLIError) {
+          this.error(normalizedError, {
+            // @ts-expect-error There is incompability in CLIError and this.error expected types - TODO refactor errors and error handling
+            exit: normalizedError?.oclif?.exit,
+          });
+        } else if (normalizedError instanceof Error) {
+          this.error(normalizedError);
+        } else {
+          warnUnrecognizedError(normalizedError);
+        }
       }
     }
   }

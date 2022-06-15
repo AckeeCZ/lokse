@@ -1,5 +1,5 @@
 import { test as oclifTest } from "@oclif/test";
-import { cosmiconfigSync } from "cosmiconfig";
+import { cosmiconfig } from "cosmiconfig";
 import * as dedent from "dedent";
 import { prompt } from "inquirer";
 import logger from "../../logger";
@@ -8,7 +8,7 @@ jest.mock("cosmiconfig");
 const explorerMock = {
   search: jest.fn(),
 };
-(cosmiconfigSync as jest.Mock).mockReturnValue(explorerMock);
+(cosmiconfig as jest.Mock).mockReturnValue(explorerMock);
 
 const writeFileAsyncMock = jest.fn();
 
@@ -38,7 +38,7 @@ describe("init command", () => {
     .stdout()
     .setupMocks()
     .do(() => {
-      explorerMock.search.mockReturnValue({
+      explorerMock.search.mockResolvedValue({
         config: { splitTranslations: true },
       });
     })
@@ -55,7 +55,7 @@ describe("init command", () => {
   test
     .setupMocks()
     .do(() => {
-      explorerMock.search.mockReturnValue(null);
+      explorerMock.search.mockResolvedValue(null);
       promptMock
         .mockReturnValueOnce({ type: "typescript" })
         .mockReturnValueOnce({
@@ -93,7 +93,7 @@ describe("init command", () => {
   test
     .setupMocks()
     .do(() => {
-      explorerMock.search.mockReturnValue(null);
+      explorerMock.search.mockResolvedValue(null);
       promptMock
         .mockReturnValueOnce({ type: "javascript" })
         .mockReturnValueOnce({
@@ -132,7 +132,7 @@ describe("init command", () => {
   test
     .setupMocks()
     .do(() => {
-      explorerMock.search.mockReturnValue(null);
+      explorerMock.search.mockResolvedValue(null);
       promptMock.mockReturnValueOnce({ type: "rc file" }).mockReturnValueOnce({
         sheetId: "",
         outDir: "",
@@ -161,7 +161,7 @@ describe("init command", () => {
   test
     .setupMocks()
     .do(() => {
-      explorerMock.search.mockReturnValue(null);
+      explorerMock.search.mockResolvedValue(null);
       promptMock
         .mockReturnValueOnce({ type: "typescript" })
         .mockReturnValueOnce({

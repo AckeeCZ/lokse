@@ -11,7 +11,7 @@ export { default as Line } from "./line";
 
 export { OutputFormat, NAME } from "./constants";
 
-export { FatalError } from "./errors";
+export { FatalError, warnUnrecognizedError } from "./errors";
 
 export * from "./config";
 

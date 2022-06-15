@@ -1,4 +1,4 @@
-import { Command } from "@oclif/command";
+import { Command } from "@oclif/core";
 import * as updateNotifier from "update-notifier";
 
 import { getConfig } from "@lokse/core";
@@ -17,6 +17,6 @@ export default abstract class Base extends Command {
     });
     notifier.notify();
 
-    this.conf = getConfig();
+    this.conf = await getConfig();
   }
 }
