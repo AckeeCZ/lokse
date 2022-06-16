@@ -1,4 +1,4 @@
-import { CLIError } from "@oclif/errors";
+import { Errors } from "@oclif/core";
 
 export const cliInvariant = (
   expression: unknown,
@@ -6,7 +6,7 @@ export const cliInvariant = (
   options: Record<string, any> = {}
 ): void => {
   if (!expression) {
-    throw new CLIError(message, options);
+    throw new Errors.CLIError(message, options);
   }
 };
 

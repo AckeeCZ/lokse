@@ -1,6 +1,6 @@
 import * as path from "path";
 import { Flags } from "@oclif/core";
-import { CLIError } from "@oclif/errors";
+import { Errors } from "@oclif/core";
 import * as ora from "ora";
 import * as slugify from "@sindresorhus/slugify";
 import * as dedent from "dedent";
@@ -258,9 +258,9 @@ class Update extends Base {
         spinner.fail(`Generating ${langName} translations failed.`);
 
         const normalizedError =
-          error instanceof FatalError ? new CLIError(error) : error;
+          error instanceof FatalError ? new Errors.CLIError(error) : error;
 
-        if (normalizedError instanceof CLIError) {
+        if (normalizedError instanceof Errors.CLIError) {
           this.error(normalizedError, {
             // @ts-expect-error There is incompability in CLIError and this.error expected types - TODO refactor errors and error handling
             exit: normalizedError?.oclif?.exit,
