@@ -31,10 +31,10 @@
     "typescript": "~4.6"
   },
   "dependencies": {
-    "@types/jest": "^26.0.13",
-    "jest": "^26.4.2",
+    "@types/jest": "^28.1.2",
+    "jest": "^28.1.1",
     "lerna": "4",
-    "ts-jest": "^26.3.0"
+    "ts-jest": "^28.0.5"
   },
   "resolutions": {
     "rxjs": "6",
