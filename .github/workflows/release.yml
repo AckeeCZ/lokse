@@ -19,7 +19,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - name: Install dependencies
-        run: yarn bootstrap
+        run: yarn install
 
       - name: Build
         run: yarn build
