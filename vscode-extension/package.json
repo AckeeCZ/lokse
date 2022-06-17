@@ -1,5 +1,5 @@
 {
-  "name": "lokse",
+  "name": "lokse-extension",
   "displayName": "Lokse",
   "description": "Run Lokse commands from VsCode",
   "version": "0.1.7",
