@@ -7,17 +7,15 @@
     "packages/*"
   ],
   "scripts": {
-    "bootstrap": "lerna bootstrap --use-workspaces",
-    "build": "lerna run build",
-    "clean": "lerna exec --ignore example -- rm -r lib",
+    "build": "turbo run build --ignore example",
+    "clean": "turbo run clean --ignore example",
     "changelog": "yarn update-gitmoji-config && npx gitmoji-changelog --preset generic",
-    "lint": "eslint packages/*/src/ --ext .ts --config ./.eslintrc",
+    "lint": "turbo run lint --ignore example",
     "prettier": "prettier --write --config ./.prettierrc \"packages/*/(src|test)/**/*.(ts|tsx)\"",
     "publish:ci": "lerna publish from-package --yes",
     "release": "lerna version $1",
     "version": "yarn changelog && code --wait CHANGELOG.md && git add CHANGELOG.md .gitmoji-changelogrc",
-    "test": "jest",
-    "test:watch": "jest --watchAll",
+    "test": "turbo run test --ignore example",
     "update-gitmoji-config": "node ./scripts/update-gitmoji-config.js"
   },
   "devDependencies": {
@@ -29,6 +27,7 @@
     "husky": "^4.3.0",
     "lint-staged": "^10.5.1",
     "prettier": "^2.1.1",
+    "turbo": "^1.2.16",
     "typescript": "~4.6"
   },
   "dependencies": {
