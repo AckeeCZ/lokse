@@ -64,8 +64,9 @@
   "repository": "AckeeCZ/lokse",
   "scripts": {
     "build": "tsc -b",
+    "copy:templates": "cp -r src/templates lib/templates",
     "postpack": "rm -f oclif.manifest.json",
-    "prepack": "rm -rf lib && yarn build && oclif-dev manifest && oclif-dev readme",
+    "prepack": "rm -rf lib && yarn build && yarn copy:templates && oclif-dev manifest && oclif-dev readme",
     "version": "yarn readme && git add README.md",
     "readme": "oclif-dev readme",
     "release": "yarn version"
