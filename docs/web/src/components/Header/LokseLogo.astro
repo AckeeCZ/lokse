@@ -1,0 +1,10 @@
+---
+import logo from "../../../../../images/lokse.svg";
+
+type Props = {
+  size: number;
+};
+const { size } = Astro.props as Props;
+---
+
+<img width={size} height={size} src={logo} />

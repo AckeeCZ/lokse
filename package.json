@@ -3,6 +3,7 @@
   "name": "@lokse/workspace",
   "workspaces": [
     "example",
+    "docs/web",
     "packages/*"
   ],
   "scripts": {

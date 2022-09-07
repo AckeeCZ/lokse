@@ -1,0 +1,33 @@
+---
+import { getSection } from "../../utils/content";
+import Layout from "../../layouts/MainLayout.astro";
+import * as doc from "../../../../../vscode-extension/README.md";
+
+const { compiledContent, getHeadings } = doc;
+
+const [...headings] = getHeadings();
+const contentHeadings = headings.filter((h, i) => {
+  return i > 0 && /features|requirements|settings/i.test(h.text);
+});
+
+const contentFragments = compiledContent().split("\n");
+const featuresSection = getSection(contentFragments, "features").join("\n");
+const requirementsSection = getSection(contentFragments, "requirements").join(
+  "\n"
+);
+const settingsSection = getSection(contentFragments, "settings").join("\n");
+
+const content = featuresSection
+  .concat(requirementsSection)
+  .concat(settingsSection);
+
+const frontmatter = {
+  title: "VsCode extension",
+  description: "Lokse VsCode extension",
+  layout: "../../layouts/MainLayout.astro",
+};
+---
+
+<Layout frontmatter={frontmatter} headings={contentHeadings}>
+  <Fragment set:html={content} />
+</Layout>

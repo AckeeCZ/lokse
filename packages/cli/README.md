@@ -30,7 +30,7 @@ USAGE
 
 ## 🔑 Authentication
 
-The last version of Google Spreadsheets API requires us to be authenticated to allow fetching spreadsheet data. Read more about [authentication here](https://github.com/AckeeCZ/lokse/tree/master/packages/core/doc/authentication.md)
+The last version of Google Spreadsheets API requires us to be authenticated to allow fetching spreadsheet data. Read more about [authentication here](http://ackeecz.github.io/lokse/authentication)
 
 ## 🔧 Configuration
 
@@ -41,7 +41,7 @@ So just create `lokse.config.js`, `.lokserc`, `.lokserc.yml`, `.lokserc.json` or
 ### `sheetId`
 
 Spreadsheet id. When you open your spreadsheet it's this string  
-![](https://raw.githubusercontent.com/AckeeCZ/lokse/master/doc/spreadsheet-id.png)
+![](https://raw.githubusercontent.com/AckeeCZ/lokse/master/docs/spreadsheet-id.png)
 
 ### `dir`
 

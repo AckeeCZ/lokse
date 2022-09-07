@@ -16,7 +16,7 @@ More commands coming soon...
 
 You must have [`lokse`](https://github.com/AckeeCZ/lokse) installed in you project and [lokse config](https://github.com/AckeeCZ/lokse/tree/master/packages/cli#-configuration) with correct sheet id must be available there.
 
-## Extension Settings
+## Settings
 
 Extension has currently no settings
 
