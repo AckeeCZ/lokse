@@ -18,26 +18,29 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v2
+      - name: Install, build, and upload your site
+        uses: withastro/action@v0
+        working-directory: ./docs/web
       # We can't use https://github.com/withastro/action as it doesn't play well
       # with nested monorepo architecture
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: yarn
+      # - name: Setup Node
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 16
+      #     cache: yarn
 
-      - name: Install
-        shell: "bash"
-        run: yarn install
+      # - name: Install
+      #   shell: "bash"
+      #   run: yarn install
 
-      - name: Build
-        shell: "bash"
-        run: yarn workspace lokse-doc-site build
+      # - name: Build
+      #   shell: "bash"
+      #   run: yarn workspace lokse-doc-site build
 
-      - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: "./docs/web/dist/"
+      # - name: Upload Pages Artifact
+      #   uses: actions/upload-pages-artifact@v1
+      #   with:
+      #     path: "./docs/web/dist/"
 
   deploy:
     needs: build
