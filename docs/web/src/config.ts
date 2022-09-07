@@ -45,22 +45,25 @@ export type Sidebar = Record<
   typeof KNOWN_LANGUAGE_CODES[number],
   Record<string, { text: string; link: string }[]>
 >;
+
+const BASE = "lokse/";
+
 export const SIDEBAR: Sidebar = {
   en: {
     Basics: [
-      { text: "Introduction", link: "en/introduction" },
-      { text: "Lokse CLI", link: "en/cli" },
-      { text: "Authentication", link: "en/authentication" },
-      { text: "VsCode extension", link: "en/extension" },
+      { text: "Introduction", link: `${BASE}en/introduction` },
+      { text: "Lokse CLI", link: `${BASE}en/cli` },
+      { text: "Authentication", link: `${BASE}en/authentication` },
+      { text: "VsCode extension", link: `${BASE}en/extension` },
     ],
     Plugins: [
-      { text: "Intro", link: "en/plugins" },
-      { text: "How to create", link: "en/plugin-create" },
-      { text: "Prettier plugin", link: "en/plugin/prettier" },
-      { text: "Fallback plugin", link: "en/plugin/fallback" },
+      { text: "Intro", link: `${BASE}en/plugins` },
+      { text: "How to create", link: `${BASE}en/plugin-create` },
+      { text: "Prettier plugin", link: `${BASE}en/plugin/prettier` },
+      { text: "Fallback plugin", link: `${BASE}en/plugin/fallback` },
       {
         text: "Non-breaking spaces plugin",
-        link: "en/plugin/non-breaking-spaces",
+        link: `${BASE}en/plugin/non-breaking-spaces`,
       },
     ],
   },
