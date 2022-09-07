@@ -14,7 +14,7 @@ We have practically two ways of how to define environment variables containing A
 
 Use it before the command like
 
-```sh-session
+```sh
 $ LOKSE_SERVICE_ACCOUNT_EMAIL=this_is_account_email LOKSE_PRIVATE_KEY=this_is_the_private_key lokse update
 ```
 
@@ -27,7 +27,7 @@ LOKSE_PRIVATE_KEY=this_is_the_private_key
 
 then you'll be able to run
 
-```sh-session
+```sh
 $ lokse update
 ```
 

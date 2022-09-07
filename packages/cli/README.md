@@ -15,7 +15,7 @@ A tool for efficient usage of translations stored in google spreadsheet
 ## 🚀 Usage
 
 <!-- usage -->
-```sh-session
+```sh
 $ npm install -g lokse
 $ lokse COMMAND
 running command...
