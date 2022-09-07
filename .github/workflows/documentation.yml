@@ -28,7 +28,6 @@ jobs:
 
       - name: Install
         shell: "bash"
-        working-directory: ./docs/web
         run: yarn install
 
       - name: Build
