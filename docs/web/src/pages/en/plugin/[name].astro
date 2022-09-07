@@ -1,0 +1,51 @@
+---
+import type { MarkdownInstance } from "astro";
+import Layout from "../../../layouts/MainLayout.astro";
+
+export interface Props {
+  plugin: MarkdownInstance<{}>
+}
+
+export async function getStaticPaths() {
+  const plugins = await Astro.glob('../../../../../../packages/plugin-*/README.md')
+  
+  return plugins.map(plugin => {
+    const [, pluginName] = plugin.file.match(/.*plugin-([\w-]*)\/README.md/) ?? []
+
+    return {
+      params: { 
+        'name': pluginName,
+      },
+      props: {
+        plugin
+      },
+    }
+  })
+}
+
+const { compiledContent, getHeadings } = Astro.props.plugin
+
+const [mainHeading, ...headings] = getHeadings();
+const contentHeadings = headings.filter((h) => h.slug !== "license");
+
+const contentFragments = compiledContent().split('\n');
+const licenseBlockIndex = contentFragments.findIndex(fragment => fragment.includes('License</h'))
+
+const content = contentFragments.filter(filterRedundantBlocksOut).join('\n')
+
+const frontmatter = {
+  title: mainHeading.text,
+  description: `${mainHeading.text} description`,
+  layout: "../../layouts/MainLayout.astro",
+};
+
+function filterRedundantBlocksOut(_: any, index: number) {
+  // Remove <h1> title, it's already added by Layout via frontmatter
+  // Remove the License block, which should be the last block in the content
+  return index > 0 && index < licenseBlockIndex
+}
+---
+
+<Layout frontmatter={frontmatter} headings={contentHeadings}>
+    <Fragment set:html={content}></Fragment>
+</Layout>

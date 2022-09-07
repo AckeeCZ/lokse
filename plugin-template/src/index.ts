@@ -1,5 +1,9 @@
 import { createPlugin } from "@lokse/core";
-import type { GeneralPluginOptions, GeneralPluginMeta, LoksePlugin } from "@lokse/core";
+import type {
+  GeneralPluginOptions,
+  GeneralPluginMeta,
+  LoksePlugin,
+} from "@lokse/core";
 
 export default function (
   /**
@@ -16,7 +20,7 @@ export default function (
     /**
      * Here is the place to implement any of LoksePlugin hooks
      * and some useful operations.
-     * Read https://github.com/AckeeCZ/lokse/tree/master/doc/Plugins.md
+     * Read https://ackeecz.github.io/lokse/plugins
      */
   });
 }

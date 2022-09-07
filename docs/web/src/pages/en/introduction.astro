@@ -1,0 +1,75 @@
+---
+import { Code } from "astro/components";
+
+import { getSection } from "../../utils/content";
+import Layout from "../../layouts/MainLayout.astro";
+import * as doc from "../../../../../README.md";
+
+const { compiledContent, getHeadings } = doc;
+
+const [...headings] = getHeadings();
+
+const historyHeading = headings.filter(h => /Brief history/i.test(h.text))
+const nameMeaningHeading = headings.filter(h => /name meaning/i.test(h.text))
+const contentHeadings = [
+    ...historyHeading,
+    {
+        slug: 'getting-started',
+        depth: 2,
+        text: 'Getting started'
+    },
+    ...nameMeaningHeading
+]
+
+const contentFragments = compiledContent().split("\n");
+const historySection = getSection(contentFragments, "Brief history").join('\n');
+const nameMeaningSection = getSection(contentFragments, "name meaning").join('\n');
+
+const frontmatter = {
+  title: "Introduction",
+  description: "Docs intro",
+  layout: "../../layouts/MainLayout.astro",
+};
+---
+
+<Layout frontmatter={frontmatter} headings={contentHeadings}>
+  <strong>Welcome to the world of Lokse!</strong>
+
+  <p>
+    The project's goal is to faciliate the work with translations held in Google
+    spreadsheet.
+  </p>
+
+  <!-- <ul class="no-markers">
+    <li> ✅ <strong>Full Markdown support</strong></li>
+    <li> ✅ <strong>Responsive mobile-friendly design</strong></li>
+    <li> ✅ <strong>Sidebar navigation</strong></li>
+    <li> ✅ <strong>Search (powered by Algolia)</strong></li>
+    <li> ✅ <strong>Multi-language i18n</strong></li>
+    <li> ✅ <strong>Automatic table of contents</strong></li>
+    <li> ✅ <strong>Automatic list of contributors</strong></li>
+    <li> ✅ (and, best of all) <strong>dark mode</strong></li>
+  </ul> -->
+
+  <Fragment set:html={historySection} />
+
+  <h2 id="getting-started">Getting started</h2>
+
+  <p>Install lokse CLI in your project</p>
+  <Code code="yarn add -D lokse" lang="bash" />
+
+  <p>create config</p>
+  <Code code="yarn lokse init" lang="bash" />
+
+  <p>and fetch dependencies</p>
+  <Code code="yarn update" lang="bash" />
+
+  <Fragment set:html={nameMeaningSection} />
+
+</Layout>
+
+<style>
+    ul.no-markers li {
+        list-style-type: none;
+    }
+</style>
