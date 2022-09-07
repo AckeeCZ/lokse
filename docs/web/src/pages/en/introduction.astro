@@ -9,21 +9,23 @@ const { compiledContent, getHeadings } = doc;
 
 const [...headings] = getHeadings();
 
-const historyHeading = headings.filter(h => /Brief history/i.test(h.text))
-const nameMeaningHeading = headings.filter(h => /name meaning/i.test(h.text))
+const historyHeading = headings.filter((h) => /Brief history/i.test(h.text));
+const nameMeaningHeading = headings.filter((h) => /name meaning/i.test(h.text));
 const contentHeadings = [
-    ...historyHeading,
-    {
-        slug: 'getting-started',
-        depth: 2,
-        text: 'Getting started'
-    },
-    ...nameMeaningHeading
-]
+  ...historyHeading,
+  {
+    slug: "getting-started",
+    depth: 2,
+    text: "Getting started",
+  },
+  ...nameMeaningHeading,
+];
 
 const contentFragments = compiledContent().split("\n");
-const historySection = getSection(contentFragments, "Brief history").join('\n');
-const nameMeaningSection = getSection(contentFragments, "name meaning").join('\n');
+const historySection = getSection(contentFragments, "Brief history").join("\n");
+const nameMeaningSection = getSection(contentFragments, "name meaning").join(
+  "\n"
+);
 
 const frontmatter = {
   title: "Introduction",
@@ -65,11 +67,10 @@ const frontmatter = {
   <Code code="yarn update" lang="bash" />
 
   <Fragment set:html={nameMeaningSection} />
-
 </Layout>
 
 <style>
-    ul.no-markers li {
-        list-style-type: none;
-    }
+  ul.no-markers li {
+    list-style-type: none;
+  }
 </style>
