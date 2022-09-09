@@ -1,5 +1,9 @@
+// eslint-disable-next-line node/no-unpublished-import
+import pkg from "../../../packages/cli/package.json";
+
 export const SITE = {
   title: "Lokse",
+  version: pkg.version,
   description: "Localize your app from spreadsheet",
   defaultLanguage: "en_US",
 };

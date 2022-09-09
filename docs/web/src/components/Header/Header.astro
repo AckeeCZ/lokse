@@ -24,8 +24,9 @@ const lang = getLanguageFromURL(currentPage);
     <div class="logo flex">
       <a href="/lokse/">
         <LokseLogo size={40} />
-        <h1>{CONFIG.SITE.title ?? "Documentation"}</h1>
+        <h1>{CONFIG.SITE.title ?? "Documentation"} <span class="version">@{CONFIG.SITE.version}</span></h1>
       </a>
+      
     </div>
     <div style="flex-grow: 1;"></div>
     {
@@ -78,6 +79,10 @@ const lang = getLanguageFromURL(currentPage);
   .logo a {
     transition: color 100ms ease-out;
     color: var(--theme-text);
+  }
+
+  .logo .version {
+    font-size: 0.8em;
   }
 
   .logo a:hover,
