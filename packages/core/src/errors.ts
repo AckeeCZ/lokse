@@ -9,7 +9,7 @@ export class MissingAuthError extends FatalError {
     super(
       dedent`
           Cannot authenticate to fetch Spreadsheet data. 
-            Provide either Service account credentials or API key 🔑 See detail info at http://ackeecz.github.io/lokse/authentication
+            Provide either Service account credentials or API key 🔑 See detail info at https://github.com/AckeeCZ/lokse/blob/master/docs/web/src/pages/en/authentication.md
           `
     );
     this.name = "MissingAuthError";
