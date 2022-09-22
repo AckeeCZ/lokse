@@ -25,6 +25,7 @@
     "react-dom": "^18.1.0"
   },
   "devDependencies": {
+    "@astrojs/sitemap": "^1.0.0",
     "prettier": "^2.7.1",
     "prettier-plugin-astro": "^0.5.4"
   }
