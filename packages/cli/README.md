@@ -30,7 +30,7 @@ USAGE
 
 ## 🔑 Authentication
 
-The last version of Google Spreadsheets API requires us to be authenticated to allow fetching spreadsheet data. Read more about [authentication here](http://ackeecz.github.io/lokse/authentication)
+The last version of Google Spreadsheets API requires us to be authenticated to allow fetching spreadsheet data. Read more about [authentication here](https://ackeecz.github.io/lokse/en/authentication/)
 
 ## 🔧 Configuration
 
