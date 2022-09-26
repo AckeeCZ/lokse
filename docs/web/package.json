@@ -1,6 +1,6 @@
 {
   "name": "lokse-doc-site",
-  "version": "0.0.1",
+  "version": "2.2.2",
   "private": true,
   "scripts": {
     "dev": "astro dev",

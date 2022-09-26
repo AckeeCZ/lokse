@@ -1,5 +1,33 @@
 # Changelog
 
+<a name="2.2.2"></a>
+
+## 2.2.2 (2022-09-26)
+
+### Changed
+
+- 📝 Add documentation page [[df8e6da](https://github.com/AckeeCZ/lokse/commit/df8e6da4a8b20d74f4a73c71be3ddd0ffe7b8e57)]
+- ⬆️ Fix version resolution for @types/react [[8f83843](https://github.com/AckeeCZ/lokse/commit/8f83843cafe66c5c4b5ecad7ac5ad4169c7c6dc3)]
+- ♻️ Extract documentation web from the monorepo architecture [[4d96192](https://github.com/AckeeCZ/lokse/commit/4d96192a2aee7926703cff17481b024e50b4cc85)]
+- 👷 Use node@16 for github workflows [[db9c343](https://github.com/AckeeCZ/lokse/commit/db9c343f3c6b5a5ce78578d1e10876156442b3a1)]
+- 📝 Update auth details links [[de4401c](https://github.com/AckeeCZ/lokse/commit/de4401c8092e73d67c0dd91baa2ea827f59651a5)]
+
+### Removed
+
+- 🔥 Remove core/doc/authentication as it is included in doc web [[322734e](https://github.com/AckeeCZ/lokse/commit/322734e926d625d675a1b0449a133f90487962c0)]
+
+<a name="2.2.1"></a>
+
+## 2.2.1 (2022-09-01)
+
+### Changed
+
+- 🔧 Change extension name field from lokse to lokse-extension [[aeea379](https://github.com/AckeeCZ/lokse/commit/aeea37998836ac8b30649d404a4a18012d73fbae)]
+
+### Fixed
+
+- 🐛 Fix packing templates with lokse cli package [[e984c54](https://github.com/AckeeCZ/lokse/commit/e984c5477b9de7a012ad975b5861a36231831dd9)]
+
 <a name="2.2.0"></a>
 
 ## 2.2.0 (2022-06-15)
