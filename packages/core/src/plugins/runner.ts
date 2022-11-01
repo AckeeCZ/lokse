@@ -7,7 +7,6 @@ import type {
 } from "./create";
 
 export class PluginsRunner {
-  // eslint-disable-next-line no-useless-constructor
   constructor(
     public plugins: NamedLoksePlugin[],
     private options: GeneralPluginOptions

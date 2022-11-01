@@ -16,7 +16,6 @@ interface FileInfo {
   outputDir: string;
 }
 class FileWriter {
-  // eslint-disable-next-line no-useless-constructor
   constructor(private plugins: PluginsRunner) {}
 
   async write(
