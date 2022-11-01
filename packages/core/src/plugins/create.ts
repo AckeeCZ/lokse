@@ -3,7 +3,14 @@ import { identity } from "lodash";
 
 import Line from "../line";
 import type { Logger } from "../logger";
+import type { WorksheetLinesByTitle } from "../reader";
+import type { LinesWithNamespace } from "../sorter";
 import type Transformer from "../transformer";
+
+export interface SortLinesMeta {
+  language: string;
+  linesWithNamespace: LinesWithNamespace[];
+}
 
 export interface TransformLineMeta {
   language: string;
@@ -23,6 +30,10 @@ export interface ReadTranslationMeta {
 }
 
 export interface LoksePlugin {
+  sortLines: (
+    linesByWorkshet: WorksheetLinesByTitle,
+    meta: SortLinesMeta
+  ) => void;
   transformLine: (line: Line, meta: TransformLineMeta) => Line | Promise<Line>;
   transformFullOutput: (
     output: string,
@@ -52,6 +63,7 @@ export type PluginFactory = (
 ) => LoksePlugin;
 
 const pluginDefaults: LoksePlugin = {
+  sortLines: identity,
   transformLine: identity,
   transformFullOutput: identity,
   readTranslation: identity,
