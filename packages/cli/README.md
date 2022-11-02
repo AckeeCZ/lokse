@@ -15,6 +15,7 @@ A tool for efficient usage of translations stored in google spreadsheet
 ## 🚀 Usage
 
 <!-- usage -->
+
 ```sh-session
 $ npm install -g lokse
 $ lokse COMMAND
@@ -26,6 +27,7 @@ USAGE
   $ lokse COMMAND
 ...
 ```
+
 <!-- usagestop -->
 
 ## 🔑 Authentication
@@ -66,79 +68,67 @@ Target spreadsheet can contain more than one sheet and default behaviour is to u
 You can choose from various formats to define sheets to use
 
 1. Special value `*` means to include all sheets and is the default behaviour when you omit the `sheets` option.
-  
-    ```json
-    {
-      "sheets": "*",
-    }
-    ```
+
+   ```json
+   {
+     "sheets": "*"
+   }
+   ```
 
 2. Titles of sheets to use. Can be string or array of strings
-  
-    ```json
-      {
-        "sheets": "Web translations",
-      }
-      // or
-      {
-        "sheets": ["App translations", "Legal docs"]
-      }
-    ```
+
+   ```json
+     {
+       "sheets": "Web translations",
+     }
+     // or
+     {
+       "sheets": ["App translations", "Legal docs"]
+     }
+   ```
 
 3. Definition of sheets to include or exclude from the list of all sheets. Can be one of formats mentioned above
-  
-    ```json
-      {
-        "sheets": {
-          "include": ["Web translations", "Legal docs"],
-          "exclude": "CMS translations"
-        }
-      }
-      // or
-      {
-        "sheets": {
-          "exclude": ["CMS translations"]
-        }
-      }
-      // or 
-      {
-        "sheets": {
-          "include": ["Web translations", "Legal docs"],
-        }
-      }
-    ```
-### `splitTranslations`
 
-Enables splitting translations into multiple files which is useful for lazy loading of some big parts of translations (eg. translation of the whole legal document).
-
-You have two ways of how to split your translations:
-
-- **Split by sheets - `splitTranslations: true`** - each sheet means one translations file and name of file is determined by sheet title. Given 3 sheets in yout spreadsheet named "App translations", "Legal docs", "Landing Page" the result will be 3 files named `app-translations.cs.json`, `legal-docs.cs.json`, `landing-page.cs.json` (of course the language and format depends on your settings).
-
-- **Split by domains - `splitTranslations: string[]`** - this configuration expects an array of domain names. Domain is a first part of your translation id, given translation id `news.mostRead.error.text` the domain is `news`. The domain name determines also the filename, `news.cs.json` in our example.  
-  Translations that starts with domain `news.` will be written into the `news.cs.json`, other translations that does not belong to any other group will be saved into general translations in file `cs.json`.
-
-The `splitTranslations` option can be provided only through configuration not inline CLI parameter.
+   ```json
+     {
+       "sheets": {
+         "include": ["Web translations", "Legal docs"],
+         "exclude": "CMS translations"
+       }
+     }
+     // or
+     {
+       "sheets": {
+         "exclude": ["CMS translations"]
+       }
+     }
+     // or
+     {
+       "sheets": {
+         "include": ["Web translations", "Legal docs"],
+       }
+     }
+   ```
 
 ### Plugins
 
 List of plugins to use. Plugin can be either name of plugin, or object containing name and options. **You must install first.**
 
-  ```shell
-  $ yarn add -D @lokse/plugin-prettify @lokse/plugin-transform-values
-  ```
+```shell
+$ yarn add -D @lokse/plugin-prettify @lokse/plugin-transform-values
+```
 
-  ```json
-  plugins: [
-    "@lokse/plugin-prettify",
-    {
-      "name": "@lokse/plugin-transform-values",
-      "options": {
-        "uppercase": "true"
-      }
+```json
+plugins: [
+  "@lokse/plugin-prettify",
+  {
+    "name": "@lokse/plugin-transform-values",
+    "options": {
+      "uppercase": "true"
     }
-  ],
-  ```
+  }
+],
+```
 
 ---
 
@@ -160,10 +150,11 @@ List of plugins to use. Plugin can be either name of plugin, or object containin
 ## 🕹 Commands
 
 <!-- commands -->
-* [`lokse help [COMMAND]`](#lokse-help-command)
-* [`lokse init`](#lokse-init)
-* [`lokse open`](#lokse-open)
-* [`lokse update`](#lokse-update)
+
+- [`lokse help [COMMAND]`](#lokse-help-command)
+- [`lokse init`](#lokse-init)
+- [`lokse open`](#lokse-open)
+- [`lokse update`](#lokse-update)
 
 ## `lokse help [COMMAND]`
 
@@ -244,4 +235,5 @@ EXAMPLES
 ```
 
 _See code: [lib/commands/update.js](https://github.com/AckeeCZ/lokse/blob/v2.2.2/lib/commands/update.js)_
+
 <!-- commandsstop -->

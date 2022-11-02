@@ -9,7 +9,7 @@ export { transformersByFormat } from "./transformer";
 export { default as FileWriter } from "./writer";
 export { default as Line } from "./line";
 
-export { OutputFormat, NAME } from "./constants";
+export { OutputFormat, NAME, OTHER_TRANSLATIONS_NAMESPACE } from "./constants";
 
 export { FatalError } from "./errors";
 

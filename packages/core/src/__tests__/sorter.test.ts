@@ -176,17 +176,4 @@ describe("Sorter.sort", () => {
       },
     ]);
   });
-
-  // THESE belongs to the plugin
-  it.todo("splits by sheet title when split option is true");
-
-  it.todo("warns if there is only one sheet so splitting is unnecessary");
-
-  it.todo(
-    "split translations by specified namespaces and put rest into the other"
-  );
-
-  it.todo("should split correctly when namespace is nested (contains dot)");
-
-  it.todo("should split correctly when domain name is part of other domain");
 });
