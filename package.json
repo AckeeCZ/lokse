@@ -13,7 +13,7 @@
     "lint": "lerna run lint --ignore example",
     "prettier": "prettier --write --config ./.prettierrc \"packages/*/(src|test)/**/*.(ts|tsx)\"",
     "publish:ci": "lerna publish from-package --yes",
-    "release": "lerna version $1",
+    "release": "lerna version $1 --no-private",
     "version": "yarn changelog && code --wait CHANGELOG.md && git add CHANGELOG.md .gitmoji-changelogrc",
     "test": "lerna run test --ignore example",
     "update-gitmoji-config": "node ./scripts/update-gitmoji-config.js"
@@ -32,7 +32,7 @@
   "dependencies": {
     "@types/jest": "^28.1.2",
     "jest": "^28.1.1",
-    "lerna": "4",
+    "lerna": "^6.0.1",
     "ts-jest": "^28.0.5"
   },
   "resolutions": {
