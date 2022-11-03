@@ -60,7 +60,7 @@ describe("Split translations plugin", () => {
         { ns: "sheet-1", lines: linesByWorksheet["Sheet 1"] },
       ]);
       expect(logger.warn).toHaveBeenCalledWith(
-        "Requested splitting translations by sheet but only one sheet\ncalled Sheet 1 got. Check if this is intended."
+        "Requested splitting translations by sheet but only one sheet\n called Sheet 1 got. Check if this is intended."
       );
     });
 
@@ -193,7 +193,7 @@ describe("Split translations plugin", () => {
       expect(logger.warn).not.toHaveBeenCalled();
     });
 
-    it("splits correctly when domain name is part of other domain", () => {
+    it("splits correctly when namespace name is part of other namespace", () => {
       const linesByWorksheet = {
         "Sheet 1": [
           new Line("home.title", "Bejsbol"),

@@ -33,7 +33,7 @@ or
 
 ### Plugin options
 
-`namespaces` — List of namespaces to split by, see explanation in [Splitting section](#splitting) below 👇
+`namespaces` — List of namespaces to split by, see explanation in [Splitting](#splitting) section below 👇
 
 ```json
 {

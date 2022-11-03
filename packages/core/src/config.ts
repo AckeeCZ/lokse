@@ -37,7 +37,6 @@ export type LokseConfig = {
   column?: string;
   format?: typeof OutputFormat;
   sheets?: SheetsFilter;
-  splitTranslations?: boolean | string[];
   plugins?: (PluginName | PluginDefinition)[];
 };
 

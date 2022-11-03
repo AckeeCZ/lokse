@@ -142,7 +142,6 @@ plugins: [
   "column": "key_web",
   "format": "json",
   "sheets": ["App translations", "Legal docs"],
-  "splitTranslations": ["news", "documents"],
   "plugins": []
 }
 ```

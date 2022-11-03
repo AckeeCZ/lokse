@@ -14,13 +14,13 @@ export interface SortLinesMeta {
 
 export interface TransformLineMeta {
   language: string;
-  domain?: string;
+  namespace?: string;
 }
 
 export interface TransformFullOutputMeta {
   transformer: Transformer;
   language: string;
-  domain?: string;
+  namespace?: string;
 }
 
 export interface ReadTranslationMeta {

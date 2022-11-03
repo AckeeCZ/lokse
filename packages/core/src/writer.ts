@@ -7,12 +7,13 @@ import Transformer from "./transformer";
 import Line from "./line";
 import { PluginsRunner } from "./plugins";
 import type { TransformLineMeta } from "./plugins";
+import { OTHER_TRANSLATIONS_NAMESPACE } from "./constants";
 
 const fs = promisifyAll(require("fs"));
 
 interface FileInfo {
   language: string;
-  domain?: string;
+  namespace: string;
   outputDir: string;
 }
 class FileWriter {
@@ -25,8 +26,14 @@ class FileWriter {
     encoding = "utf8"
   ): Promise<string> {
     let fileContent = "";
-    const { language, domain, outputDir } = fileInfo;
-    const fileName = transformer.getFileName(language, domain);
+    const { language, outputDir } = fileInfo;
+
+    const namespace =
+      fileInfo.namespace === OTHER_TRANSLATIONS_NAMESPACE
+        ? undefined
+        : fileInfo.namespace;
+
+    const fileName = transformer.getFileName(language, namespace);
     const filePath = path.resolve(outputDir, fileName);
 
     try {
@@ -40,14 +47,14 @@ class FileWriter {
 
     const valueToInsert = await this.getTransformedLines(lines, transformer, {
       language,
-      domain,
+      namespace,
     });
 
     let output = await transformer.insert(fileContent, valueToInsert);
     output = await this.plugins.runHook("transformFullOutput", output, {
       transformer,
       language,
-      domain,
+      namespace,
     });
 
     const dirname = path.dirname(filePath);

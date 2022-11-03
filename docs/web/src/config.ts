@@ -65,6 +65,7 @@ export const SIDEBAR: Sidebar = {
       { text: "How to create", link: `${BASE}en/plugin-create` },
       { text: "Prettier plugin", link: `${BASE}en/plugin/prettier` },
       { text: "Fallback plugin", link: `${BASE}en/plugin/fallback` },
+      { text: "Split plugin", link: `${BASE}en/plugin/split` },
       {
         text: "Non-breaking spaces plugin",
         link: `${BASE}en/plugin/non-breaking-spaces`,

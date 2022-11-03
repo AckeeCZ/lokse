@@ -1,5 +1,4 @@
 import * as slugify from "@sindresorhus/slugify";
-import * as dedent from "dedent";
 import { createPlugin } from "@lokse/core";
 import type {
   GeneralPluginOptions,
@@ -30,9 +29,10 @@ export default function (options: PluginOptions): LoksePlugin {
     const worksheetLinesEntries = Object.entries(linesByTitle);
 
     if (worksheetLinesEntries.length === 1) {
-      options.logger
-        .warn(dedent`Requested splitting translations by sheet but only one sheet
-      called ${worksheetLinesEntries[0][0]} got. Check if this is intended.`);
+      const sheetName = worksheetLinesEntries[0][0];
+      options.logger.warn(
+        `Requested splitting translations by sheet but only one sheet\n called ${sheetName} got. Check if this is intended.`
+      );
     }
 
     for (const [title, lines] of worksheetLinesEntries) {
@@ -49,7 +49,7 @@ export default function (options: PluginOptions): LoksePlugin {
   ) {
     const worksheetLinesEntries = Object.entries(linesByTitle);
 
-    const linesByNamespace: { [domain: string]: Line[] } = {};
+    const linesByNamespace: { [ns: string]: Line[] } = {};
     const restLinesByWorksheet: WorksheetLinesByTitle = {};
 
     for (const [sheetTitle, sheetLines] of worksheetLinesEntries) {

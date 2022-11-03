@@ -39,7 +39,7 @@ describe("init command", () => {
     .setupMocks()
     .do(() => {
       explorerMock.search.mockReturnValue({
-        config: { splitTranslations: true },
+        config: {},
       });
     })
     .command(["init"])

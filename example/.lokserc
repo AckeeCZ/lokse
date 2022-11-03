@@ -7,17 +7,22 @@
         "fr"
     ],
     "column": "key_web",
-    "splitTranslations": [
-        "login",
-        "forgot_password",
-        "reset_password"
-    ],
     "plugins": [
         "@lokse/plugin-prettier",
         {
             "name": "@lokse/plugin-fallback",
             "options": {
                 "defaultLanguage": "cs"
+            }
+        },
+        {
+            "name": "@lokse/plugin-split",
+            "options": {
+                "namespaces": [
+                    "login",
+                    "forgot_password",
+                    "reset_password"
+                ]
             }
         }
     ]

@@ -23,14 +23,12 @@ const jsonTransformer: Transformer = {
     return `${EOL}{${EOL}${newValues}${EOL}}`;
   },
 
-  getFileName(lang, domain) {
-    return [domain, lang, "json"]
+  getFileName(lang, namespace) {
+    return [namespace, lang, "json"]
       .filter(Boolean)
       .map((s) => s!.toLowerCase())
       .join(".");
   },
-
-  supportsSplit: true,
 };
 
 export default jsonTransformer;
