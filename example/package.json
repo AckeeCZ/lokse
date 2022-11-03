@@ -7,6 +7,7 @@
     "devDependencies": {
         "@lokse/plugin-fallback": "^2.2.2",
         "@lokse/plugin-prettier": "^2.2.2",
+        "@lokse/plugin-split": "^1.0.0",
         "lokse": "^2.2.2"
     }
 }

@@ -4,6 +4,7 @@ export type {
   GeneralPluginMeta,
   TransformFullOutputMeta,
   TransformLineMeta,
+  SortLinesMeta,
 } from "./create";
 export { createPlugin } from "./create";
 

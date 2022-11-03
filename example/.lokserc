@@ -14,6 +14,16 @@
             "options": {
                 "defaultLanguage": "cs"
             }
+        },
+        {
+            "name": "@lokse/plugin-split",
+            "options": {
+                "namespaces": [
+                    "login",
+                    "forgot_password",
+                    "reset_password"
+                ]
+            }
         }
     ]
 }

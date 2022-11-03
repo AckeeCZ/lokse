@@ -32,16 +32,48 @@ readTranslation: async (line: Line, meta: MetaInfo) => {
 };
 ```
 
+### `sortLines`
+
+Invoked after translation lines are read from the spreadsheet.
+
+Receives object lines by title of worksheet they belong to. Second argument are meta information containing language and more importatntly **target list of lines with associated namespaces**. If some lines needs to be assigned to specific namespace, that's the place to move them.
+
+It's important to return `linesByWorksheet` object only with lines not assigned to any other namespace, otherwise these lines will be duplicated in resulting translation files. That's because default behaviour executed after the hook is to assign remaining lines to the "other translations" namespace. The "other translations" namespace with no lines is also always available in the `linesWithNamespace`.
+
+```ts
+interface MetaInfo {
+  language: string;
+  linesWithNamespace: { ns: string; lines: Line[] }[];
+}
+
+sortLines: async (linesByWorkshet: Record<string, Line[]>, meta: MetaInfo) => {
+  const otherLinesByWorksheet: Record<string, Line[]> = {};
+
+  for (const [title, lines] of linesByWorksheet.entries()) {
+    if (title.startsWith("Legal")) {
+      meta.linesWithNamespace.push({
+        ns: title.toLowerCase().replaceAll(" ", "-"),
+        lines,
+      });
+    } else {
+      otherLinesByWorksheet[title] = lines;
+    }
+  }
+
+  return otherLinesByWorksheet;
+};
+```
+
 ### `transformLine`
 
-Invoked before writing the line into the final output string.
+Invoked before adding the line to the final output string.
 
 Receives object of the type `Line` and must return `Line` too. On the line you can utilize `setKey` and `setValue` methods which accepts function with current key/value and returns modified key/value.
 
 ```ts
 interface MetaInfo {
   language: string;
-  domain?: string;
+  namespace?: string;
 }
 
 transformLine: async (line: Line, meta: MetaInfo) => {
@@ -64,7 +96,7 @@ import { OutputFormat } from "@lokse/core";
 interface MetaInfo {
   transformer: Transformer;
   language: string;
-  domain?: string;
+  namespace?: string;
 }
 
 transformFullOutput: async (output: string, meta: MetaInfo) => {

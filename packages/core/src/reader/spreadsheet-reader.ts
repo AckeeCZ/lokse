@@ -90,7 +90,7 @@ export class SpreadsheetReader {
 
         if (worksheetsLines[title]) {
           this.logger.warn(
-            `🔀 Found two sheets with same title ${title}. We're gonna concat the data.`
+            `🔀 Found two sheets with same title ${title}. We're gonna merge the data.`
           );
 
           worksheetsLines[title] = [...worksheetsLines[title], ...lines];
