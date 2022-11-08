@@ -24,6 +24,7 @@ import Base from "../base";
 
 import { id as idFlag } from "../flags";
 import { MissingFlagValue, IncorrectFlagValue } from "../flags/errors";
+import { isCLIError } from "../invariants";
 
 flat.shim();
 
@@ -256,12 +257,16 @@ class Update extends Base {
       } catch (error) {
         spinner.fail(`Generating ${langName} translations failed.`);
 
-        const normalizedError =
-          error instanceof FatalError ? new CLIError(error) : error;
-
-        this.error(normalizedError, {
-          exit: normalizedError?.oclif?.exit,
-        });
+        if (error instanceof FatalError) {
+          this.error(new CLIError(error));
+        } else if (isCLIError(error)) {
+          this.error(error, {
+            // @ts-expect-error For some reason overload doesn't match correct exit type
+            exit: error.oclif?.exit,
+          });
+        } else if (error instanceof Error || typeof error === "string") {
+          this.error(error);
+        }
       }
     }
   }
