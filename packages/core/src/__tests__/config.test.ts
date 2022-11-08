@@ -11,7 +11,7 @@ jest.mock("cosmiconfig", () => {
   };
 });
 
-jest.mock("cosmiconfig-ts-loader");
+jest.mock("cosmiconfig-typescript-loader");
 
 describe("getConfig", () => {
   const OLD_ENV = process.env;

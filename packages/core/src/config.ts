@@ -1,5 +1,5 @@
 import { cosmiconfigSync } from "cosmiconfig";
-import typeScriptLoader from "cosmiconfig-ts-loader";
+import { TypeScriptLoader as typeScriptLoader } from "cosmiconfig-typescript-loader";
 
 import { OutputFormat, NAME } from "./constants";
 import type { PluginDefinition, PluginName } from "./plugins";
