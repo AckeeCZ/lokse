@@ -29,7 +29,7 @@
     "husky": "^4.3.0",
     "lint-staged": "^10.5.1",
     "prettier": "^2.1.1",
-    "typescript": "~4.8"
+    "typescript": "~4.6"
   },
   "dependencies": {
     "@types/jest": "^26.0.13",
