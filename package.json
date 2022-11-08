@@ -38,6 +38,7 @@
   "resolutions": {
     "rxjs": "6",
     "@types/prettier": "2.6.0",
-    "@types/configstore": "5"
+    "@types/configstore": "5",
+    "typescript": "~4.6"
   }
 }
