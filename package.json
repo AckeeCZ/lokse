@@ -7,15 +7,15 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "lerna run build --ignore example",
-    "clean": "lerna run clean --ignore example",
+    "build": "lerna run build",
+    "clean": "lerna run clean",
     "changelog": "yarn update-gitmoji-config && npx gitmoji-changelog --preset generic",
-    "lint": "lerna run lint --ignore example",
+    "lint": "lerna run lint",
     "prettier": "prettier --write --config ./.prettierrc \"packages/*/(src|test)/**/*.(ts|tsx)\"",
     "publish:ci": "lerna publish from-package --yes",
     "release": "lerna version $1 --no-private",
     "version": "yarn changelog && code --wait CHANGELOG.md && git add CHANGELOG.md .gitmoji-changelogrc",
-    "test": "lerna run test --ignore example",
+    "test": "lerna run test",
     "update-gitmoji-config": "node ./scripts/update-gitmoji-config.js"
   },
   "devDependencies": {
