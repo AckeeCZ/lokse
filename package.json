@@ -29,7 +29,7 @@
     "husky": "^4.3.0",
     "lint-staged": "^10.5.1",
     "prettier": "^2.1.1",
-    "typescript": "~4.6"
+    "typescript": "~4.8"
   },
   "dependencies": {
     "@types/jest": "^26.0.13",
@@ -39,6 +39,7 @@
   },
   "resolutions": {
     "rxjs": "6",
-    "@types/prettier": "2.6.0"
+    "@types/prettier": "2.6.0",
+    "@types/configstore": "5"
   }
 }
