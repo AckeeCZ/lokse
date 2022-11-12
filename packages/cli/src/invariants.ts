@@ -14,3 +14,7 @@ export const noExitCliInvariant = (
   expression: unknown,
   message: string
 ): void => cliInvariant(expression, message, { exit: false });
+
+export function isCLIError(error: unknown): error is CLIError {
+  return "message" in (error as CLIError);
+}

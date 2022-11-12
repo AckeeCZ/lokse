@@ -25,8 +25,6 @@ jest.mock("cosmiconfig", () => {
   };
 });
 
-jest.mock("cosmiconfig-ts-loader");
-
 const mockOraInstance = {
   start: jest.fn(),
   warn: jest.fn(),

@@ -1,4 +1,5 @@
 import { reduce } from "bluebird";
+import { getErrorMessage } from "../errors";
 
 import type {
   LoksePlugin,
@@ -30,8 +31,11 @@ export class PluginsRunner {
           const transformedTarget = await hook(target, meta);
           return transformedTarget;
         } catch (error) {
+          const { pluginName } = plugin;
+          const errorMsg = getErrorMessage(error);
+
           this.options.logger.warn(
-            `Error when running hook ${hookName} of plugin ${plugin.pluginName}: ${error.message}`
+            `Error when running hook ${hookName} of plugin ${pluginName}: ${errorMsg}`
           );
           return target;
         }

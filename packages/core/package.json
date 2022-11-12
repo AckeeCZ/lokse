@@ -14,7 +14,7 @@
     "@types/mkdirp": "^1.0.1",
     "bluebird": "^3.7.2",
     "cosmiconfig": "^7.0.0",
-    "cosmiconfig-ts-loader": "^0.1.1",
+    "cosmiconfig-typescript-loader": "^4.2.0",
     "dedent": "^0.7.0",
     "google-spreadsheet": "^3.2.0",
     "lodash": "^4.17.20",
@@ -34,7 +34,10 @@
   "main": "lib/index.js",
   "repository": "AckeeCZ/lokse",
   "scripts": {
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "clean": "rm -r lib",
+    "lint": "eslint src --ext .ts",
+    "test": "jest"
   },
   "publishConfig": {
     "access": "public"

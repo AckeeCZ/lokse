@@ -37,3 +37,9 @@ export class LangColumnNotFound extends Error {
     this.lang = lang;
   }
 }
+
+export function getErrorMessage(error: unknown): string {
+  return "message" in (error as Error)
+    ? (error as Error).message
+    : "Unrecognized error";
+}

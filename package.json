@@ -7,17 +7,15 @@
     "packages/*"
   ],
   "scripts": {
-    "bootstrap": "lerna bootstrap --use-workspaces",
     "build": "lerna run build",
-    "clean": "lerna exec --ignore example -- rm -r lib",
+    "clean": "lerna run clean",
     "changelog": "yarn update-gitmoji-config && npx gitmoji-changelog --preset generic",
-    "lint": "eslint packages/*/src/ --ext .ts --config ./.eslintrc",
+    "lint": "lerna run lint",
     "prettier": "prettier --write --config ./.prettierrc \"packages/*/(src|test)/**/*.(ts|tsx)\"",
     "publish:ci": "lerna publish from-package --yes",
-    "release": "lerna version $1",
+    "release": "lerna version $1 --no-private",
     "version": "yarn changelog && code --wait CHANGELOG.md && git add CHANGELOG.md .gitmoji-changelogrc",
-    "test": "jest",
-    "test:watch": "jest --watchAll",
+    "test": "lerna run test",
     "update-gitmoji-config": "node ./scripts/update-gitmoji-config.js"
   },
   "devDependencies": {
@@ -29,16 +27,18 @@
     "husky": "^4.3.0",
     "lint-staged": "^10.5.1",
     "prettier": "^2.1.1",
-    "typescript": "^3.9"
+    "typescript": "~4.6"
   },
   "dependencies": {
-    "@types/jest": "^26.0.13",
-    "jest": "^26.4.2",
-    "lerna": "4",
-    "ts-jest": "^26.3.0"
+    "@types/jest": "^28.1.2",
+    "jest": "^28.1.1",
+    "lerna": "^6.0.1",
+    "ts-jest": "^28.0.5"
   },
   "resolutions": {
     "rxjs": "6",
-    "@types/prettier": "2.6.0"
+    "@types/prettier": "2.6.0",
+    "@types/configstore": "5",
+    "typescript": "~4.6"
   }
 }
