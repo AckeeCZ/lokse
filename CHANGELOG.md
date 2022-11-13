@@ -1,5 +1,25 @@
 # Changelog
 
+<a name="2.3.0"></a>
+
+## 2.3.0 (2022-11-13)
+
+### Changed
+
+- ⬇️ Downgrade typescript version to v4.6 [[a990c54](https://github.com/AckeeCZ/lokse/commit/a990c54360fe91eb912420bcbd82c8f0714557b0)]
+- 📌 Pin @types/configstore to v5 corresponding with pkg version [[7b177b6](https://github.com/AckeeCZ/lokse/commit/7b177b6fc50acaec7c90def999d772da22990f1a)]
+- ♻️ Handle error with better typing [[e7c0aef](https://github.com/AckeeCZ/lokse/commit/e7c0aef727bf5efba307e178c203c974c3c94708)]
+- ⬆️ Upgrade typescript to v4.6 [[91b665c](https://github.com/AckeeCZ/lokse/commit/91b665c67f473a7b760ccc658a91ab9c72173c02)]
+
+### Removed
+
+- ➖ Remove @types/react dependency to solve versions conflict [[6acf4b2](https://github.com/AckeeCZ/lokse/commit/6acf4b2ad2afcda59f0aa45794dc9600e547b825)]
+
+### Miscellaneous
+
+- 🙈 Avoid oclif.manifest.json from being versioned [[382ba0d](https://github.com/AckeeCZ/lokse/commit/382ba0d2ff490b8426afd4110c9503df36c1e2af)]
+- Bump parse-url from 6.0.0 to 6.0.5 [[da8f6d4](https://github.com/AckeeCZ/lokse/commit/da8f6d460f6b3fb0e68c08ec2af4f753fefe4e18)]
+
 <a name="2.2.2"></a>
 
 ## 2.2.2 (2022-09-26)
