@@ -1,3 +1,4 @@
+import * as findNodeModules from "find-node-modules";
 import { getErrorMessage } from "../errors";
 import type {
   NamedLoksePlugin,
@@ -10,7 +11,9 @@ import { PluginsRunner } from "./runner";
 export class PluginError extends Error {}
 
 function interopRequire(path: string) {
-  const obj = require(path);
+  const lookupPaths = findNodeModules({ cwd: process.cwd() });
+  const obj = require(require.resolve(path, { paths: lookupPaths }));
+
   return obj && obj.__esModule ? obj.default : obj;
 }
 

@@ -21,4 +21,5 @@ module.exports = {
       diagnostics: { warnOnly: true },
     },
   },
+  resolver: "<rootDir>/test-utils/resolver",
 };
