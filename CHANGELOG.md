@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="2.3.1"></a>
+
+## 2.3.1 (2023-02-09)
+
+### Added
+
+- ✅ Mock require.resolve in plugins loading tests [[dde8940](https://github.com/AckeeCZ/lokse/commit/dde894052ec07ac42cc6a6798055e8320e24329b)]
+
+### Fixed
+
+- 🐛 Resolve plugin source path for case of globa lokse usage [[d83e8d2](https://github.com/AckeeCZ/lokse/commit/d83e8d2db60a0b26a7adb013162acd76ca646333)]
+
 <a name="2.3.0"></a>
 
 ## 2.3.0 (2022-11-13)
