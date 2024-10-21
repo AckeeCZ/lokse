@@ -11,7 +11,7 @@ import Line from "../../line";
 import Worksheet from "../worksheet";
 import { PluginsRunner } from "../../plugins";
 
-const GoogleSpreadsheetMock = GoogleSpreadsheet as jest.Mock;
+const GoogleSpreadsheetMock = GoogleSpreadsheet as unknown as jest.Mock;
 
 jest.mock("google-spreadsheet");
 

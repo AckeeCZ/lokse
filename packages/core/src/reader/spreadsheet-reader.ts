@@ -1,7 +1,8 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
+import { AnyAuthClient, GoogleAuth, JWT } from "google-auth-library";
 
 import Line from "../line";
-import { MissingAuthError, FatalError, getErrorMessage } from "../errors";
+import { FatalError, getErrorMessage } from "../errors";
 import WorksheetReader from "./worksheet-reader";
 import Worksheet from "./worksheet";
 import defaultLogger from "../logger";
@@ -11,12 +12,11 @@ import type { PluginsRunner } from "../plugins";
 export declare type WorksheetLinesByTitle = {
   [worksheetTitle: string]: Line[];
 };
-
 interface SpreadsheetReaderOptions {
   logger?: Logger;
 }
 export class SpreadsheetReader {
-  private spreadsheet: GoogleSpreadsheet;
+  private spreadsheetId: string;
 
   private worksheets: Worksheet[] | null;
 
@@ -30,42 +30,70 @@ export class SpreadsheetReader {
   ) {
     this.logger = options.logger || defaultLogger;
 
-    this.spreadsheet = new GoogleSpreadsheet(spreadsheetId);
+    this.spreadsheetId = spreadsheetId;
 
     this.worksheets = null;
   }
 
-  async authenticate(): Promise<void> {
+  async authenticate(): Promise<AnyAuthClient> {
     const { LOKSE_API_KEY, LOKSE_SERVICE_ACCOUNT_EMAIL, LOKSE_PRIVATE_KEY } =
       process.env;
 
     if (LOKSE_SERVICE_ACCOUNT_EMAIL && LOKSE_PRIVATE_KEY) {
-      await this.spreadsheet.useServiceAccountAuth({
-        // eslint-disable-next-line camelcase
-        client_email: LOKSE_SERVICE_ACCOUNT_EMAIL,
-        // Treat new lines properly - https://stackoverflow.com/a/36439803/7051731
-        // eslint-disable-next-line camelcase
-        private_key: LOKSE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+      this.logger.log("🔑 Authenticating with service account...");
+
+      const jwt = new JWT({
+        clientId: LOKSE_SERVICE_ACCOUNT_EMAIL,
+        clientSecret: LOKSE_PRIVATE_KEY,
       });
-    } else if (LOKSE_API_KEY) {
-      this.spreadsheet.useApiKey(LOKSE_API_KEY);
-    } else {
-      throw new MissingAuthError();
+
+      const auth = new GoogleAuth();
+
+      auth.setGapicJWTValues(jwt);
+
+      return auth.getClient();
     }
+
+    if (LOKSE_API_KEY) {
+      this.logger.log("🔑 Authenticating with API key...");
+      const auth = new GoogleAuth({
+        apiKey: LOKSE_API_KEY,
+      });
+
+      return auth.getClient();
+    }
+
+    this.logger.log(
+      "🔑 Authenticating with Application Default Credentials..."
+    );
+
+    const auth = new GoogleAuth({
+      scopes: [
+        "https://www.googleapis.com/auth/spreadsheets.readonly",
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive.file",
+      ],
+    });
+
+    return auth.getClient();
   }
 
   async fetchSheets(): Promise<Worksheet[]> {
-    if (!this.worksheets) {
-      await this.authenticate();
-
-      try {
-        await this.spreadsheet.loadInfo();
-      } catch (error) {
-        throw new FatalError(getErrorMessage(error));
-      }
-
-      this.worksheets = await this.sheetsReader.read(this.spreadsheet);
+    if (this.worksheets) {
+      return this.worksheets;
     }
+
+    const client = await this.authenticate();
+
+    const spreadsheet = new GoogleSpreadsheet(this.spreadsheetId, client);
+
+    try {
+      await spreadsheet.loadInfo();
+    } catch (error) {
+      throw new FatalError(getErrorMessage(error));
+    }
+
+    this.worksheets = await this.sheetsReader.read(spreadsheet);
 
     return this.worksheets;
   }

@@ -7,6 +7,7 @@ const createRow = (rowIndex: number, values: { [key: string]: any }) =>
   ({
     rowIndex,
     ...values,
+    get: (key: string) => values[key],
     save: () => null,
     delete: () => null,
   } as unknown as GoogleSpreadsheetRow);
