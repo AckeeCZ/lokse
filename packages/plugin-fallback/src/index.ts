@@ -42,7 +42,7 @@ export default function (
           Object.keys(meta.row).find((key) => isDefaultLang(key)) ??
           NOT_FOUND_KEY;
 
-        const fallbackLanguageValue = meta.row[defaultLanguageKey] ?? "";
+        const fallbackLanguageValue = meta.row.get(defaultLanguageKey) ?? "";
 
         if (logMissingFallback && !fallbackLanguageValue) {
           logger.warn(`Fallback translation of key "${meta.key}" not found`);

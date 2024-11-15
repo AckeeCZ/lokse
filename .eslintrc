@@ -1,5 +1,9 @@
 {
-  "extends": ["oclif", "oclif-typescript", "prettier"],
+  "extends": [
+    "oclif",
+    "oclif-typescript",
+    "prettier"
+  ],
   "rules": {
     "unicorn/prefer-node-protocol": "off",
     "node/no-extraneous-import": "off",
@@ -16,7 +20,14 @@
     ],
     "no-warning-comments": [
       "warn",
-      { "terms": ["fixme", "xxx"], "location": "start" }
-    ]
+      {
+        "terms": [
+          "fixme",
+          "xxx"
+        ],
+        "location": "start"
+      }
+    ],
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   }
 }

@@ -3,7 +3,7 @@ import { KeyColumnNotFound, LangColumnNotFound } from "../../errors";
 import { PluginsRunner } from "../../plugins";
 import Worksheet from "../worksheet";
 
-const createRow = (rowIndex: number, values: { [key: string]: any }) =>
+export const createRow = (rowIndex: number, values: { [key: string]: any }) =>
   ({
     rowIndex,
     ...values,

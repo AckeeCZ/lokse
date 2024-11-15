@@ -1,5 +1,5 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import { AnyAuthClient, GoogleAuth, JWT } from "google-auth-library";
+import { GoogleAuth, JWT } from "google-auth-library";
 
 import Line from "../line";
 import { FatalError, getErrorMessage } from "../errors";
@@ -35,7 +35,7 @@ export class SpreadsheetReader {
     this.worksheets = null;
   }
 
-  async authenticate(): Promise<AnyAuthClient> {
+  createAuthClient() {
     const { LOKSE_API_KEY, LOKSE_SERVICE_ACCOUNT_EMAIL, LOKSE_PRIVATE_KEY } =
       process.env;
 
@@ -47,33 +47,30 @@ export class SpreadsheetReader {
         clientSecret: LOKSE_PRIVATE_KEY,
       });
 
-      const auth = new GoogleAuth();
-
-      auth.setGapicJWTValues(jwt);
-
-      return auth.getClient();
+      return new GoogleAuth({ authClient: jwt });
     }
 
     if (LOKSE_API_KEY) {
       this.logger.log("🔑 Authenticating with API key...");
-      const auth = new GoogleAuth({
-        apiKey: LOKSE_API_KEY,
-      });
 
-      return auth.getClient();
+      return new GoogleAuth({ apiKey: LOKSE_API_KEY });
     }
 
     this.logger.log(
       "🔑 Authenticating with Application Default Credentials..."
     );
 
-    const auth = new GoogleAuth({
+    return new GoogleAuth({
       scopes: [
         "https://www.googleapis.com/auth/spreadsheets.readonly",
         "https://www.googleapis.com/auth/spreadsheets",
         "https://www.googleapis.com/auth/drive.file",
       ],
     });
+  }
+
+  async authenticate() {
+    const auth = this.createAuthClient();
 
     return auth.getClient();
   }

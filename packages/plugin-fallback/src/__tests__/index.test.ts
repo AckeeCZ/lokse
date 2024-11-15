@@ -4,6 +4,15 @@ import { Line } from "@lokse/core";
 import fallbackPluginFactory from "..";
 import type { PluginOptions } from "..";
 
+export const createRow = (rowIndex: number, values: { [key: string]: any }) =>
+  ({
+    rowIndex,
+    ...values,
+    get: (key: string) => values[key],
+    save: () => null,
+    delete: () => null,
+  } as unknown as GoogleSpreadsheetRow);
+
 describe("Fallback plugin", () => {
   const logger = { warn: jest.fn(), log: jest.fn() };
   const factoryMeta = { languages: ["cs", "mng"] };
@@ -36,11 +45,11 @@ describe("Fallback plugin", () => {
 
     it("should keep translation as it is when filled", async () => {
       const line = new Line("test.key", "Ukama bugama");
-      const row = {
+      const row = createRow(0, {
         key: "test.key",
         mng: "Ukama bugama",
         cs: "Nejakej nesmysl",
-      } as unknown as GoogleSpreadsheetRow;
+      });
       const meta = { row, key: line.key, language: "mng" };
 
       await expect(plugin.readTranslation(line, meta)).resolves.toHaveProperty(
@@ -52,11 +61,11 @@ describe("Fallback plugin", () => {
 
     it("should log missing fallback translation in default", async () => {
       const line = new Line("test.key", "");
-      const row = {
+      const row = createRow(0, {
         key: "test.key",
         mng: "",
         cs: "",
-      } as unknown as GoogleSpreadsheetRow;
+      });
       const meta = { row, key: line.key, language: "mng" };
 
       await expect(plugin.readTranslation(line, meta)).resolves.toHaveProperty(
@@ -77,11 +86,11 @@ describe("Fallback plugin", () => {
         factoryMeta
       );
       const line = new Line("test.key", "");
-      const row = {
+      const row = createRow(0, {
         key: "test.key",
         mng: "",
         cs: "",
-      } as unknown as GoogleSpreadsheetRow;
+      });
       const meta = { row, key: line.key, language: "mng" };
 
       await expect(plugin2.readTranslation(line, meta)).resolves.toHaveProperty(
@@ -93,11 +102,11 @@ describe("Fallback plugin", () => {
 
     it("should fallback to default language translation when translation is empty", async () => {
       const line = new Line("test.key", "");
-      const row = {
+      const row = createRow(0, {
         key: "test.key",
         mng: "",
         cs: "Nejakej nesmysl",
-      } as unknown as GoogleSpreadsheetRow;
+      });
       const meta = { row, key: line.key, language: "mng" };
 
       await expect(plugin.readTranslation(line, meta)).resolves.toHaveProperty(
@@ -109,11 +118,11 @@ describe("Fallback plugin", () => {
 
     it("should fallback to default language case insensivly", async () => {
       const line = new Line("test.key", "");
-      const row = {
+      const row = createRow(0, {
         key: "test.key",
         MNG: "",
         CS: "Nejakej nesmysl",
-      } as unknown as GoogleSpreadsheetRow;
+      });
       const meta = { row, key: line.key, language: "mng" };
 
       await expect(plugin.readTranslation(line, meta)).resolves.toHaveProperty(

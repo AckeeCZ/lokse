@@ -1,20 +1,4 @@
-import * as dedent from "dedent";
-
 export class FatalError extends Error {}
-
-export class MissingAuthError extends FatalError {
-  public name: string;
-
-  constructor() {
-    super(
-      dedent`
-          Cannot authenticate to fetch Spreadsheet data. 
-            Provide either Service account credentials or API key 🔑 See detail info at https://ackeecz.github.io/lokse/en/authentication/
-          `
-    );
-    this.name = "MissingAuthError";
-  }
-}
 
 export class KeyColumnNotFound extends Error {
   public key: string;
