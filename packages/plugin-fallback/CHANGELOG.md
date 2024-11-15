@@ -1,5 +1,13 @@
 # @lokse/plugin-fallback
 
+## 2.4.1
+
+### Patch Changes
+
+-   c518182: Fix internal imports.
+-   Updated dependencies [c518182]
+    -   @lokse/core@2.4.1
+
 ## 2.4.0
 
 ### Minor Changes

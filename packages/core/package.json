@@ -1,7 +1,7 @@
 {
     "name": "@lokse/core",
     "description": "Core of localization from spreadsheet solution lokse",
-    "version": "2.4.0",
+    "version": "2.4.1",
     "author": {
         "name": "Lukas Horak",
         "email": "horaklukas@centrum.cz"
