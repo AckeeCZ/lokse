@@ -6,6 +6,7 @@
     "name": "Lukas Horak",
     "email": "horaklukas@centrum.cz"
   },
+  "type": "module",
   "bugs": "https://github.com/AckeeCZ/lokse/issues",
   "dependencies": {
     "@types/bluebird": "^3.5.32",
@@ -20,7 +21,8 @@
     "google-auth-library": "9.15.0",
     "google-spreadsheet": "4.1.4",
     "lodash": "^4.17.20",
-    "mkdirp": "^1.0.4"
+    "mkdirp": "^1.0.4",
+    "typescript": "~4.6"
   },
   "devDependencies": {
     "@types/node": "20.14.11"
