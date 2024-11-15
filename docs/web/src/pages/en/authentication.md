@@ -6,7 +6,7 @@ layout: ../../layouts/MainLayout.astro
 
 The last version of Google Spreadsheets API requires us to be authenticated to allow fetching spreadsheet data 🔑
 
-There are two options for authentication: Service Account or API key. For each of these options we have to define some values as environment variables.
+There are three options for authentication: Service Account or API key. For each of these options we have to define some values as environment variables.
 
 ## Environment variables
 
@@ -55,3 +55,12 @@ For read only access, we're good with usage of API key, if you don't have any, f
 Then define the variable `LOKSE_API_KEY=this_is_your_api_key` and then if the key is valid fetching data should work for you.
 
 Using API key instead of Service account has one important limitation: You spreadsheet must set permissions to be visible for everyone in the Internet.
+
+## Application default credential
+
+If none of those environment variables have been provided, `lokse` fallbacks to [application default credential authentication](https://cloud.google.com/docs/authentication/provide-credentials-adc).
+Don't forget to login first with appropriate scopes:
+
+```bash
+gcloud auth application-default login --scopes=openid,https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/spreadsheets,https://www.googleapis.com/auth/drive.file
+```

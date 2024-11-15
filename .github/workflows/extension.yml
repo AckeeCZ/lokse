@@ -1,25 +1,31 @@
 name: Deploy extension
 
 on:
-  push:
-    tags:
-      - "ext-*"
+    push:
+        tags:
+            - 'ext-*'
 
 jobs:
-  publish-marketplace:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "16"
+    publish-marketplace:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
 
-      - name: Install
-        run: yarn install --frozen-lockfile
-        working-directory: ./vscode-extension
+            - name: Enable Corepack
+              run: corepack enable
 
-      - name: Deploy to marketplace
-        run: yarn deploy
-        working-directory: ./vscode-extension
-        env:
-          VSCE_PAT: ${{ secrets.VSCODE_SECRET }}
+            - name: Install Corepack
+              run: corepack install
+
+            - name: Install
+              run: yarn install --immutable
+              working-directory: ./vscode-extension
+
+            - name: Deploy to marketplace
+              run: yarn deploy
+              working-directory: ./vscode-extension
+              env:
+                  VSCE_PAT: ${{ secrets.VSCODE_SECRET }}

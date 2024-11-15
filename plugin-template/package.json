@@ -8,12 +8,9 @@
   },
   "bugs": "https://github.com/AckeeCZ/lokse/issues",
   "dependencies": {
-    "@lokse/core": "^2.0.1"
+    "@lokse/core": "workspace:*"
   },
   "devDependencies": {},
-  "engines": {
-    "node": ">=8.0.0"
-  },
   "homepage": "https://github.com/AckeeCZ/lokse",
   "keywords": [
     "lokse",

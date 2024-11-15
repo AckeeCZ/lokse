@@ -1,65 +1,56 @@
-import type { GoogleSpreadsheetRow } from "google-spreadsheet";
-import { identity } from "lodash";
+import type { GoogleSpreadsheetRow } from 'google-spreadsheet';
+import { identity } from 'lodash';
 
-import Line from "../line";
-import type { Logger } from "../logger";
-import type Transformer from "../transformer";
+import Line from '../line';
+import type { Logger } from '../logger';
+import type Transformer from '../transformer';
 
 export interface TransformLineMeta {
-  language: string;
-  domain?: string;
+    language: string;
+    domain?: string;
 }
 
 export interface TransformFullOutputMeta {
-  transformer: Transformer;
-  language: string;
-  domain?: string;
+    transformer: Transformer;
+    language: string;
+    domain?: string;
 }
 
 export interface ReadTranslationMeta {
-  key: string;
-  language: string;
-  row: GoogleSpreadsheetRow;
+    key: string;
+    language: string;
+    row: GoogleSpreadsheetRow;
 }
 
 export interface LoksePlugin {
-  transformLine: (line: Line, meta: TransformLineMeta) => Line | Promise<Line>;
-  transformFullOutput: (
-    output: string,
-    meta: TransformFullOutputMeta
-  ) => string | Promise<string>;
-  readTranslation: (
-    line: Line,
-    meta: ReadTranslationMeta
-  ) => Line | Promise<Line>;
+    transformLine: (line: Line, meta: TransformLineMeta) => Line | Promise<Line>;
+    transformFullOutput: (output: string, meta: TransformFullOutputMeta) => string | Promise<string>;
+    readTranslation: (line: Line, meta: ReadTranslationMeta) => Line | Promise<Line>;
 }
 
 export interface NamedLoksePlugin extends LoksePlugin {
-  pluginName: string;
+    pluginName: string;
 }
 
 export interface GeneralPluginOptions {
-  logger: Logger;
+    logger: Logger;
 }
 
 export interface GeneralPluginMeta {
-  languages: string[];
+    languages: string[];
 }
 
-export type PluginFactory = (
-  options: GeneralPluginOptions,
-  meta: GeneralPluginMeta
-) => LoksePlugin;
+export type PluginFactory = (options: GeneralPluginOptions, meta: GeneralPluginMeta) => LoksePlugin;
 
 const pluginDefaults: LoksePlugin = {
-  transformLine: identity,
-  transformFullOutput: identity,
-  readTranslation: identity,
+    transformLine: identity,
+    transformFullOutput: identity,
+    readTranslation: identity,
 };
 
 export function createPlugin(plugin: Partial<LoksePlugin>): LoksePlugin {
-  return {
-    ...pluginDefaults,
-    ...plugin,
-  };
+    return {
+        ...pluginDefaults,
+        ...plugin,
+    };
 }

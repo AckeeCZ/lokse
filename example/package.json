@@ -5,8 +5,8 @@
     "main": "index.js",
     "license": "MIT",
     "devDependencies": {
-        "@lokse/plugin-fallback": "^2.3.1",
-        "@lokse/plugin-prettier": "^2.3.1",
-        "lokse": "^2.3.1"
+        "@lokse/plugin-fallback": "workspace:*",
+        "@lokse/plugin-prettier": "workspace:*",
+        "lokse": "workspace:*"
     }
 }

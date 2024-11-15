@@ -4,33 +4,39 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - "v*"
+    push:
+        tags:
+            - 'v*'
 
 jobs:
-  publish-npm:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
+    publish-npm:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  registry-url: https://registry.npmjs.org/
 
-      - name: Install dependencies
-        run: yarn bootstrap
+            - name: Enable Corepack
+              run: corepack enable
 
-      - name: Build
-        run: yarn build
+            - name: Install Corepack
+              run: corepack install
 
-      - name: Publish packages
-        run: yarn publish:ci
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+            - name: Install dependencies
+              run: yarn install --immutable
 
-      # - name: Create Github Release
-      #   uses: docker://antonyurchenko/git-release:latest
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     ALLOW_TAG_PREFIX: "true"
+            - name: Build
+              run: yarn build
+
+            - name: Publish packages
+              run: yarn publish:ci
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+            # - name: Create Github Release
+            #   uses: docker://antonyurchenko/git-release:latest
+            #   env:
+            #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            #     ALLOW_TAG_PREFIX: "true"

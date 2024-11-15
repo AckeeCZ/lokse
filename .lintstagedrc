@@ -1,4 +1,4 @@
 { 
   "packages/*/src/**/*.(ts|tsx)": "yarn lint",
-  "packages/*/(src|test)/**/*.(ts|tsx)": "yarn prettier"
+  "packages/*/(src|test)/**/*.(ts|tsx)": "yarn format"
 }

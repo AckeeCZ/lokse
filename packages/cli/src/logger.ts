@@ -1,10 +1,10 @@
-import type { Logger } from "@lokse/core";
+import type { Logger } from '@lokse/core';
 
-import { warn } from "@oclif/errors";
+import { warn } from '@oclif/errors';
 
 const logger: Logger = {
-  ...console,
-  warn,
+    ...console,
+    warn,
 };
 
 export default logger;

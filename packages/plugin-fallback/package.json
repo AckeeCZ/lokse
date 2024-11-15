@@ -8,10 +8,7 @@
   },
   "bugs": "https://github.com/AckeeCZ/lokse/issues",
   "dependencies": {
-    "@lokse/core": "^2.3.1"
-  },
-  "engines": {
-    "node": ">=8.0.0"
+    "@lokse/core": "workspace:*"
   },
   "homepage": "https://github.com/AckeeCZ/lokse",
   "keywords": [
@@ -22,7 +19,8 @@
   "main": "lib/index.js",
   "repository": "AckeeCZ/lokse",
   "scripts": {
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "clean": "rm -rf lib"
   },
   "publishConfig": {
     "access": "public"

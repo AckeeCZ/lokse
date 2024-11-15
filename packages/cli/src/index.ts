@@ -1,3 +1,3 @@
-export { run } from "@oclif/command";
+export { run } from '@oclif/command';
 
-export type { LokseConfig } from "@lokse/core";
+export type { LokseConfig } from '@lokse/core';

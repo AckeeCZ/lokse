@@ -6,27 +6,26 @@
     "name": "Lukas Horak",
     "email": "horaklukas@centrum.cz"
   },
+  "type": "module",
   "bugs": "https://github.com/AckeeCZ/lokse/issues",
   "dependencies": {
     "@types/bluebird": "^3.5.32",
     "@types/dedent": "^0.7.0",
     "@types/find-node-modules": "^2.1.0",
-    "@types/google-spreadsheet": "^3.0.1",
     "@types/mkdirp": "^1.0.1",
     "bluebird": "^3.7.2",
     "cosmiconfig": "^7.0.0",
     "cosmiconfig-ts-loader": "^0.1.1",
     "dedent": "^0.7.0",
     "find-node-modules": "^2.1.3",
-    "google-spreadsheet": "^3.2.0",
+    "google-auth-library": "9.15.0",
+    "google-spreadsheet": "4.1.4",
     "lodash": "^4.17.20",
-    "mkdirp": "^1.0.4"
+    "mkdirp": "^1.0.4",
+    "typescript": "5.6.3"
   },
   "devDependencies": {
-    "@types/node": "^10"
-  },
-  "engines": {
-    "node": ">=8.0.0"
+    "@types/node": "20.14.11"
   },
   "homepage": "https://github.com/AckeeCZ/lokse",
   "keywords": [
@@ -36,7 +35,8 @@
   "main": "lib/index.js",
   "repository": "AckeeCZ/lokse",
   "scripts": {
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "clean": "rm -rf lib"
   },
   "publishConfig": {
     "access": "public"
