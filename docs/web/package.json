@@ -1,31 +1,32 @@
 {
-  "name": "lokse-doc-site",
-  "version": "2.4.0",
-  "private": true,
-  "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "check": "astro check && tsc",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "@algolia/client-search": "^4.13.1",
-    "@astrojs/preact": "^1.0.2",
-    "@astrojs/react": "^1.1.0",
-    "@docsearch/css": "^3.1.0",
-    "@docsearch/react": "^3.1.0",
-    "@types/node": "20.14.11",
-    "@types/react-dom": "^18.0.8",
-    "astro": "^1.1.5",
-    "preact": "^10.7.3",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0"
-  },
-  "devDependencies": {
-    "@astrojs/sitemap": "^1.0.0",
-    "prettier": "^3.3.3",
-    "prettier-plugin-astro": "^0.5.4"
-  }
+    "name": "lokse-doc-site",
+    "version": "2.4.0",
+    "private": true,
+    "packageManager": "yarn@4.5.1",
+    "scripts": {
+        "dev": "astro dev",
+        "start": "astro dev",
+        "check": "astro check && tsc",
+        "build": "astro build",
+        "preview": "astro preview",
+        "astro": "astro"
+    },
+    "dependencies": {
+        "@algolia/client-search": "^4.13.1",
+        "@astrojs/preact": "^1.0.2",
+        "@astrojs/react": "^1.1.0",
+        "@docsearch/css": "^3.1.0",
+        "@docsearch/react": "^3.1.0",
+        "@types/node": "20.14.11",
+        "@types/react-dom": "^18.0.8",
+        "astro": "^1.1.5",
+        "preact": "^10.7.3",
+        "react": "^18.1.0",
+        "react-dom": "^18.1.0"
+    },
+    "devDependencies": {
+        "@astrojs/sitemap": "^1.0.0",
+        "prettier": "^3.3.3",
+        "prettier-plugin-astro": "^0.5.4"
+    }
 }
