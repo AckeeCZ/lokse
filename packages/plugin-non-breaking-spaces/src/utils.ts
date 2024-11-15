@@ -1,15 +1,11 @@
-import { mapKeys, mapValues } from "lodash";
+import { mapKeys, mapValues } from 'lodash';
 
-import { CustomPatterns } from ".";
+import { CustomPatterns } from '.';
 
-export const lowerCaseKeys = (
-  patterns: CustomPatterns
-): Record<string, string> => mapKeys(patterns, (_, key) => key.toLowerCase());
+export const lowerCaseKeys = (patterns: CustomPatterns): Record<string, string> =>
+    mapKeys(patterns, (_, key) => key.toLowerCase());
 
-const convertStringToRegex = (string: string) =>
-  new RegExp(`(\\s|^)${string}(\\s+)`, "gim");
+const convertStringToRegex = (string: string) => new RegExp(`(\\s|^)${string}(\\s+)`, 'gim');
 
-export const regexifyValues = (
-  patterns: CustomPatterns
-): Record<string, RegExp> =>
-  mapValues(patterns, (value) => convertStringToRegex(value));
+export const regexifyValues = (patterns: CustomPatterns): Record<string, RegExp> =>
+    mapValues(patterns, value => convertStringToRegex(value));

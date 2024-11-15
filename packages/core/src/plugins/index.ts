@@ -1,13 +1,13 @@
 export type {
-  LoksePlugin,
-  GeneralPluginOptions,
-  GeneralPluginMeta,
-  TransformFullOutputMeta,
-  TransformLineMeta,
-} from "./create";
-export { createPlugin } from "./create";
+    LoksePlugin,
+    GeneralPluginOptions,
+    GeneralPluginMeta,
+    TransformFullOutputMeta,
+    TransformLineMeta,
+} from './create';
+export { createPlugin } from './create';
 
-export { PluginsRunner } from "./runner";
+export { PluginsRunner } from './runner';
 
-export type { PluginName, PluginDefinition } from "./load";
-export { loadPlugins, PluginError } from "./load";
+export type { PluginName, PluginDefinition } from './load';
+export { loadPlugins, PluginError } from './load';

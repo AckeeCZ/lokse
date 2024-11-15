@@ -1,25 +1,22 @@
-import { all } from "bluebird";
-import { isPlainObject } from "lodash";
-import type {
-  GoogleSpreadsheet,
-  GoogleSpreadsheetWorksheet,
-} from "google-spreadsheet";
-import { forceArray, isEqualCaseInsensitive } from "../utils";
-import Worksheet from "./worksheet";
-import defaultLogger from "../logger";
-import type { Logger } from "../logger";
+import { all } from 'bluebird';
+import { isPlainObject } from 'lodash';
+import type { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
+import { forceArray, isEqualCaseInsensitive } from '../utils';
+import Worksheet from './worksheet';
+import defaultLogger from '../logger';
+import type { Logger } from '../logger';
 
 export class InvalidFilterError extends Error {
-  public filterStringified: string;
+    public filterStringified: string;
 
-  constructor(filter: unknown) {
-    const filterStringified = JSON.stringify(filter);
-    super(
-      `💥 Invalid sheets filter provided: ${filterStringified}. Look at the supported filter format reference.`
-    );
+    constructor(filter: unknown) {
+        const filterStringified = JSON.stringify(filter);
+        super(
+            `💥 Invalid sheets filter provided: ${filterStringified}. Look at the supported filter format reference.`,
+        );
 
-    this.filterStringified = filterStringified;
-  }
+        this.filterStringified = filterStringified;
+    }
 }
 
 type SheetTitle = string;
@@ -27,133 +24,118 @@ type SheetTitle = string;
 type SheetIndexOrTitle = number | SheetTitle;
 
 interface SheetFilterComplex {
-  include: SheetIndexOrTitle[];
-  exclude: SheetIndexOrTitle[];
+    include: SheetIndexOrTitle[];
+    exclude: SheetIndexOrTitle[];
 }
 
 export type SheetsFilter =
-  | SheetTitle
-  | SheetIndexOrTitle[]
-  | {
-      include?: string | SheetIndexOrTitle[];
-      exclude?: string | SheetIndexOrTitle[];
-    };
+    | SheetTitle
+    | SheetIndexOrTitle[]
+    | {
+          include?: string | SheetIndexOrTitle[];
+          exclude?: string | SheetIndexOrTitle[];
+      };
 
 interface WorksheetReaderOptions {
-  logger?: Logger;
+    logger?: Logger;
 }
 
 class WorksheetReader {
-  static ALL_SHEETS_FILTER = "*";
+    static ALL_SHEETS_FILTER = '*';
 
-  public filter: SheetFilterComplex;
+    public filter: SheetFilterComplex;
 
-  public logger: Logger;
+    public logger: Logger;
 
-  constructor(
-    filter?: SheetsFilter | null,
-    options: WorksheetReaderOptions = {}
-  ) {
-    this.logger = options.logger || defaultLogger;
+    constructor(filter?: SheetsFilter | null, options: WorksheetReaderOptions = {}) {
+        this.logger = options.logger || defaultLogger;
 
-    this.filter = WorksheetReader.normalizeFilter(filter);
-  }
-
-  static normalizeFilter(filter?: SheetsFilter | null): SheetFilterComplex {
-    if (!filter || filter === WorksheetReader.ALL_SHEETS_FILTER) {
-      return {
-        include: [WorksheetReader.ALL_SHEETS_FILTER],
-        exclude: [],
-      };
+        this.filter = WorksheetReader.normalizeFilter(filter);
     }
 
-    if (typeof filter === "string" || Array.isArray(filter)) {
-      return {
-        include: forceArray(filter),
-        exclude: [],
-      };
+    static normalizeFilter(filter?: SheetsFilter | null): SheetFilterComplex {
+        if (!filter || filter === WorksheetReader.ALL_SHEETS_FILTER) {
+            return {
+                include: [WorksheetReader.ALL_SHEETS_FILTER],
+                exclude: [],
+            };
+        }
+
+        if (typeof filter === 'string' || Array.isArray(filter)) {
+            return {
+                include: forceArray(filter),
+                exclude: [],
+            };
+        }
+
+        if (isPlainObject(filter)) {
+            return {
+                include: forceArray(filter.include ?? WorksheetReader.ALL_SHEETS_FILTER),
+                exclude: forceArray(filter.exclude ?? []),
+            };
+        }
+
+        throw new InvalidFilterError(filter);
     }
 
-    if (isPlainObject(filter)) {
-      return {
-        include: forceArray(
-          filter.include ?? WorksheetReader.ALL_SHEETS_FILTER
-        ),
-        exclude: forceArray(filter.exclude ?? []),
-      };
+    static isSheetInTheList(worksheet: GoogleSpreadsheetWorksheet, list: SheetIndexOrTitle[]): boolean {
+        return list.some((sheetFilter: string | number) => {
+            if (sheetFilter === WorksheetReader.ALL_SHEETS_FILTER) {
+                return true;
+            }
+
+            if (typeof sheetFilter === 'number' && worksheet.index === sheetFilter) {
+                return true;
+            }
+
+            if (typeof sheetFilter === 'string' && isEqualCaseInsensitive(worksheet.title, sheetFilter)) {
+                return true;
+            }
+
+            return false;
+        });
     }
 
-    throw new InvalidFilterError(filter);
-  }
+    shouldUseWorksheet(worksheet: GoogleSpreadsheetWorksheet): boolean {
+        const { include, exclude } = this.filter;
 
-  static isSheetInTheList(
-    worksheet: GoogleSpreadsheetWorksheet,
-    list: SheetIndexOrTitle[]
-  ): boolean {
-    return list.some((sheetFilter: string | number) => {
-      if (sheetFilter === WorksheetReader.ALL_SHEETS_FILTER) {
-        return true;
-      }
+        const isIncluded = WorksheetReader.isSheetInTheList(worksheet, include);
+        const isExcluded = WorksheetReader.isSheetInTheList(worksheet, exclude);
 
-      if (typeof sheetFilter === "number" && worksheet.index === sheetFilter) {
-        return true;
-      }
-
-      if (
-        typeof sheetFilter === "string" &&
-        isEqualCaseInsensitive(worksheet.title, sheetFilter)
-      ) {
-        return true;
-      }
-
-      return false;
-    });
-  }
-
-  shouldUseWorksheet(worksheet: GoogleSpreadsheetWorksheet): boolean {
-    const { include, exclude } = this.filter;
-
-    const isIncluded = WorksheetReader.isSheetInTheList(worksheet, include);
-    const isExcluded = WorksheetReader.isSheetInTheList(worksheet, exclude);
-
-    return isIncluded && !isExcluded;
-  }
-
-  async loadSheet(worksheet: GoogleSpreadsheetWorksheet): Promise<Worksheet> {
-    const rows = await worksheet.getRows();
-
-    return new Worksheet(worksheet.title, worksheet.headerValues, rows);
-  }
-
-  async read(spreadsheet: GoogleSpreadsheet): Promise<Worksheet[]> {
-    const worksheets = spreadsheet.sheetsByIndex.filter((worksheet) =>
-      this.shouldUseWorksheet(worksheet)
-    );
-
-    if (worksheets.length === 0) {
-      let message = `Couldn't find any sheets`;
-
-      const existingSheets = Object.keys(spreadsheet.sheetsByTitle);
-      const { include, exclude } = this.filter;
-
-      const filterStringified = [
-        include.length > 0 && `include: ${include.toString()}`,
-        exclude.length > 0 && `exclude: ${exclude.toString()}`,
-      ]
-        .filter(Boolean)
-        .join(", ");
-
-      message += ` that match the filter ${filterStringified}. Existing sheets are ${existingSheets}`;
-
-      this.logger.warn(`${message}. `);
+        return isIncluded && !isExcluded;
     }
 
-    const sheets = await all(
-      worksheets.map((worksheet) => this.loadSheet(worksheet))
-    );
+    async loadSheet(worksheet: GoogleSpreadsheetWorksheet): Promise<Worksheet> {
+        const rows = await worksheet.getRows();
 
-    return sheets;
-  }
+        return new Worksheet(worksheet.title, worksheet.headerValues, rows);
+    }
+
+    async read(spreadsheet: GoogleSpreadsheet): Promise<Worksheet[]> {
+        const worksheets = spreadsheet.sheetsByIndex.filter(worksheet => this.shouldUseWorksheet(worksheet));
+
+        if (worksheets.length === 0) {
+            let message = `Couldn't find any sheets`;
+
+            const existingSheets = Object.keys(spreadsheet.sheetsByTitle);
+            const { include, exclude } = this.filter;
+
+            const filterStringified = [
+                include.length > 0 && `include: ${include.toString()}`,
+                exclude.length > 0 && `exclude: ${exclude.toString()}`,
+            ]
+                .filter(Boolean)
+                .join(', ');
+
+            message += ` that match the filter ${filterStringified}. Existing sheets are ${existingSheets}`;
+
+            this.logger.warn(`${message}. `);
+        }
+
+        const sheets = await all(worksheets.map(worksheet => this.loadSheet(worksheet)));
+
+        return sheets;
+    }
 }
 
 export default WorksheetReader;

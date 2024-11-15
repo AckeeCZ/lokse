@@ -1,31 +1,29 @@
-import { flags } from "@oclif/command";
-import * as open from "open";
+import { flags } from '@oclif/command';
+import * as open from 'open';
 
-import { NAME, createSheetUrl } from "@lokse/core";
-import Base from "../base";
-import { id as idFlag } from "../flags";
+import { NAME, createSheetUrl } from '@lokse/core';
+import Base from '../base';
+import { id as idFlag } from '../flags';
 
 class Open extends Base {
-  static description = "open localization spreadsheet in default browser";
+    static description = 'open localization spreadsheet in default browser';
 
-  static examples = [
-    `$ ${NAME} open -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk`,
-  ];
+    static examples = [`$ ${NAME} open -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk`];
 
-  static flags = {
-    help: flags.help({ char: "h" }),
-    id: idFlag.flag(),
-  };
+    static flags = {
+        help: flags.help({ char: 'h' }),
+        id: idFlag.flag(),
+    };
 
-  async run(): Promise<void> {
-    const { flags } = this.parse(Open);
+    async run(): Promise<void> {
+        const { flags } = this.parse(Open);
 
-    const sheetId = flags.id;
+        const sheetId = flags.id;
 
-    idFlag.invariant(sheetId, "open");
+        idFlag.invariant(sheetId, 'open');
 
-    await open(createSheetUrl(sheetId));
-  }
+        await open(createSheetUrl(sheetId));
+    }
 }
 
 export = Open;
