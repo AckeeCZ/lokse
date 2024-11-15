@@ -2726,7 +2726,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lokse/core@npm:^2.4.0, @lokse/core@workspace:packages/core":
+"@lokse/core@npm:^2.4.1, @lokse/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lokse/core@workspace:packages/core"
   dependencies:
@@ -2748,11 +2748,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lokse/plugin-fallback@npm:^2.4.0, @lokse/plugin-fallback@workspace:packages/plugin-fallback":
+"@lokse/plugin-fallback@npm:^2.4.1, @lokse/plugin-fallback@workspace:packages/plugin-fallback":
   version: 0.0.0-use.local
   resolution: "@lokse/plugin-fallback@workspace:packages/plugin-fallback"
   dependencies:
-    "@lokse/core": "npm:^2.4.0"
+    "@lokse/core": "npm:^2.4.1"
   languageName: unknown
   linkType: soft
 
@@ -2760,16 +2760,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lokse/plugin-non-breaking-spaces@workspace:packages/plugin-non-breaking-spaces"
   dependencies:
-    "@lokse/core": "npm:^2.4.0"
+    "@lokse/core": "npm:^2.4.1"
     lodash: "npm:4.17.20"
   languageName: unknown
   linkType: soft
 
-"@lokse/plugin-prettier@npm:^2.4.0, @lokse/plugin-prettier@workspace:packages/plugin-prettier":
+"@lokse/plugin-prettier@npm:^2.4.1, @lokse/plugin-prettier@workspace:packages/plugin-prettier":
   version: 0.0.0-use.local
   resolution: "@lokse/plugin-prettier@workspace:packages/plugin-prettier"
   dependencies:
-    "@lokse/core": "npm:^2.4.0"
+    "@lokse/core": "npm:^2.4.1"
     prettier: "npm:3.3.3"
     typescript: "npm:5.6.3"
   languageName: unknown
@@ -6990,9 +6990,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "example@workspace:example"
   dependencies:
-    "@lokse/plugin-fallback": "npm:^2.4.0"
-    "@lokse/plugin-prettier": "npm:^2.4.0"
-    lokse: "npm:^2.4.0"
+    "@lokse/plugin-fallback": "npm:^2.4.1"
+    "@lokse/plugin-prettier": "npm:^2.4.1"
+    lokse: "npm:^2.4.1"
   languageName: unknown
   linkType: soft
 
@@ -10408,11 +10408,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"lokse@npm:^2.4.0, lokse@workspace:packages/cli":
+"lokse@npm:^2.4.1, lokse@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "lokse@workspace:packages/cli"
   dependencies:
-    "@lokse/core": "npm:^2.4.0"
+    "@lokse/core": "npm:^2.4.1"
     "@oclif/command": "npm:^1"
     "@oclif/config": "npm:^1"
     "@oclif/dev-cli": "npm:^1"
