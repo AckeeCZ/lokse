@@ -17,18 +17,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout your repository using git
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       # We can't use https://github.com/withastro/action as it install dependencies
       # at root directory, not the defined sub path
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
           cache: yarn
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install Corepack
+        run: corepack install
 
       - name: Install
         shell: "bash"
-        run: yarn install
+        run: yarn install --immutable
 
       - name: Build
         shell: "bash"
@@ -36,7 +42,7 @@ jobs:
         run: yarn build
 
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: "./docs/web/dist/"
 
@@ -49,4 +55,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
