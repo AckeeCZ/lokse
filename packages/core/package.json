@@ -35,7 +35,8 @@
   "main": "lib/index.js",
   "repository": "AckeeCZ/lokse",
   "scripts": {
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "clean": "rm -rf lib"
   },
   "publishConfig": {
     "access": "public"

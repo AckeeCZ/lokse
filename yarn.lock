@@ -2483,7 +2483,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lokse/core@npm:^2.3.1, @lokse/core@workspace:packages/core":
+"@lokse/core@workspace:*, @lokse/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lokse/core@workspace:packages/core"
   dependencies:
@@ -2505,11 +2505,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lokse/plugin-fallback@npm:^2.3.1, @lokse/plugin-fallback@workspace:packages/plugin-fallback":
+"@lokse/plugin-fallback@workspace:*, @lokse/plugin-fallback@workspace:packages/plugin-fallback":
   version: 0.0.0-use.local
   resolution: "@lokse/plugin-fallback@workspace:packages/plugin-fallback"
   dependencies:
-    "@lokse/core": "npm:^2.3.1"
+    "@lokse/core": "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -2517,16 +2517,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lokse/plugin-non-breaking-spaces@workspace:packages/plugin-non-breaking-spaces"
   dependencies:
-    "@lokse/core": "npm:^2.3.1"
-    lodash: "npm:^4.17.20"
+    "@lokse/core": "workspace:*"
+    lodash: "npm:4.17.20"
   languageName: unknown
   linkType: soft
 
-"@lokse/plugin-prettier@npm:^2.3.1, @lokse/plugin-prettier@workspace:packages/plugin-prettier":
+"@lokse/plugin-prettier@workspace:*, @lokse/plugin-prettier@workspace:packages/plugin-prettier":
   version: 0.0.0-use.local
   resolution: "@lokse/plugin-prettier@workspace:packages/plugin-prettier"
   dependencies:
-    "@lokse/core": "npm:^2.3.1"
+    "@lokse/core": "workspace:*"
     prettier: "npm:3.3.3"
     typescript: "npm:5.6.3"
   languageName: unknown
@@ -2550,6 +2550,7 @@ __metadata:
     lint-staged: "npm:^10.5.1"
     prettier: "npm:3.3.3"
     ts-jest: "npm:29.2.5"
+    turbo: "npm:^2.3.0"
     typescript: "npm:5.6.3"
   languageName: unknown
   linkType: soft
@@ -6675,9 +6676,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "example@workspace:example"
   dependencies:
-    "@lokse/plugin-fallback": "npm:^2.3.1"
-    "@lokse/plugin-prettier": "npm:^2.3.1"
-    lokse: "npm:^2.3.1"
+    "@lokse/plugin-fallback": "workspace:*"
+    "@lokse/plugin-prettier": "workspace:*"
+    lokse: "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -9985,6 +9986,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash@npm:4.17.20":
+  version: 4.17.20
+  resolution: "lodash@npm:4.17.20"
+  checksum: 10c0/faec37cb9f161b766bdc078a1356a07b9eaaa867796dd2520a407fe0a6a6d7be031e8f228f0cf3d305095703ee40258616c870b8d17dcdcb16f745bf31e8c3c2
+  languageName: node
+  linkType: hard
+
 "lodash@npm:4.17.21, lodash@npm:^4.17.11, lodash@npm:^4.17.13, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.7.0":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
@@ -10045,11 +10053,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"lokse@npm:^2.3.1, lokse@workspace:packages/cli":
+"lokse@workspace:*, lokse@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "lokse@workspace:packages/cli"
   dependencies:
-    "@lokse/core": "npm:^2.3.1"
+    "@lokse/core": "workspace:*"
     "@oclif/command": "npm:^1"
     "@oclif/config": "npm:^1"
     "@oclif/dev-cli": "npm:^1"
@@ -14745,6 +14753,77 @@ __metadata:
   dependencies:
     safe-buffer: "npm:^5.0.1"
   checksum: 10c0/4c7a1b813e7beae66fdbf567a65ec6d46313643753d0beefb3c7973d66fcec3a1e7f39759f0a0b4465883499c6dc8b0750ab8b287399af2e583823e40410a17a
+  languageName: node
+  linkType: hard
+
+"turbo-darwin-64@npm:2.3.0":
+  version: 2.3.0
+  resolution: "turbo-darwin-64@npm:2.3.0"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"turbo-darwin-arm64@npm:2.3.0":
+  version: 2.3.0
+  resolution: "turbo-darwin-arm64@npm:2.3.0"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"turbo-linux-64@npm:2.3.0":
+  version: 2.3.0
+  resolution: "turbo-linux-64@npm:2.3.0"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"turbo-linux-arm64@npm:2.3.0":
+  version: 2.3.0
+  resolution: "turbo-linux-arm64@npm:2.3.0"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"turbo-windows-64@npm:2.3.0":
+  version: 2.3.0
+  resolution: "turbo-windows-64@npm:2.3.0"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"turbo-windows-arm64@npm:2.3.0":
+  version: 2.3.0
+  resolution: "turbo-windows-arm64@npm:2.3.0"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"turbo@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "turbo@npm:2.3.0"
+  dependencies:
+    turbo-darwin-64: "npm:2.3.0"
+    turbo-darwin-arm64: "npm:2.3.0"
+    turbo-linux-64: "npm:2.3.0"
+    turbo-linux-arm64: "npm:2.3.0"
+    turbo-windows-64: "npm:2.3.0"
+    turbo-windows-arm64: "npm:2.3.0"
+  dependenciesMeta:
+    turbo-darwin-64:
+      optional: true
+    turbo-darwin-arm64:
+      optional: true
+    turbo-linux-64:
+      optional: true
+    turbo-linux-arm64:
+      optional: true
+    turbo-windows-64:
+      optional: true
+    turbo-windows-arm64:
+      optional: true
+  bin:
+    turbo: bin/turbo
+  checksum: 10c0/cad6a7b16d2cdaa15fe75efe1938d335cb026c073dfe639aaf2dce4c4d10ecc6a63216689682c1d1f7238ceed56f6e4ba736aa1b738aec70afb66f770e7c3817
   languageName: node
   linkType: hard
 
