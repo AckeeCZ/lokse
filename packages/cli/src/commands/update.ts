@@ -184,7 +184,7 @@ class Update extends Base {
 
             const langName = `${language}`;
 
-            spinner.start(`Saving ${langName} translations into ${relativeOutputPath}`);
+            spinner.start(`Saving ${langName} translations into ${relativeOutputPath}\n`);
 
             // Reason: Process languages sequentially
             /* eslint-disable no-await-in-loop */
