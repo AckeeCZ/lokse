@@ -23,7 +23,7 @@
     "mkdirp": "^1.0.4"
   },
   "devDependencies": {
-    "@types/node": "^10"
+    "@types/node": "20.14.11"
   },
   "homepage": "https://github.com/AckeeCZ/lokse",
   "keywords": [
