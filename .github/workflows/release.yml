@@ -7,6 +7,9 @@ on:
     push:
         tags:
             - '*'
+    release:
+        types:
+            - created
 
 jobs:
     publish-npm:
