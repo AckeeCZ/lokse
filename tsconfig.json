@@ -5,6 +5,10 @@
     "module": "commonjs",
     "strict": true,
     "target": "es2017",
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+    "skipLibCheck": true,
   },
+  "exclude": [
+    "node_modules",
+  ]
 }

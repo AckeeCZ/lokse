@@ -2508,7 +2508,8 @@ __metadata:
   resolution: "@lokse/plugin-prettier@workspace:packages/plugin-prettier"
   dependencies:
     "@lokse/core": "npm:^2.3.1"
-    prettier: "npm:^2.1.2"
+    prettier: "npm:3.3.3"
+    typescript: "npm:~4.6"
   languageName: unknown
   linkType: soft
 
@@ -2528,7 +2529,7 @@ __metadata:
     jest: "npm:29.7.0"
     lerna: "npm:4"
     lint-staged: "npm:^10.5.1"
-    prettier: "npm:^2.1.1"
+    prettier: "npm:3.3.3"
     ts-jest: "npm:29.2.5"
     typescript: "npm:~4.6"
   languageName: unknown
@@ -3162,10 +3163,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/configstore@npm:5":
-  version: 5.0.1
-  resolution: "@types/configstore@npm:5.0.1"
-  checksum: 10c0/a15647f7dee36c6fc415a764f5983fc458c311b3c5e2a91469340ac06b54bbb3318f04f5e668dce09469475092eba6e573ac856327bfd558d9ba2b95437d501a
+"@types/configstore@npm:*":
+  version: 6.0.2
+  resolution: "@types/configstore@npm:6.0.2"
+  checksum: 10c0/e38020663d0693122e90d30c17024d4cdbd6e0cd44ff8188cbf5df140c98964a0017386aff8053ff7816f58a9f2fce71d5c060fb4451bc6b132b8011f1e6a224
   languageName: node
   linkType: hard
 
@@ -9972,7 +9973,7 @@ __metadata:
     "@types/react-dom": "npm:^18.0.8"
     astro: "npm:^1.1.5"
     preact: "npm:^10.7.3"
-    prettier: "npm:^2.7.1"
+    prettier: "npm:^3.3.3"
     prettier-plugin-astro: "npm:^0.5.4"
     react: "npm:^18.1.0"
     react-dom: "npm:^18.1.0"
@@ -10004,7 +10005,7 @@ __metadata:
     jest-when: "npm:3.6.0"
     open: "npm:^7.2.1"
     ora: "npm:^5.0.0"
-    prettier: "npm:^2.1.2"
+    prettier: "npm:3.3.3"
     ts-node: "npm:9.1.1"
     tslib: "npm:1.14.1"
     update-notifier: "npm:^5.1.0"
@@ -12395,12 +12396,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.1.1, prettier@npm:^2.1.2":
-  version: 2.7.0
-  resolution: "prettier@npm:2.7.0"
+"prettier@npm:3.3.3, prettier@npm:^3.3.3":
+  version: 3.3.3
+  resolution: "prettier@npm:3.3.3"
   bin:
-    prettier: bin-prettier.js
-  checksum: 10c0/54591f56de63456624a82ddff3c4093051ed9f99118b83b36bb5805b9004419b166cab1077763e30ab65bd3a8dff2ae254c6701b3e6b1623d21f75462181066e
+    prettier: bin/prettier.cjs
+  checksum: 10c0/b85828b08e7505716324e4245549b9205c0cacb25342a030ba8885aba2039a115dbcf75a0b7ca3b37bc9d101ee61fab8113fc69ca3359f2a226f1ecc07ad2e26
   languageName: node
   linkType: hard
 
@@ -13353,12 +13354,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:6":
+"rxjs@npm:^6.6.0":
   version: 6.6.7
   resolution: "rxjs@npm:6.6.7"
   dependencies:
     tslib: "npm:^1.9.0"
   checksum: 10c0/e556a13a9aa89395e5c9d825eabcfa325568d9c9990af720f3f29f04a888a3b854f25845c2b55875d875381abcae2d8100af9cacdc57576e7ed6be030a01d2fe
+  languageName: node
+  linkType: hard
+
+"rxjs@npm:^7.2.0, rxjs@npm:^7.5.1, rxjs@npm:^7.5.5":
+  version: 7.8.1
+  resolution: "rxjs@npm:7.8.1"
+  dependencies:
+    tslib: "npm:^2.1.0"
+  checksum: 10c0/3c49c1ecd66170b175c9cacf5cef67f8914dcbc7cd0162855538d365c83fea631167cacb644b3ce533b2ea0e9a4d0b12175186985f89d75abe73dbd8f7f06f68
   languageName: node
   linkType: hard
 
@@ -14594,6 +14604,13 @@ __metadata:
   version: 2.4.0
   resolution: "tslib@npm:2.4.0"
   checksum: 10c0/eb19bda3ae545b03caea6a244b34593468e23d53b26bf8649fbc20fce43e9b21a71127fd6d2b9662c0fe48ee6ff668ead48fd00d3b88b2b716b1c12edae25b5d
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.1.0":
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
   languageName: node
   linkType: hard
 
