@@ -2726,7 +2726,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lokse/core@npm:^2.4.0, @lokse/core@workspace:packages/core":
+"@lokse/core@npm:^2.4.1, @lokse/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lokse/core@workspace:packages/core"
   dependencies:
@@ -2748,11 +2748,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lokse/plugin-fallback@npm:^2.4.0, @lokse/plugin-fallback@workspace:packages/plugin-fallback":
+"@lokse/plugin-fallback@npm:^2.4.1, @lokse/plugin-fallback@workspace:packages/plugin-fallback":
   version: 0.0.0-use.local
   resolution: "@lokse/plugin-fallback@workspace:packages/plugin-fallback"
   dependencies:
-    "@lokse/core": "npm:^2.4.0"
+    "@lokse/core": "npm:^2.4.1"
   languageName: unknown
   linkType: soft
 
@@ -2760,16 +2760,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lokse/plugin-non-breaking-spaces@workspace:packages/plugin-non-breaking-spaces"
   dependencies:
-    "@lokse/core": "npm:^2.4.0"
+    "@lokse/core": "npm:^2.4.1"
     lodash: "npm:4.17.20"
   languageName: unknown
   linkType: soft
 
-"@lokse/plugin-prettier@npm:^2.4.0, @lokse/plugin-prettier@workspace:packages/plugin-prettier":
+"@lokse/plugin-prettier@npm:^2.4.1, @lokse/plugin-prettier@workspace:packages/plugin-prettier":
   version: 0.0.0-use.local
   resolution: "@lokse/plugin-prettier@workspace:packages/plugin-prettier"
   dependencies:
-    "@lokse/core": "npm:^2.4.0"
+    "@lokse/core": "npm:^2.4.1"
     prettier: "npm:3.3.3"
     typescript: "npm:5.6.3"
   languageName: unknown
@@ -6145,9 +6145,9 @@ __metadata:
   linkType: hard
 
 "dset@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "dset@npm:3.1.2"
-  checksum: 10c0/a10d5f214ccd53e7d2e79215473256b74cb98fd3f20ad4f4684ab575b19bac71e5dda524d6febcf42854062e3f575a2dbfca4d53d2ffb9ae238eecdcc97a095b
+  version: 3.1.4
+  resolution: "dset@npm:3.1.4"
+  checksum: 10c0/b67bbd28dd8a539e90c15ffb61100eb64ef995c5270a124d4f99bbb53f4d82f55a051b731ba81f3215dd9dce2b4c8d69927dc20b3be1c5fc88bab159467aa438
   languageName: node
   linkType: hard
 
@@ -6990,9 +6990,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "example@workspace:example"
   dependencies:
-    "@lokse/plugin-fallback": "npm:^2.4.0"
-    "@lokse/plugin-prettier": "npm:^2.4.0"
-    lokse: "npm:^2.4.0"
+    "@lokse/plugin-fallback": "npm:^2.4.1"
+    "@lokse/plugin-prettier": "npm:^2.4.1"
+    lokse: "npm:^2.4.1"
   languageName: unknown
   linkType: soft
 
@@ -10408,11 +10408,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"lokse@npm:^2.4.0, lokse@workspace:packages/cli":
+"lokse@npm:^2.4.1, lokse@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "lokse@workspace:packages/cli"
   dependencies:
-    "@lokse/core": "npm:^2.4.0"
+    "@lokse/core": "npm:^2.4.1"
     "@oclif/command": "npm:^1"
     "@oclif/config": "npm:^1"
     "@oclif/dev-cli": "npm:^1"
