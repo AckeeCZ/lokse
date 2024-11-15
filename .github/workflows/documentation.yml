@@ -15,16 +15,21 @@ permissions:
 jobs:
     build:
         runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [20.x]
+
         steps:
             - name: Checkout your repository using git
               uses: actions/checkout@v4
             # We can't use https://github.com/withastro/action as it install dependencies
             # at root directory, not the defined sub path
-            - name: Setup Node
+            - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v4
               with:
-                  node-version: 20
-                  cache: yarn
+                  node-version: ${{ matrix.node-version }}
+                  package-manager: yarn
 
             - name: Enable Corepack
               run: corepack enable
@@ -33,11 +38,9 @@ jobs:
               run: corepack install
 
             - name: Install
-              shell: 'bash'
               run: yarn install --immutable
 
             - name: Build
-              shell: 'bash'
               working-directory: ./docs/web
               run: yarn build
 
