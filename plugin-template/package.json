@@ -11,9 +11,6 @@
     "@lokse/core": "^2.0.1"
   },
   "devDependencies": {},
-  "engines": {
-    "node": ">=8.0.0"
-  },
   "homepage": "https://github.com/AckeeCZ/lokse",
   "keywords": [
     "lokse",

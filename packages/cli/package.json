@@ -6,9 +6,7 @@
     "name": "Lukas Horak",
     "email": "horaklukas@centrum.cz"
   },
-  "bin": {
-    "lokse": "./bin/run"
-  },
+  "bin": "./bin/run",
   "bugs": "https://github.com/AckeeCZ/lokse/issues",
   "dependencies": {
     "@lokse/core": "^2.3.1",
@@ -38,9 +36,6 @@
     "@types/jest-when": "^2.7.2",
     "@types/node": "^10",
     "jest-when": "^3.0.1"
-  },
-  "engines": {
-    "node": ">=8.0.0"
   },
   "files": [
     "/bin",

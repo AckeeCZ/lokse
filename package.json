@@ -1,11 +1,15 @@
 {
   "private": true,
   "name": "@lokse/workspace",
+  "packageManager": "yarn@4.5.1",
   "workspaces": [
     "example",
     "docs/web",
     "packages/*"
   ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "bootstrap": "lerna bootstrap --use-workspaces",
     "build": "lerna run build",

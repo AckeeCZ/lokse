@@ -5,6 +5,7 @@ module.exports = {
   transform: {
     "\\.ts$": "ts-jest",
   },
+  transformIgnorePatterns: ["node_modules/"],
   coverageReporters: ["lcov", "text-summary"],
   collectCoverageFrom: ["packages/*/src/**/*.ts"],
   coveragePathIgnorePatterns: ["/templates/"],

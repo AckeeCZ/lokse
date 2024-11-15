@@ -10,9 +10,6 @@
   "dependencies": {
     "@lokse/core": "^2.3.1"
   },
-  "engines": {
-    "node": ">=8.0.0"
-  },
   "homepage": "https://github.com/AckeeCZ/lokse",
   "keywords": [
     "lokse",

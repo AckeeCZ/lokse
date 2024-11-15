@@ -11,9 +11,6 @@
     "@lokse/core": "^2.3.1",
     "prettier": "^2.1.2"
   },
-  "engines": {
-    "node": ">=8.0.0"
-  },
   "homepage": "https://github.com/AckeeCZ/lokse",
   "keywords": [
     "lokse",
