@@ -1,28 +1,28 @@
 {
-  "name": "@lokse/plugin-fallback",
-  "description": "Plugin for fallbacking missing translations to the default language translation",
-  "version": "2.4.0",
-  "author": {
-    "name": "Lukáš Horák",
-    "email": "horaklukas@centrum.cz"
-  },
-  "bugs": "https://github.com/AckeeCZ/lokse/issues",
-  "dependencies": {
-    "@lokse/core": "workspace:*"
-  },
-  "homepage": "https://github.com/AckeeCZ/lokse",
-  "keywords": [
-    "lokse",
-    "lokse-plugin"
-  ],
-  "license": "MIT",
-  "main": "lib/index.js",
-  "repository": "AckeeCZ/lokse",
-  "scripts": {
-    "build": "tsc -b",
-    "clean": "rm -rf lib"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+    "name": "@lokse/plugin-fallback",
+    "description": "Plugin for fallbacking missing translations to the default language translation",
+    "version": "2.4.0",
+    "author": {
+        "name": "Lukáš Horák",
+        "email": "horaklukas@centrum.cz"
+    },
+    "bugs": "https://github.com/AckeeCZ/lokse/issues",
+    "dependencies": {
+        "@lokse/core": "^2.4.0"
+    },
+    "homepage": "https://github.com/AckeeCZ/lokse",
+    "keywords": [
+        "lokse",
+        "lokse-plugin"
+    ],
+    "license": "MIT",
+    "main": "lib/index.js",
+    "repository": "AckeeCZ/lokse",
+    "scripts": {
+        "build": "tsc -b",
+        "clean": "rm -rf lib"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }

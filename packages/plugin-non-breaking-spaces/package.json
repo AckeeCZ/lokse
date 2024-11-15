@@ -1,29 +1,29 @@
 {
-  "name": "@lokse/plugin-non-breaking-spaces",
-  "description": "",
-  "version": "2.4.0",
-  "author": {
-    "name": "Filip Kubík",
-    "email": "filip.kubik.dev@gmail.com"
-  },
-  "bugs": "https://github.com/AckeeCZ/lokse/issues",
-  "dependencies": {
-    "@lokse/core": "workspace:*",
-    "lodash": "4.17.20"
-  },
-  "homepage": "https://github.com/AckeeCZ/lokse",
-  "keywords": [
-    "lokse",
-    "lokse-plugin"
-  ],
-  "license": "MIT",
-  "main": "lib/index.js",
-  "repository": "AckeeCZ/lokse",
-  "scripts": {
-    "build": "tsc -b",
-    "clean": "rm -rf lib"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+    "name": "@lokse/plugin-non-breaking-spaces",
+    "description": "",
+    "version": "2.4.0",
+    "author": {
+        "name": "Filip Kubík",
+        "email": "filip.kubik.dev@gmail.com"
+    },
+    "bugs": "https://github.com/AckeeCZ/lokse/issues",
+    "dependencies": {
+        "@lokse/core": "^2.4.0",
+        "lodash": "4.17.20"
+    },
+    "homepage": "https://github.com/AckeeCZ/lokse",
+    "keywords": [
+        "lokse",
+        "lokse-plugin"
+    ],
+    "license": "MIT",
+    "main": "lib/index.js",
+    "repository": "AckeeCZ/lokse",
+    "scripts": {
+        "build": "tsc -b",
+        "clean": "rm -rf lib"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }
