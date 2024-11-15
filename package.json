@@ -19,8 +19,8 @@
         "test": "jest",
         "test:watch": "jest --watchAll",
         "release:prepare": "yarn changeset",
-        "release:apply": "yarn changeset version",
-        "release:publish": "yarn changeset publish && yarn changeset tag"
+        "release:apply": "yarn changeset version && yarn changeset tag",
+        "release:publish": "yarn changeset publish"
     },
     "devDependencies": {
         "@changesets/cli": "2.27.9",
