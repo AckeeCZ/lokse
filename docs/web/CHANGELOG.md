@@ -1,5 +1,33 @@
 # lokse-doc-site
 
+## 3.0.0
+
+### Major Changes
+
+-   f836acf: 💥 Use application default credentials as only authentication method.
+
+    ## Migration guide
+
+    1. Remove `.env.local`
+    2. Install `gcloud` first - https://cloud.google.com/sdk/docs/install
+    3. Sign-in with Google:
+
+        ```sh
+        gcloud auth application-default login --scopes=openid,https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/spreadsheets,https://www.googleapis.com/auth/drive.file
+        ```
+
+    4. Fetch spreadsheets:
+
+        ```sh
+        lokse update
+        ```
+
+    5. In case of getting quote project warning:
+
+        ```sh
+        gcloud auth application-default set-quota-project <project-name>
+        ```
+
 ## 2.4.1
 
 ### Patch Changes
