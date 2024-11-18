@@ -35,40 +35,6 @@ describe('SpreadsheetReader', () => {
             GoogleSpreadsheetMock.mockClear();
         });
 
-        afterEach(() => {
-            delete process.env.LOKSE_API_KEY;
-            delete process.env.LOKSE_SERVICE_ACCOUNT_EMAIL;
-            delete process.env.LOKSE_PRIVATE_KEY;
-        });
-
-        it('uses service account if available', async () => {
-            const private_key = 'this-is-dummy-private-key';
-            const client_email = 'this-is@dummy-email';
-
-            process.env.LOKSE_SERVICE_ACCOUNT_EMAIL = client_email;
-            process.env.LOKSE_PRIVATE_KEY = private_key;
-
-            const reader = new SpreadsheetReader('test-sheet-id', new WorksheetReader('*'), noPlugins);
-
-            const client = await reader.authenticate();
-
-            // @ts-expect-error private property
-            expect(client._clientId).toEqual(client_email);
-            // @ts-expect-error private property
-            expect(client._clientSecret).toEqual(private_key);
-        });
-
-        it('uses api key if available', async () => {
-            const dummyApiKey = 'dummy-api-key';
-            process.env.LOKSE_API_KEY = dummyApiKey;
-
-            const reader = new SpreadsheetReader('test-sheet-id', new WorksheetReader('*'), noPlugins);
-
-            const client = await reader.authenticate();
-
-            expect(client.apiKey).toEqual(dummyApiKey);
-        });
-
         it('throw if service account nor api key found', async () => {
             const reader = new SpreadsheetReader('test-sheet-id', new WorksheetReader('*'), noPlugins);
 

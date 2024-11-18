@@ -1,5 +1,6 @@
+/* eslint-disable camelcase */
 import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { GoogleAuth, JWT } from 'google-auth-library';
+import { GoogleAuth } from 'google-auth-library';
 
 import Line from '../line';
 import { FatalError, getErrorMessage } from '../errors';
@@ -36,25 +37,6 @@ export class SpreadsheetReader {
     }
 
     createAuthClient() {
-        const { LOKSE_API_KEY, LOKSE_SERVICE_ACCOUNT_EMAIL, LOKSE_PRIVATE_KEY } = process.env;
-
-        if (LOKSE_SERVICE_ACCOUNT_EMAIL && LOKSE_PRIVATE_KEY) {
-            this.logger.log('🔑 Authenticating with service account...');
-
-            const jwt = new JWT({
-                clientId: LOKSE_SERVICE_ACCOUNT_EMAIL,
-                clientSecret: LOKSE_PRIVATE_KEY,
-            });
-
-            return new GoogleAuth({ authClient: jwt });
-        }
-
-        if (LOKSE_API_KEY) {
-            this.logger.log('🔑 Authenticating with API key...');
-
-            return new GoogleAuth({ apiKey: LOKSE_API_KEY });
-        }
-
         this.logger.log('🔑 Authenticating with Application Default Credentials...');
 
         return new GoogleAuth({
