@@ -19,7 +19,7 @@
         "test": "jest",
         "test:watch": "jest --watchAll",
         "release:prepare": "yarn changeset",
-        "release:apply": "yarn changeset version && yarn changeset tag",
+        "release:apply": "yarn changeset version && yarn changeset tag && yarn install",
         "release:publish": "yarn changeset publish"
     },
     "devDependencies": {
