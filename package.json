@@ -18,7 +18,7 @@
         "format": "prettier --write --config prettier.config.mjs \"packages/*/(src|test)/**/*.(ts|tsx)\"",
         "test": "jest",
         "test:watch": "jest --watchAll",
-        "release:prepare": "yarn changeset",
+        "release:prepare": "yarn build && yarn changeset",
         "release:apply": "yarn changeset version && yarn changeset tag && yarn install",
         "release:publish": "yarn changeset publish"
     },
