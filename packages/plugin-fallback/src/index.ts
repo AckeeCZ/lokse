@@ -28,7 +28,8 @@ export default function (options: PluginOptions, { languages }: GeneralPluginMet
     return createPlugin({
         async readTranslation(line, meta) {
             if (line.key && !line.value) {
-                const defaultLanguageKey = Object.keys(meta.row).find(key => isDefaultLang(key)) ?? NOT_FOUND_KEY;
+                const defaultLanguageKey =
+                    meta.row._worksheet.headerValues.find(key => isDefaultLang(key)) ?? NOT_FOUND_KEY;
 
                 const fallbackLanguageValue = meta.row.get(defaultLanguageKey) ?? '';
 

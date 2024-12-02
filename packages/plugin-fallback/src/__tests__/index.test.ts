@@ -1,17 +1,39 @@
-import type { GoogleSpreadsheetRow } from 'google-spreadsheet';
+import type { GoogleSpreadsheetRow, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 import { Line } from '@lokse/core';
 
 import fallbackPluginFactory from '..';
 import type { PluginOptions } from '..';
 
-export const createRow = (rowIndex: number, values: { [key: string]: any }) =>
-    ({
+export const createRow = (rowIndex: number, values: { [key: string]: any }) => {
+    const defaultRow = {
         rowIndex,
-        ...values,
         get: (key: string) => values[key],
         save: () => null,
         delete: () => null,
-    }) as unknown as GoogleSpreadsheetRow;
+    };
+    return new Proxy<GoogleSpreadsheetRow>({} as unknown as GoogleSpreadsheetRow, {
+        get(_t: GoogleSpreadsheetRow, p: string | symbol, _r: any): any {
+            const key = p as keyof GoogleSpreadsheetRow;
+            if (key in defaultRow) {
+                return defaultRow[key as keyof typeof defaultRow];
+            }
+
+            if (key === '_worksheet') {
+                return new Proxy<GoogleSpreadsheetWorksheet>({} as unknown as GoogleSpreadsheetWorksheet, {
+                    get(_t: GoogleSpreadsheetWorksheet, p: string | symbol, _r: any): any {
+                        if (p === ('headerValues' satisfies keyof GoogleSpreadsheetWorksheet)) {
+                            return Object.keys(values);
+                        }
+
+                        throw new Error(`GoogleSpreadsheetWorksheet::${key} not implemented`);
+                    },
+                });
+            }
+
+            throw new Error(`GoogleSpreadsheetRow::${key} not implemented`);
+        },
+    });
+};
 
 describe('Fallback plugin', () => {
     const logger = { warn: jest.fn(), log: jest.fn() };
