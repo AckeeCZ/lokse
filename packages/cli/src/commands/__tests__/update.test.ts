@@ -1,23 +1,12 @@
-import { test as oclifTest } from '@oclif/test';
-import { cosmiconfigSync } from 'cosmiconfig';
 import dedent from 'dedent';
-import { describe, Mock, vi, expect } from 'vitest';
+import { describe, Mock, vi, expect, MockedClass } from 'vitest';
 
 // eslint-disable-next-line node/no-missing-import
 import { when } from 'vitest-when';
+import type { Line, WorksheetLinesByTitle } from '@lokse/core';
 
-import {
-    FileWriter,
-    InvalidFilterError,
-    OutputFormat,
-    Reader,
-    transformersByFormat,
-    WorksheetReader,
-} from '@lokse/core';
-import { CosmiconfigResult } from 'cosmiconfig/dist/types';
+import type { CosmiconfigResult } from 'cosmiconfig/dist/types';
 import { noExitCliInvariant } from '../../invariants';
-
-const jsonTransformer = transformersByFormat[OutputFormat.JSON];
 
 vi.mock('cosmiconfig', () => {
     const mockExplorer = {
@@ -37,25 +26,30 @@ const mockOraInstance = {
 };
 vi.mock('ora', () => vi.fn().mockReturnValue(mockOraInstance));
 
-// File writer mock
-const FileWriterMock = vi.mocked(FileWriter);
-const mockWrite = vi.fn();
-// Spreadsheet reader mock
-const ReaderMock = vi.mocked(Reader);
-const mockRead = vi.fn();
-// Worksheet reader mock
-const WorksheetReaderMock = vi.mocked(WorksheetReader);
-const mockWorksheetRead = vi.fn();
-vi.mock('@lokse/core', async () => ({
-    ...(await vi.importActual('@lokse/core')),
-    FileWriter: { ...FileWriterMock, write: mockWrite },
-    Reader: { ...ReaderMock, read: mockRead },
-    WorksheetReader: { ...WorksheetReaderMock, read: mockWorksheetRead },
-}));
+vi.mock('@lokse/core', async importOriginal => {
+    const original = await importOriginal<typeof import('@lokse/core')>();
+    return {
+        ...original,
+        FileWriter: vi.mocked(original.FileWriter),
+        Reader: vi.mocked(original.Reader),
+        WorksheetReader: vi.mocked(original.WorksheetReader),
+    };
+});
 
-const outputFormats = Object.values(OutputFormat).join(', ');
+describe('update command', async () => {
+    const { cosmiconfigSync } = await import('cosmiconfig');
+    const { test: oclifTest } = await import('@oclif/test');
+    const { FileWriter, InvalidFilterError, OutputFormat, transformersByFormat, Reader, WorksheetReader } =
+        await import('@lokse/core');
+    const outputFormats = Object.values(OutputFormat).join(', ');
+    const jsonTransformer = transformersByFormat[OutputFormat.JSON];
 
-describe('update command', () => {
+    const ReaderMock = Reader as MockedClass<typeof Reader>;
+    const WorksheetReaderMock = WorksheetReader as MockedClass<typeof WorksheetReader>;
+    const FileWriterMock = FileWriter as MockedClass<typeof FileWriter>;
+    const mockRead = ReaderMock.prototype.read;
+    const mockWrite = FileWriterMock.prototype.write;
+
     const searchMock = vi.mocked(cosmiconfigSync('foo').search);
 
     let consoleErrorBackup: typeof console.error;
@@ -71,19 +65,19 @@ describe('update command', () => {
         format: `--format=json`,
     };
 
-    const mockSheetLines = [{ key: 'sheet1.line' }, { key: 'sheet1.line' }];
-    const mockSheetLines2 = [{ key: 'sheet2.line_1' }, { key: 'sheet2.line_2' }];
-    const mockSheetLines3 = [{ key: 'sheet3.line_1' }, { key: 'sheet3.line_2' }];
+    const mockSheetLines = [{ key: 'sheet1.line' }, { key: 'sheet1.line' }] as Line[];
+    const mockSheetLines2 = [{ key: 'sheet2.line_1' }, { key: 'sheet2.line_2' }] as Line[];
+    const mockSheetLines3 = [{ key: 'sheet3.line_1' }, { key: 'sheet3.line_2' }] as Line[];
 
     const test = oclifTest.register('setupMocks', () => ({
         run() {
             ReaderMock.mockClear();
             WorksheetReaderMock.mockClear();
-            mockRead.mockClear().mockReturnValue(mockSheetLines);
+            mockRead.mockClear().mockReturnValue(Promise.resolve(mockSheetLines as unknown as WorksheetLinesByTitle));
             FileWriterMock.mockClear();
             mockWrite
                 .mockClear()
-                .mockImplementation(({ language, domain }) => [language, domain].filter(Boolean).join('.'));
+                .mockImplementation(async ({ language, domain }) => [language, domain].filter(Boolean).join('.'));
 
             mockOraInstance.start.mockClear();
             mockOraInstance.warn.mockClear();
@@ -150,7 +144,7 @@ describe('update command', () => {
         .it('set empty filter when no one supplied', () => {
             expect(true).toBe(true);
             expect(ReaderMock.mock.instances).toHaveLength(1);
-            expect(ReaderMock.mock.instances[0][1]).toBeUndefined();
+            expect((ReaderMock.mock.instances[0] as any)[1]).toBeUndefined();
         });
 
     describe('Sheets filter', () => {
@@ -284,7 +278,7 @@ describe('update command', () => {
         });
 
     test.setupMocks()
-        .do(() => mockRead.mockReturnValue({}))
+        .do(() => mockRead.mockReturnValue(Promise.resolve({})))
         .command(['update', ...Object.values(params)])
         .it('doesnt write language data when lines set is empty', () => {
             expect(mockWrite).not.toHaveBeenCalled();
@@ -305,7 +299,7 @@ describe('update command', () => {
         });
 
     test.setupMocks()
-        .do(() => mockRead.mockReturnValue({ sheet1: mockSheetLines }))
+        .do(() => mockRead.mockReturnValue(Promise.resolve({ sheet1: mockSheetLines })))
         .stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
         .command(['update', ...Object.values(params)])
         .it('writes language data in desired format into the output dir', () => {
@@ -349,7 +343,7 @@ describe('update command', () => {
         .stderr()
         .do(() => {
             mockRead
-                .mockImplementationOnce(() => ({ sheet1: mockSheetLines }))
+                .mockImplementationOnce(async () => ({ sheet1: mockSheetLines }))
                 .mockImplementationOnce(() => {
                     throw new Error('Read spreadsheet error');
                 });
@@ -374,11 +368,11 @@ describe('update command', () => {
         .do(() => {
             mockRead
                 .mockImplementationOnce((_, lang) => {
-                    noExitCliInvariant(false, `No exit read ${lang} error`);
+                    return noExitCliInvariant(false, `No exit read ${lang} error`) as never;
                 })
-                .mockImplementation(() => mockSheetLines);
+                .mockImplementation(async () => mockSheetLines as unknown as WorksheetLinesByTitle);
             mockWrite.mockImplementationOnce(() => {
-                noExitCliInvariant(false, 'No exit write translations error');
+                return noExitCliInvariant(false, 'No exit write translations error') as never;
             });
         })
         .command(['update', ...Object.values(params)])
@@ -412,13 +406,13 @@ describe('update command', () => {
 
         test.setupMocks()
             .do(() => {
-                mockRead.mockReturnValue(threeSheets);
+                mockRead.mockReturnValue(Promise.resolve(threeSheets));
                 searchMock.mockReturnValue({
                     config: { splitTranslations: true },
                 } satisfies Partial<CosmiconfigResult> as any);
                 mockWrite
-                    .mockReturnValueOnce(`/values-${languages[0]}strings.xml`)
-                    .mockReturnValueOnce(`/values-${languages[1]}strings.xml`);
+                    .mockReturnValueOnce(Promise.resolve(`/values-${languages[0]}strings.xml`))
+                    .mockReturnValueOnce(Promise.resolve(`/values-${languages[1]}strings.xml`));
             })
             .stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
             .command(['update', ...Object.values(params), langsParam, `--format=android`])
@@ -460,7 +454,7 @@ describe('update command', () => {
         test.setupMocks()
             .stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
             .do(() => {
-                mockRead.mockReturnValue(threeSheets);
+                mockRead.mockReturnValue(Promise.resolve(threeSheets));
                 searchMock.mockReturnValue({
                     config: { splitTranslations: true },
                 } satisfies Partial<CosmiconfigResult> as any);
@@ -525,7 +519,7 @@ describe('update command', () => {
 
         test.setupMocks()
             .do(() => {
-                mockRead.mockReturnValue({ 'Sheet 1': mockSheetLines });
+                mockRead.mockReturnValue(Promise.resolve({ 'Sheet 1': mockSheetLines }));
                 searchMock.mockReturnValue({
                     config: { splitTranslations: true },
                 } satisfies Partial<CosmiconfigResult> as any);
@@ -560,7 +554,7 @@ describe('update command', () => {
 
         test.setupMocks()
             .do(() => {
-                mockRead.mockReturnValue(threeSheets);
+                mockRead.mockReturnValue(Promise.resolve(threeSheets));
                 searchMock.mockReturnValue({
                     config: { splitTranslations: ['sheet1', 'sheet3'] },
                 } satisfies Partial<CosmiconfigResult> as any);
@@ -642,7 +636,7 @@ describe('update command', () => {
         test.setupMocks()
             .stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
             .do(() => {
-                mockRead.mockReturnValue(threeSheets);
+                mockRead.mockReturnValue(Promise.resolve(threeSheets));
 
                 when(mockWrite)
                     .calledWith(
@@ -745,10 +739,12 @@ describe('update command', () => {
 
         test.setupMocks()
             .do(() => {
-                mockRead.mockReturnValue({
-                    'sheet1 Title': mockSheetLines,
-                    'sheet2 Title': mockSheetLines2,
-                });
+                mockRead.mockReturnValue(
+                    Promise.resolve({
+                        'sheet1 Title': mockSheetLines,
+                        'sheet2 Title': mockSheetLines2,
+                    }),
+                );
                 searchMock.mockReturnValue({
                     config: { splitTranslations: ['sheet1', 'sheet2'] },
                 } satisfies Partial<CosmiconfigResult> as any);
@@ -812,10 +808,12 @@ describe('update command', () => {
 
         test.setupMocks()
             .do(() => {
-                mockRead.mockReturnValue({
-                    'sheet1 Title': [{ key: 'sheet.1.line' }, { key: 'sheet.1.line' }],
-                    'sheet2 Title': [{ key: 'sheet.2.line' }, { key: 'sheet.2.line' }],
-                });
+                mockRead.mockReturnValue(
+                    Promise.resolve({
+                        'sheet1 Title': [{ key: 'sheet.1.line' }, { key: 'sheet.1.line' }],
+                        'sheet2 Title': [{ key: 'sheet.2.line' }, { key: 'sheet.2.line' }],
+                    } as unknown as WorksheetLinesByTitle),
+                );
                 searchMock.mockReturnValue({
                     config: { splitTranslations: ['sheet.1', 'sheet.2'] },
                 } satisfies Partial<CosmiconfigResult> as any);
@@ -854,14 +852,16 @@ describe('update command', () => {
 
         test.setupMocks()
             .do(() => {
-                mockRead.mockReturnValue({
-                    'sheet1 Title': [
-                        { key: 'sheet1.line' },
-                        { key: 'sheet1.line' },
-                        { key: 'sheet12.line' },
-                        { key: 'sheet12.line' },
-                    ],
-                });
+                mockRead.mockReturnValue(
+                    Promise.resolve({
+                        'sheet1 Title': [
+                            { key: 'sheet1.line' },
+                            { key: 'sheet1.line' },
+                            { key: 'sheet12.line' },
+                            { key: 'sheet12.line' },
+                        ],
+                    } as unknown as WorksheetLinesByTitle),
+                );
                 searchMock.mockReturnValue({
                     config: { splitTranslations: ['sheet1', 'sheet12'] },
                 } satisfies Partial<CosmiconfigResult> as any);

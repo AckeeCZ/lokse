@@ -16,7 +16,7 @@
         "clean": "turbo run clean --parallel",
         "lint": "eslint packages/*/src/ --ext .ts --config ./.eslintrc",
         "format": "prettier --write --config prettier.config.mjs \"packages/*/(src|test)/**/*.(ts|tsx)\"",
-        "test": "vitest",
+        "test": "vitest --coverage",
         "release:prepare": "yarn build && yarn changeset",
         "release:apply": "yarn changeset version && yarn changeset tag && yarn install",
         "release:publish": "yarn changeset publish"
