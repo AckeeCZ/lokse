@@ -1,5 +1,6 @@
 import type { GoogleSpreadsheetRow } from 'google-spreadsheet';
 import { Line } from '@lokse/core';
+import { describe, it, beforeEach, expect, vi } from 'vitest';
 
 import fallbackPluginFactory from '..';
 import type { PluginOptions } from '..';
@@ -14,7 +15,7 @@ export const createRow = (rowIndex: number, values: { [key: string]: any }) =>
     }) as unknown as GoogleSpreadsheetRow;
 
 describe('Fallback plugin', () => {
-    const logger = { warn: jest.fn(), log: jest.fn() };
+    const logger = { warn: vi.fn(), log: vi.fn() };
     const factoryMeta = { languages: ['cs', 'mng'] };
 
     beforeEach(() => {
