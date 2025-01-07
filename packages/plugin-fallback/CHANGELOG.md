@@ -1,5 +1,17 @@
 # @lokse/plugin-fallback
 
+## 3.0.2
+
+### Patch Changes
+
+-   146c706: Run build before release:prepare
+
+## 3.0.1
+
+### Patch Changes
+
+-   838cfaf: Fix fallback plugin not finding default language column
+
 ## 3.0.0
 
 ### Major Changes
