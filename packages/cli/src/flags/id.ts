@@ -1,18 +1,19 @@
-import { flags } from '@oclif/command';
+import { Flags } from '@oclif/core';
 import { getConfig } from '@lokse/core';
 import { MissingFlagValue } from './errors';
 import type { Action } from './errors';
+import { Default } from '@oclif/core/lib/interfaces';
 
-export const flag = flags.build({
+export const flag = Flags.build({
     char: 'i',
     description: 'spreadsheet id',
 
-    default: ({ flags }) => {
-        const conf = getConfig();
+    default: (async ({ flags }) => {
+        const conf = await getConfig();
         const id = process.env.SPREADSHEET_ID ?? flags.id ?? conf?.sheetId;
 
         return id;
-    },
+    }) satisfies Default<string | undefined>,
 });
 
 export function invariant(id: string | undefined, action: Action): asserts id is string {

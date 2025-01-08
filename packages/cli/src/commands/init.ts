@@ -1,14 +1,11 @@
-import { flags } from '@oclif/command';
-import { promisifyAll } from 'bluebird';
+import { Flags } from '@oclif/core';
 import { template } from 'lodash';
 import * as path from 'path';
 import { prompt } from 'inquirer';
-
-const fs = promisifyAll(require('fs'));
+import fs from 'fs/promises';
 
 import { NAME } from '@lokse/core';
 import Base from '../base';
-import logger from '../logger';
 
 const configTypes = {
     typescript: 'lokse.config.ts.tmpl',
@@ -22,10 +19,11 @@ class Init extends Base {
     static examples = [`$ ${NAME} init`];
 
     static flags = {
-        help: flags.help({ char: 'h' }),
+        help: Flags.help({ char: 'h' }),
     };
 
     async run(): Promise<void> {
+        const logger = this.logger;
         if (this.conf) {
             logger.log(`🤷‍♂️ Lokse config already exists, skipping init.`);
             return;
@@ -50,8 +48,8 @@ class Init extends Base {
         const templateName = configTypes[answer.type];
         const templatePath = path.resolve(__dirname, '../templates', templateName);
 
-        const configTemplate = await fs.readFileAsync(templatePath);
-        const createConfig = template(configTemplate);
+        const configTemplate = await fs.readFile(templatePath);
+        const createConfig = template(configTemplate.toString());
 
         const initValues = await prompt<{
             sheetId: string;
@@ -92,10 +90,10 @@ class Init extends Base {
         });
         const configFilename = templateName.replace('.tmpl', '');
 
-        await fs.writeFileAsync(path.resolve(rootDir, configFilename), config);
+        await fs.writeFile(path.resolve(rootDir, configFilename), config);
 
         logger.log(`🔧 Generated config ${configFilename}`);
     }
 }
 
-export = Init;
+export default Init;

@@ -1,4 +1,4 @@
-import { flags } from '@oclif/command';
+import { Flags } from '@oclif/core';
 import open from 'open';
 
 import { NAME, createSheetUrl } from '@lokse/core';
@@ -11,12 +11,12 @@ class Open extends Base {
     static examples = [`$ ${NAME} open -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk`];
 
     static flags = {
-        help: flags.help({ char: 'h' }),
+        help: Flags.help({ char: 'h' }),
         id: idFlag.flag(),
     };
 
     async run(): Promise<void> {
-        const { flags } = this.parse(Open);
+        const { flags } = await this.parse(Open);
 
         const sheetId = flags.id;
 
@@ -26,4 +26,4 @@ class Open extends Base {
     }
 }
 
-export = Open;
+export default Open;
