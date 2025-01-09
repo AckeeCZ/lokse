@@ -12,7 +12,7 @@ class Open extends Base {
 
     static flags = {
         help: Flags.help({ char: 'h' }),
-        id: idFlag.flag(),
+        id: idFlag.flag,
     };
 
     async run(): Promise<void> {

@@ -2,9 +2,9 @@ import { Flags } from '@oclif/core';
 import { getConfig } from '@lokse/core';
 import { MissingFlagValue } from './errors';
 import type { Action } from './errors';
-import { Default } from '@oclif/core/lib/interfaces';
+import { FlagDefault } from '@oclif/core/lib/interfaces/parser';
 
-export const flag = Flags.build({
+export const flag = Flags.string({
     char: 'i',
     description: 'spreadsheet id',
 
@@ -13,7 +13,7 @@ export const flag = Flags.build({
         const id = process.env.SPREADSHEET_ID ?? flags.id ?? conf?.sheetId;
 
         return id;
-    }) satisfies Default<string | undefined>,
+    }) satisfies FlagDefault<string | undefined>,
 });
 
 export function invariant(id: string | undefined, action: Action): asserts id is string {

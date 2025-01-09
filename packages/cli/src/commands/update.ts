@@ -39,7 +39,7 @@ class Update extends Base {
 
     static flags = {
         help: Flags.help({ char: 'h' }),
-        id: idFlag.flag(),
+        id: idFlag.flag,
         dir: Flags.string({ char: 'd', name: 'dir', description: 'output folder' }),
         languages: Flags.string({
             char: 'l',
@@ -49,11 +49,11 @@ class Update extends Base {
             char: 'c',
             description: 'column containing translations keys. For example key_web.',
         }),
-        format: Flags.enum({
+        format: Flags.custom<OutputFormat>({
             char: 'f',
             options: outputFormats,
             description: `output format. Default is ${defaultFormat}.`,
-        }),
+        })(),
         sheets: Flags.string({
             char: 's',
             description:
