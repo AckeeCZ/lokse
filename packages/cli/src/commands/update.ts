@@ -1,4 +1,5 @@
 import * as path from 'path';
+// eslint-disable-next-line node/no-missing-import
 import { Flags, Errors } from '@oclif/core';
 import ora from 'ora';
 import slugify from '@sindresorhus/slugify';
@@ -29,7 +30,7 @@ flat.shim();
 const outputFormats = Object.values(OutputFormat);
 const defaultFormat = OutputFormat.JSON;
 
-class Update extends Base {
+export default class Update extends Base {
     static description = 'update translations from localization spreadsheet';
 
     static examples = [
@@ -228,7 +229,6 @@ class Update extends Base {
                     this.error(new Errors.CLIError(error));
                 } else if (isCLIError(error)) {
                     this.error(error, {
-                        // @ts-expect-error For some reason overload doesn't match correct exit type
                         exit: error.oclif?.exit,
                     });
                 } else if (error instanceof Error || typeof error === 'string') {
@@ -238,5 +238,3 @@ class Update extends Base {
         }
     }
 }
-
-export default Update;

@@ -1,3 +1,4 @@
+// eslint-disable-next-line node/no-missing-import
 import { Errors } from '@oclif/core';
 
 export class IncorrectFlagValue extends Errors.CLIError {}

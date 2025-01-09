@@ -1,3 +1,4 @@
+// eslint-disable-next-line node/no-missing-import
 import { Flags } from '@oclif/core';
 import { template } from 'lodash';
 import * as path from 'path';
@@ -13,7 +14,7 @@ const configTypes = {
     'rc file': '.lokserc.tmpl',
 } as const;
 
-class Init extends Base {
+export default class Init extends Base {
     static description = 'create a new config file';
 
     static examples = [`$ ${NAME} init`];
@@ -95,5 +96,3 @@ class Init extends Base {
         logger.log(`🔧 Generated config ${configFilename}`);
     }
 }
-
-export default Init;

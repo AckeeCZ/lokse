@@ -1,8 +1,8 @@
-import { Flags } from '@oclif/core';
+// eslint-disable-next-line node/no-missing-import
+import { Flags, type Interfaces } from '@oclif/core';
 import { getConfig } from '@lokse/core';
 import { MissingFlagValue } from './errors';
 import type { Action } from './errors';
-import { FlagDefault } from '@oclif/core/lib/interfaces/parser';
 
 export const flag = Flags.string({
     char: 'i',
@@ -13,7 +13,7 @@ export const flag = Flags.string({
         const id = process.env.SPREADSHEET_ID ?? flags.id ?? conf?.sheetId;
 
         return id;
-    }) satisfies FlagDefault<string | undefined>,
+    }) satisfies Interfaces.OptionFlag<string | undefined>['default'],
 });
 
 export function invariant(id: string | undefined, action: Action): asserts id is string {

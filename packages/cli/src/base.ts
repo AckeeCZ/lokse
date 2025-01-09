@@ -1,3 +1,4 @@
+// eslint-disable-next-line node/no-missing-import
 import { Command } from '@oclif/core';
 import updateNotifier from 'update-notifier';
 
