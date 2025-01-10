@@ -1,13 +1,13 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { GoogleAuth } from 'google-auth-library';
 
-import Line from '../line';
-import { FatalError, getErrorMessage } from '../errors';
-import WorksheetReader from './worksheet-reader';
-import Worksheet from './worksheet';
-import defaultLogger from '../logger';
-import type { Logger } from '../logger';
-import type { PluginsRunner } from '../plugins';
+import Line from '../line.js';
+import { FatalError, getErrorMessage } from '../errors.js';
+import WorksheetReader from './worksheet-reader.js';
+import Worksheet from './worksheet.js';
+import defaultLogger from '../logger.js';
+import type { Logger } from '../logger.js';
+import type { PluginsRunner } from '../plugins/index.js';
 
 export declare type WorksheetLinesByTitle = {
     [worksheetTitle: string]: Line[];

@@ -13,7 +13,7 @@ vi.mock('cosmiconfig', () => {
 describe('getConfig', async () => {
     const OLD_ENV = process.env;
     const searchMock = mockExplorer.search;
-    const { getConfig } = await import('../config');
+    const { getConfig } = await import('../config.js');
 
     beforeEach(() => {
         searchMock.mockReset();

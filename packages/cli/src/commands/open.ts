@@ -1,10 +1,9 @@
-// eslint-disable-next-line node/no-missing-import
 import { Flags } from '@oclif/core';
 import open from 'open';
 
 import { NAME, createSheetUrl } from '@lokse/core';
-import Base from '../base';
-import { id as idFlag } from '../flags';
+import Base from '../base.js';
+import { id as idFlag } from '../flags/index.js';
 
 export default class Open extends Base {
     static description = 'open localization spreadsheet in default browser';

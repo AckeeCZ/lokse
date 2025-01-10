@@ -1,7 +1,7 @@
 import { GoogleSpreadsheetRow } from 'google-spreadsheet';
-import { KeyColumnNotFound, LangColumnNotFound } from '../../errors';
-import { PluginsRunner } from '../../plugins';
-import Worksheet from '../worksheet';
+import { KeyColumnNotFound, LangColumnNotFound } from '../../errors.js';
+import { PluginsRunner } from '../../plugins/index.js';
+import Worksheet from '../worksheet.js';
 
 export const createRow = (rowIndex: number, values: { [key: string]: any }) =>
     ({

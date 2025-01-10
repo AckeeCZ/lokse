@@ -1,8 +1,8 @@
 import { cosmiconfig } from 'cosmiconfig';
 
-import { OutputFormat, NAME } from './constants';
-import type { PluginDefinition, PluginName } from './plugins';
-import type { SheetsFilter } from './reader';
+import { OutputFormat, NAME } from './constants.js';
+import type { PluginDefinition, PluginName } from './plugins/index.js';
+import type { SheetsFilter } from './reader/index.js';
 
 // TODO: use async API once custom oclif flags will be asynchronous
 const explorer = cosmiconfig(NAME, {

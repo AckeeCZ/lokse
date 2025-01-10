@@ -1,4 +1,4 @@
-import { runCommand } from './utils';
+import { runCommand } from './utils.js';
 import dedent from 'dedent';
 import { beforeEach } from 'node:test';
 import { describe, vi, expect, it } from 'vitest';

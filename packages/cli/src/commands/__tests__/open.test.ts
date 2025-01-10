@@ -1,4 +1,4 @@
-import { runCommand } from './utils';
+import { runCommand } from './utils.js';
 import open from 'open';
 import { vi, describe, expect, it } from 'vitest';
 

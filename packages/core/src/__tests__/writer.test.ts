@@ -14,10 +14,10 @@ vi.mock('mkdirp', () => ({
     default: vi.fn(),
 }));
 
-import Line from '../line';
-import { transformersByFormat } from '../transformer';
-import { OutputFormat } from '../constants';
-import { PluginsRunner } from '../plugins';
+import Line from '../line.js';
+import { transformersByFormat } from '../transformer/index.js';
+import { OutputFormat } from '../constants.js';
+import { PluginsRunner } from '../plugins/index.js';
 
 const androidTransformer = transformersByFormat[OutputFormat.ANDROID];
 const iosTransformer = transformersByFormat[OutputFormat.IOS];

@@ -1,10 +1,9 @@
 import * as path from 'path';
-// eslint-disable-next-line node/no-missing-import
 import { Flags, Errors } from '@oclif/core';
 import ora from 'ora';
 import slugify from '@sindresorhus/slugify';
 import dedent from 'dedent';
-import * as flat from 'array.prototype.flat';
+import flat from 'array.prototype.flat';
 import {
     Reader,
     OutputFormat,
@@ -19,11 +18,11 @@ import {
 } from '@lokse/core';
 import type { WorksheetLinesByTitle } from '@lokse/core';
 
-import Base from '../base';
+import Base from '../base.js';
 
-import { id as idFlag } from '../flags';
-import { MissingFlagValue, IncorrectFlagValue } from '../flags/errors';
-import { isCLIError } from '../invariants';
+import { id as idFlag } from '../flags/index.js';
+import { MissingFlagValue, IncorrectFlagValue } from '../flags/errors.js';
+import { isCLIError } from '../invariants.js';
 
 flat.shim();
 

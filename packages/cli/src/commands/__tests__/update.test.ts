@@ -1,13 +1,12 @@
 import dedent from 'dedent';
 import { describe, Mock, vi, expect, MockedClass, beforeEach, afterEach, it } from 'vitest';
-import { runCommand } from './utils';
+import { runCommand } from './utils.js';
 
-// eslint-disable-next-line node/no-missing-import
 import { when } from 'vitest-when';
 import type { Line, WorksheetLinesByTitle } from '@lokse/core';
 
-import type { CosmiconfigResult } from 'cosmiconfig/dist/types';
-import { noExitCliInvariant } from '../../invariants';
+import { noExitCliInvariant } from '../../invariants.js';
+import type { CosmiconfigResult } from 'cosmiconfig';
 
 vi.mock('cosmiconfig', () => {
     const mockExplorer = {

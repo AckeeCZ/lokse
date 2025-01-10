@@ -1,11 +1,9 @@
-// eslint-disable-next-line node/no-missing-import
 import { Command } from '@oclif/core';
 import updateNotifier from 'update-notifier';
 
-import { getConfig } from '@lokse/core';
-import type { Logger, LokseConfig } from '@lokse/core';
+import { getConfig, type Logger, type LokseConfig } from '@lokse/core';
 
-import pkg from '../package.json';
+import pkg from '../package.json' assert { type: 'json' };
 
 export default abstract class Base extends Command {
     protected conf: undefined | null | LokseConfig;

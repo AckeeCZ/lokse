@@ -1,12 +1,13 @@
-// eslint-disable-next-line node/no-missing-import
 import { Flags } from '@oclif/core';
-import { template } from 'lodash';
+import template from 'lodash/template.js';
 import * as path from 'path';
-import { prompt } from 'inquirer';
+import inquirer from 'inquirer';
 import fs from 'fs/promises';
 
 import { NAME } from '@lokse/core';
-import Base from '../base';
+import Base from '../base.js';
+
+const { prompt } = inquirer;
 
 const configTypes = {
     typescript: 'lokse.config.ts.tmpl',

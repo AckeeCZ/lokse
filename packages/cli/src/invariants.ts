@@ -1,4 +1,3 @@
-// eslint-disable-next-line node/no-missing-import
 import { Errors } from '@oclif/core';
 
 export const cliInvariant = (expression: unknown, message: string, options: Record<string, any> = {}): void => {
