@@ -54,7 +54,7 @@
     },
     "repository": "AckeeCZ/lokse",
     "scripts": {
-        "build": "tsc -b",
+        "build": "tsc -b && cp -r src/templates lib/templates",
         "clean": "rm -rf lib",
         "copy:templates": "cp -r src/templates lib/templates",
         "postpack": "rm -f oclif.manifest.json",
