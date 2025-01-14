@@ -17,6 +17,6 @@ export default defineConfig({
         outputFile: 'coverage/sonar-report.xml',
         disableConsoleIntercept: true,
 
-        testTimeout: 100_000,
+        testTimeout: 10_000,
     },
 });

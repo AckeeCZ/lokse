@@ -1,19 +1,11 @@
 import { runCommand as runOclifCommand } from '@oclif/test';
+import path from 'path';
 
-type CaptureResult = Awaited<ReturnType<typeof runOclifCommand>>;
-
-class CommandError extends Error {
-    constructor(readonly result: CaptureResult) {
-        super(result.error!.message, {
-            cause: result.error,
-        });
-    }
-}
-
-export const runCommand = async <T>(...args: Parameters<typeof runOclifCommand>) => {
-    const result = await runOclifCommand<T>(...args);
+export const runCommand = async <T>(cmd: Parameters<typeof runOclifCommand>[0]) => {
+    const root = path.resolve(__dirname, '../../..');
+    const result = await runOclifCommand<T>(cmd, { root });
     if (result.error) {
-        throw new CommandError(result);
+        throw result.error;
     }
 
     return result;

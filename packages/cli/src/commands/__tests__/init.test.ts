@@ -1,72 +1,59 @@
 import { runCommand } from './utils.js';
 import dedent from 'dedent';
-import { beforeEach } from 'node:test';
-import { describe, vi, expect, it } from 'vitest';
+import { describe, vi, expect, it, beforeEach, MockedFunction, MockInstance } from 'vitest';
+import inquirer from 'inquirer';
+import { getConfig } from '@lokse/core';
+import fs from 'fs/promises';
 
-const explorerMock = {
-    search: vi.fn(),
-};
-vi.mock('cosmiconfig', async importOriginal => ({
-    ...(await importOriginal<typeof import('cosmiconfig')>()),
-    cosmiconfig: vi.fn().mockReturnValue(explorerMock),
-}));
+vi.mock('@lokse/core', { spy: true });
+const getConfigMock = getConfig as MockedFunction<typeof getConfig>;
 
-const writeFileAsyncMock = vi.fn();
+const writeFileMock = vi.spyOn(fs, 'writeFile');
 
-vi.mock('bluebird', () => ({
-    promisifyAll: vi.fn(async fsObject => ({
-        ...((await vi.importActual('bluebird')) as any).promisifyAll(fsObject),
-        writeFileAsync: writeFileAsyncMock,
-    })),
-}));
-
-const promptMock = vi.fn();
-vi.mock('inquirer', () => ({
-    prompt: promptMock,
-}));
-
-const logMock = vi.fn();
-vi.mock('../../base', async importActual => ({
-    ...importActual(),
-    logger: { log: logMock },
-}));
+const logger = vi.spyOn(console, 'log');
+const promptMock = vi.spyOn(inquirer, 'prompt');
+let cwdMock: MockInstance | null = null;
 
 describe('init command', () => {
     beforeEach(() => {
-        explorerMock.search.mockReset();
-        writeFileAsyncMock.mockReset();
-        logMock.mockReset();
+        writeFileMock.mockReset();
+        getConfigMock.mockReset();
+        promptMock.mockReset();
+        logger.mockReset();
+
+        cwdMock?.mockReset();
+        cwdMock = null;
     });
 
     it('print message and do nothing when config already exists', async () => {
-        explorerMock.search.mockReturnValue({
-            config: { splitTranslations: true },
-        });
+        getConfigMock.mockResolvedValue({ splitTranslations: true });
+        // prevents the test from being stuck waiting for stdin when set up incorrectly
+        promptMock.mockRejectedValueOnce(new Error('This should not be called'));
 
         await runCommand(['init']);
 
         expect(promptMock).not.toHaveBeenCalled();
-        expect(writeFileAsyncMock).not.toHaveBeenCalled();
-        expect(logMock).toHaveBeenCalledTimes(1);
-        expect(logMock).toHaveBeenCalledWith(expect.stringMatching(/already exists/));
+        expect(writeFileMock).not.toHaveBeenCalled();
+        expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith(expect.stringMatching(/already exists/));
     });
 
     it('creates typescript config when selected typescript config type', async () => {
-        explorerMock.search.mockReturnValue(null);
-        promptMock.mockReturnValueOnce({ type: 'typescript' }).mockReturnValueOnce({
+        getConfigMock.mockResolvedValue(null);
+        promptMock.mockResolvedValueOnce({ type: 'typescript' }).mockResolvedValueOnce({
             sheetId: '',
             outDir: '',
             languagesString: null,
             column: '',
         });
+        cwdMock = vi.spyOn(process, 'cwd').mockReturnValue('/ROOT_PKG_PATH');
 
-        // TODO .stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
         await runCommand(['init']);
 
-        expect(writeFileAsyncMock).toHaveBeenCalledWith(
+        expect(writeFileMock).toHaveBeenCalledWith(
             `/ROOT_PKG_PATH/lokse.config.ts`,
             dedent`import type { LokseConfig } from "lokse";
-        
+
         const config: LokseConfig = {
             sheetId: "",
             dir: "",
@@ -76,23 +63,23 @@ describe('init command', () => {
 
         export default config;`,
         );
-        expect(logMock).toHaveBeenCalledTimes(1);
-        expect(logMock).toHaveBeenCalledWith(expect.stringMatching(/generated config/i));
+        expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith(expect.stringMatching(/generated config/i));
     });
 
     it('creates javascript config when selected javascript config type', async () => {
-        explorerMock.search.mockReturnValue(null);
-        promptMock.mockReturnValueOnce({ type: 'javascript' }).mockReturnValueOnce({
+        getConfigMock.mockResolvedValue(null);
+        promptMock.mockResolvedValueOnce({ type: 'javascript' }).mockResolvedValueOnce({
             sheetId: '',
             outDir: '',
             languagesString: null,
             column: '',
         });
 
-        // .stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
+        vi.spyOn(process, 'cwd').mockReturnValue('/ROOT_PKG_PATH');
         await runCommand(['init']);
 
-        expect(writeFileAsyncMock).toHaveBeenCalledWith(
+        expect(writeFileMock).toHaveBeenCalledWith(
             `/ROOT_PKG_PATH/lokse.config.js`,
             dedent`/**
          * @type {import('lokse').LokseConfig}
@@ -106,23 +93,24 @@ describe('init command', () => {
 
         module.exports = config;`,
         );
-        expect(logMock).toHaveBeenCalledTimes(1);
-        expect(logMock).toHaveBeenCalledWith(expect.stringMatching(/generated config/i));
+        expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith(expect.stringMatching(/generated config/i));
     });
 
     it('creates rc config when selected rc file config type', async () => {
-        explorerMock.search.mockReturnValue(null);
-        promptMock.mockReturnValueOnce({ type: 'rc file' }).mockReturnValueOnce({
+        getConfigMock.mockResolvedValue(null);
+        promptMock.mockResolvedValueOnce({ type: 'rc file' }).mockResolvedValueOnce({
             sheetId: '',
             outDir: '',
             languagesString: null,
             column: '',
         });
 
-        // TODO .stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
+        vi.spyOn(process, 'cwd').mockReturnValue('/ROOT_PKG_PATH');
+
         await runCommand(['init']);
 
-        expect(writeFileAsyncMock).toHaveBeenCalledWith(
+        expect(writeFileMock).toHaveBeenCalledWith(
             `/ROOT_PKG_PATH/.lokserc`,
             dedent`{
             "sheetId": "",
@@ -131,20 +119,21 @@ describe('init command', () => {
             "column": ""
         }`,
         );
-        expect(logMock).toHaveBeenCalledTimes(1);
-        expect(logMock).toHaveBeenCalledWith(expect.stringMatching(/generated config/i));
+        expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith(expect.stringMatching(/generated config/i));
     });
 
     it('use all inputed values to create config', async () => {
-        explorerMock.search.mockReturnValue(null);
-        promptMock.mockReturnValueOnce({ type: 'typescript' }).mockReturnValueOnce({
+        getConfigMock.mockResolvedValue(null);
+        promptMock.mockResolvedValueOnce({ type: 'typescript' }).mockResolvedValueOnce({
             sheetId: 'fake-sheet-id',
             outDir: 'localesDir',
             languagesString: 'cs,en',
             column: 'web',
         });
 
-        // TODO .stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
+        vi.spyOn(process, 'cwd').mockReturnValueOnce('/ROOT_PKG_PATH');
+
         await runCommand(['init']);
 
         expect(promptMock).toHaveBeenCalledWith([
@@ -156,10 +145,10 @@ describe('init command', () => {
                 ],
             }),
         ]);
-        expect(writeFileAsyncMock).toHaveBeenCalledWith(
+        expect(writeFileMock).toHaveBeenCalledWith(
             `/ROOT_PKG_PATH/lokse.config.ts`,
             dedent`import type { LokseConfig } from "lokse";
-        
+
         const config: LokseConfig = {
             sheetId: "fake-sheet-id",
             dir: "localesDir",
@@ -169,7 +158,7 @@ describe('init command', () => {
 
         export default config;`,
         );
-        expect(logMock).toHaveBeenCalledTimes(1);
-        expect(logMock).toHaveBeenCalledWith(expect.stringMatching(/generated config/i));
+        expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith(expect.stringMatching(/generated config/i));
     });
 });

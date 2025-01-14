@@ -6,8 +6,12 @@ import fs from 'fs/promises';
 
 import { NAME } from '@lokse/core';
 import Base from '../base.js';
+import { fileURLToPath } from 'url';
 
 const { prompt } = inquirer;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const configTypes = {
     typescript: 'lokse.config.ts.tmpl',

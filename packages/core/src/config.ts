@@ -4,7 +4,6 @@ import { OutputFormat, NAME } from './constants.js';
 import type { PluginDefinition, PluginName } from './plugins/index.js';
 import type { SheetsFilter } from './reader/index.js';
 
-// TODO: use async API once custom oclif flags will be asynchronous
 const explorer = cosmiconfig(NAME, {
     searchPlaces: [
         'package.json',

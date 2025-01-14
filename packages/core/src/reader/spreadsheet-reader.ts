@@ -16,21 +16,17 @@ interface SpreadsheetReaderOptions {
     logger?: Logger;
 }
 export class SpreadsheetReader {
-    private spreadsheetId: string;
-
     private worksheets: Worksheet[] | null;
 
     public logger: Logger;
 
     constructor(
-        spreadsheetId: string,
+        private spreadsheetId: string,
         private sheetsReader: WorksheetReader,
         private plugins: PluginsRunner,
         options: SpreadsheetReaderOptions = {},
     ) {
         this.logger = options.logger || defaultLogger;
-
-        this.spreadsheetId = spreadsheetId;
 
         this.worksheets = null;
     }

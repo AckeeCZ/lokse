@@ -16,6 +16,7 @@ export default class Open extends Base {
     };
 
     async run(): Promise<void> {
+        console.debug(open);
         const { flags } = await this.parse(Open);
 
         const sheetId = flags.id;
