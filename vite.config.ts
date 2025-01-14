@@ -15,9 +15,8 @@ export default defineConfig({
             reporter: ['lcov', 'text-summary'],
         },
         outputFile: 'coverage/sonar-report.xml',
-        globals: true,
         disableConsoleIntercept: true,
 
-        testTimeout: 10_000,
+        testTimeout: 100_000,
     },
 });

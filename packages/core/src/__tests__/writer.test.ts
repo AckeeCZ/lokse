@@ -1,7 +1,7 @@
 import { EOL } from 'os';
 import mkdirp from 'mkdirp';
 
-import { type Mock, vi, describe } from 'vitest';
+import { type Mock, vi, describe, it, beforeEach, expect } from 'vitest';
 
 const fs = {
     access: vi.fn(),
@@ -33,7 +33,7 @@ const plugin = {
 const plugins = new PluginsRunner([plugin], { logger });
 
 describe('Writer', async () => {
-    const FileWriter = await import('../writer').then(v => v.default);
+    const FileWriter = await import('../writer.js').then(v => v.default);
     beforeEach(() => {
         plugin.transformFullOutput.mockReset().mockImplementation(output => output);
         plugin.transformLine.mockReset().mockImplementation(line => line);
