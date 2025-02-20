@@ -1,41 +1,65 @@
-import dedent from 'dedent';
-import { describe, Mock, vi, expect, MockedClass, beforeEach, afterEach, it, MockedFunction } from 'vitest';
+// @ts-expect-error esInterop
+import { default as dedent } from 'dedent';
+import { afterEach, beforeEach, describe, expect, it, Mock, MockedFunction, MockInstance, vi } from 'vitest';
 import { runCommand } from './utils.js';
 import { when } from 'vitest-when';
+// @ts-expect-error esInterop
+import { default as ora } from 'ora';
 import {
     FileWriter,
-    InvalidFilterError,
-    OutputFormat,
-    transformersByFormat,
-    Reader,
-    WorksheetReader,
     getConfig,
+    InvalidFilterError,
     type Line,
+    LokseConfig,
+    OutputFormat,
+    Reader,
+    transformersByFormat,
     type WorksheetLinesByTitle,
+    WorksheetReader,
 } from '@lokse/core';
-
 import { noExitCliInvariant } from '../../invariants.js';
-import type { CosmiconfigResult } from 'cosmiconfig';
-/*
+
 const mockOraInstance = {
     start: vi.fn(),
     warn: vi.fn(),
     succeed: vi.fn(),
     fail: vi.fn(),
 };
-vi.mock('ora', () => vi.fn().mockReturnValue(mockOraInstance)); */
+vi.mock('ora', () => {
+    return { default: vi.fn() };
+});
+vi.mocked(ora).mockReturnValue(mockOraInstance);
 
-vi.mock('@lokse/core');
+vi.mock('@lokse/core', async importActual => {
+    const actual = (await importActual()) as any;
+
+    const read = vi.fn();
+    const Reader = vi.fn().mockImplementation(() => ({ read }));
+    Reader.prototype.read = read;
+
+    const write = vi.fn();
+    const FileWriter = vi.fn().mockImplementation(() => ({ write }));
+    FileWriter.prototype.write = write;
+
+    return {
+        ...actual,
+        Reader,
+        WorksheetReader: vi.fn(),
+        FileWriter,
+        getConfig: vi.fn(),
+    };
+});
+
 // TODO fix mocking of getConfig
 const getConfigMock = getConfig as MockedFunction<typeof getConfig>;
 const outputFormats = Object.values(OutputFormat).join(', ');
 const jsonTransformer = transformersByFormat[OutputFormat.JSON];
 
-const ReaderMock = Reader as MockedClass<typeof Reader>;
-const WorksheetReaderMock = WorksheetReader as MockedClass<typeof WorksheetReader>;
-const FileWriterMock = FileWriter as MockedClass<typeof FileWriter>;
-const mockRead = ReaderMock.prototype.read;
-const mockWrite = FileWriterMock.prototype.write;
+const ReaderMock = vi.mocked(Reader);
+const WorksheetReaderMock = vi.mocked(WorksheetReader);
+const FileWriterMock = vi.mocked(FileWriter);
+const mockRead = vi.mocked(ReaderMock.prototype.read);
+const mockWrite = vi.mocked(FileWriterMock.prototype.write);
 
 /**
  * Mocking error output with https://www.npmjs.com/package/fancy-test#stdoutstderr-mocking
@@ -43,10 +67,10 @@ const mockWrite = FileWriterMock.prototype.write;
  * console.error and check what was send into it
  */
 const consoleErrorBackup = console.error;
-const fakeSpreadsheetId = 'fake-spreadsheet-id';
-const keyColumn = 'web';
-const translationsDir = 'src/translations';
-const languages = ['cs', 'en-us', 'en-gb'];
+const fakeSpreadsheetId = 'fake-spreadsheet-id' as const;
+const keyColumn = 'web' as const;
+const translationsDir = 'src/translations' as const;
+const languages = ['cs', 'en-us', 'en-gb'] as const;
 const params = {
     id: `--id=${fakeSpreadsheetId}`,
     dir: `--dir=${translationsDir}`,
@@ -60,22 +84,27 @@ const mockSheetLines2 = [{ key: 'sheet2.line_1' }, { key: 'sheet2.line_2' }] as 
 const mockSheetLines3 = [{ key: 'sheet3.line_1' }, { key: 'sheet3.line_2' }] as Line[];
 
 describe('update command', async () => {
+    let cwdMock: MockInstance | null = null;
+
     beforeEach(() => {
-        ReaderMock.mockClear();
-        WorksheetReaderMock.mockClear();
-        mockRead.mockClear().mockReturnValue(Promise.resolve(mockSheetLines as unknown as WorksheetLinesByTitle));
-        FileWriterMock.mockClear();
+        ReaderMock.mockReset();
+        WorksheetReaderMock.mockReset();
+        mockRead.mockReset().mockReturnValue(Promise.resolve(mockSheetLines as unknown as WorksheetLinesByTitle));
+        FileWriterMock.mockReset();
         mockWrite
-            .mockClear()
+            .mockReset()
             .mockImplementation(async ({ language, domain }) => [language, domain].filter(Boolean).join('.'));
 
-        // mockOraInstance.start.mockClear();
-        // mockOraInstance.warn.mockClear();
-        // mockOraInstance.succeed.mockClear();
-        // mockOraInstance.fail.mockClear();
+        mockOraInstance.start.mockReset();
+        mockOraInstance.warn.mockReset();
+        mockOraInstance.succeed.mockReset();
+        mockOraInstance.fail.mockReset();
 
         getConfigMock.mockReset();
         console.error = vi.fn();
+
+        cwdMock?.mockReset();
+        cwdMock = null;
     });
     afterEach(() => {
         console.error = consoleErrorBackup;
@@ -109,9 +138,15 @@ describe('update command', async () => {
         getConfigMock.mockResolvedValueOnce({
             languages: 'cs,en',
         } as any);
-        await expect(runCommand(['update', params.id, params.dir, params.col])).rejects.toThrow(
-            `🤷‍♂️ Translation columns have to be list of languages, but cs,en given`,
-        );
+        try {
+            await expect(runCommand(['update', params.id, params.dir, params.col])).rejects.toThrow(
+                `🤷‍♂️ Translation columns have to be list of languages, but cs,en given`,
+            );
+        } finally {
+            const invocations = getConfigMock.mock.calls;
+
+            console.log(invocations);
+        }
     });
 
     it('throws when unknown format provided', async () => {
@@ -120,10 +155,7 @@ describe('update command', async () => {
         );
     });
     it('set empty filter when no one supplied', async () => {
-        WorksheetReaderMock.mockImplementation(function (...args) {
-            console.log('new reader mock', args);
-            return vi.fn()(...args);
-        });
+        WorksheetReaderMock.mockImplementation(() => vi.fn());
         await runCommand(['update', ...Object.values(params)]);
 
         expect(ReaderMock.mock.instances).toHaveLength(1);
@@ -162,9 +194,9 @@ describe('update command', async () => {
         });
 
         it('uses string filter supplied through config', async () => {
-            getConfigMock.mockReturnValue({
-                config: { sheets: 'Secondary translations' },
-            } satisfies Partial<CosmiconfigResult> as any);
+            getConfigMock.mockResolvedValue({
+                sheets: 'Secondary translations',
+            } satisfies LokseConfig);
             await runCommand(['update', ...Object.values(params)]);
 
             expect(WorksheetReaderMock.mock.instances).toHaveLength(1);
@@ -173,9 +205,9 @@ describe('update command', async () => {
         });
 
         it('uses names list filter supplied through config', async () => {
-            getConfigMock.mockReturnValue({
-                config: { sheets: ['Main translations', 'Secondary translations'] },
-            } satisfies Partial<CosmiconfigResult> as any);
+            getConfigMock.mockResolvedValue({
+                sheets: ['Main translations', 'Secondary translations'],
+            });
 
             await runCommand(['update', ...Object.values(params)]);
 
@@ -185,13 +217,11 @@ describe('update command', async () => {
         });
 
         it('uses include only filter supplied through config', async () => {
-            getConfigMock.mockReturnValue({
-                config: {
-                    sheets: {
-                        include: ['Main translations', 'Other translations'],
-                    },
+            getConfigMock.mockResolvedValue({
+                sheets: {
+                    include: ['Main translations', 'Other translations'],
                 },
-            } satisfies Partial<CosmiconfigResult> as any);
+            });
 
             await runCommand(['update', ...Object.values(params)]);
 
@@ -203,13 +233,9 @@ describe('update command', async () => {
         });
 
         it('uses exclude only filter supplied through config', async () => {
-            getConfigMock.mockReturnValue({
-                config: {
-                    sheets: {
-                        exclude: ['Main translations', 'Other translations'],
-                    },
-                },
-            } satisfies Partial<CosmiconfigResult> as any);
+            getConfigMock.mockResolvedValue({
+                sheets: { exclude: ['Main translations', 'Other translations'] },
+            });
             await runCommand(['update', ...Object.values(params)]);
 
             expect(WorksheetReaderMock.mock.instances).toHaveLength(1);
@@ -218,14 +244,12 @@ describe('update command', async () => {
             });
         });
         it('uses mixed include and exclude filter supplied through config', async () => {
-            getConfigMock.mockReturnValue({
-                config: {
-                    sheets: {
-                        include: 'Main translations',
-                        exclude: ['Other translations', 'Non web translations'],
-                    },
+            getConfigMock.mockResolvedValue({
+                sheets: {
+                    include: 'Main translations',
+                    exclude: ['Other translations', 'Non web translations'],
                 },
-            } satisfies Partial<CosmiconfigResult> as any);
+            });
             await runCommand(['update', ...Object.values(params)]);
 
             expect(WorksheetReaderMock.mock.instances).toHaveLength(1);
@@ -270,7 +294,7 @@ describe('update command', async () => {
 
         it('writes language data in desired format into the output dir', async () => {
             mockRead.mockReturnValue(Promise.resolve({ sheet1: mockSheetLines }));
-            // TODO stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
+            cwdMock = vi.spyOn(process, 'cwd').mockReturnValue('/ROOT_PKG_PATH');
             await runCommand(['update', ...Object.values(params)]);
 
             expect(mockWrite).toHaveBeenCalledTimes(3);
@@ -310,6 +334,7 @@ describe('update command', async () => {
         });
 
         it('print error when process of reading or writing fails', async () => {
+            cwdMock = vi.spyOn(process, 'cwd').mockReturnValue('/abc');
             mockRead
                 .mockImplementationOnce(async () => ({ sheet1: mockSheetLines }))
                 .mockImplementationOnce(() => {
@@ -331,6 +356,7 @@ describe('update command', async () => {
         });
 
         it('goes through other langs when non critical error occur during read or write', async () => {
+            cwdMock = vi.spyOn(process, 'cwd').mockReturnValue('/abc');
             mockRead
                 .mockImplementationOnce((_, lang) => {
                     return noExitCliInvariant(false, `No exit read ${lang} error`) as never;
@@ -369,17 +395,22 @@ describe('update command', async () => {
 
         // test.it('fail when splitTranslations isnt boolean nor array of strings');
 
-        it('doesnt split when option enabled but output transformer doesnt support it', async () => {
+        it("doesn't split when option enabled but output transformer doesnt support it", async () => {
             mockRead.mockReturnValue(Promise.resolve(threeSheets));
-            getConfigMock.mockReturnValue({
-                config: { splitTranslations: true },
-            } satisfies Partial<CosmiconfigResult> as any);
+            getConfigMock.mockResolvedValue({
+                splitTranslations: true,
+            });
             mockWrite
                 .mockReturnValueOnce(Promise.resolve(`/values-${languages[0]}strings.xml`))
                 .mockReturnValueOnce(Promise.resolve(`/values-${languages[1]}strings.xml`));
+            cwdMock = vi.spyOn(process, 'cwd').mockReturnValue('/ROOT_PKG_PATH');
 
-            // TODO stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
-            await runCommand(['update', ...Object.values(params), langsParam, `--format=android`]);
+            await runCommand([
+                'update',
+                ...Object.values(params).filter(v => !v.includes('--languages') && !v.includes('--format')),
+                langsParam,
+                `--format=android`,
+            ]);
 
             let relPath = '';
 
@@ -416,14 +447,14 @@ describe('update command', async () => {
         });
 
         it('splits by sheet title when split option is true', async () => {
-            // TODO stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
+            cwdMock = vi.spyOn(process, 'cwd').mockReturnValue('/ROOT_PKG_PATH');
 
             mockRead.mockReturnValue(Promise.resolve(threeSheets));
-            getConfigMock.mockReturnValue({
-                config: { splitTranslations: true },
-            } satisfies Partial<CosmiconfigResult> as any);
+            getConfigMock.mockResolvedValue({
+                splitTranslations: true,
+            });
 
-            await runCommand(['update', ...Object.values(params), langsParam]);
+            await runCommand(['update', ...Object.values(params).filter(v => !v.includes('--language')), langsParam]);
 
             expect(mockWrite).toHaveBeenCalledTimes(6);
             expect(mockOraInstance.succeed).toHaveBeenCalledTimes(2);
@@ -483,12 +514,10 @@ describe('update command', async () => {
 
         it('warns if there is only one sheet so splitting is unnecessary', async () => {
             mockRead.mockReturnValue(Promise.resolve({ 'Sheet 1': mockSheetLines }));
-            getConfigMock.mockReturnValue({
-                config: { splitTranslations: true },
-            } satisfies Partial<CosmiconfigResult> as any);
+            getConfigMock.mockResolvedValue({ splitTranslations: true });
+            cwdMock = vi.spyOn(process, 'cwd').mockReturnValue('/ROOT_PKG_PATH');
 
-            // TODO .stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
-            await runCommand(['update', ...Object.values(params), langsParam]);
+            await runCommand(['update', ...Object.values(params).filter(v => !v.includes('--language')), langsParam]);
 
             expect(mockWrite).toHaveBeenCalledTimes(2);
             expect(mockOraInstance.succeed).toHaveBeenCalledTimes(2);
@@ -515,12 +544,10 @@ describe('update command', async () => {
 
         it('split translations by specified domains and put rest into the general', async () => {
             mockRead.mockReturnValue(Promise.resolve(threeSheets));
-            getConfigMock.mockReturnValue({
-                config: { splitTranslations: ['sheet1', 'sheet3'] },
-            } satisfies Partial<CosmiconfigResult> as any);
+            getConfigMock.mockResolvedValue({ splitTranslations: ['sheet1', 'sheet3'] });
+            cwdMock = vi.spyOn(process, 'cwd').mockReturnValue('/ROOT_PKG_PATH');
 
-            // TODO .stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
-            await runCommand(['update', ...Object.values(params), langsParam]);
+            await runCommand(['update', ...Object.values(params).filter(v => !v.includes('--language')), langsParam]);
 
             expect(mockWrite).toHaveBeenCalledTimes(6);
             expect(mockOraInstance.succeed).toHaveBeenCalledTimes(2);
@@ -594,8 +621,7 @@ describe('update command', async () => {
         });
 
         it('write other domain translations if writing one of them fail', async () => {
-            // TODO stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
-
+            cwdMock = vi.spyOn(process, 'cwd').mockReturnValue('/ROOT_PKG_PATH');
             mockRead.mockReturnValue(Promise.resolve(threeSheets));
 
             when(mockWrite)
@@ -620,12 +646,9 @@ describe('update command', async () => {
                     jsonTransformer,
                 )
                 .thenReject(new Error(`Write error 2`));
+            getConfigMock.mockResolvedValue({ splitTranslations: true });
 
-            getConfigMock.mockReturnValue({
-                config: { splitTranslations: true },
-            } satisfies Partial<CosmiconfigResult> as any);
-
-            await runCommand(['update', ...Object.values(params), langsParam]);
+            await runCommand(['update', ...Object.values(params).filter(v => !v.includes('--language')), langsParam]);
 
             expect(mockWrite).toHaveBeenCalledTimes(6);
             expect(mockOraInstance.warn).toHaveBeenCalledTimes(2);
@@ -704,12 +727,10 @@ describe('update command', async () => {
                     'sheet2 Title': mockSheetLines2,
                 }),
             );
-            getConfigMock.mockReturnValue({
-                config: { splitTranslations: ['sheet1', 'sheet2'] },
-            } satisfies Partial<CosmiconfigResult> as any);
+            getConfigMock.mockResolvedValue({ splitTranslations: ['sheet1', 'sheet2'] });
+            cwdMock = vi.spyOn(process, 'cwd').mockReturnValue('/ROOT_PKG_PATH');
 
-            // TODO .stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
-            await runCommand(['update', ...Object.values(params), langsParam]);
+            await runCommand(['update', ...Object.values(params).filter(v => !v.includes('--language')), langsParam]);
 
             expect(mockWrite).toHaveBeenCalledTimes(4);
             expect(mockOraInstance.succeed).toHaveBeenCalledTimes(2);
@@ -772,12 +793,14 @@ describe('update command', async () => {
                     'sheet2 Title': [{ key: 'sheet.2.line' }, { key: 'sheet.2.line' }],
                 } as unknown as WorksheetLinesByTitle),
             );
-            getConfigMock.mockReturnValue({
-                config: { splitTranslations: ['sheet.1', 'sheet.2'] },
-            } satisfies Partial<CosmiconfigResult> as any);
+            getConfigMock.mockResolvedValue({ splitTranslations: ['sheet.1', 'sheet.2'] });
+            cwdMock = vi.spyOn(process, 'cwd').mockReturnValue('/ROOT_PKG_PATH');
 
-            // TODO .stub(process, 'cwd', vi.fn().mockReturnValue('/ROOT_PKG_PATH'))
-            await runCommand(['update', ...Object.values(params), `--languages=${languages[0]}`]);
+            await runCommand([
+                'update',
+                ...Object.values(params).filter(v => !v.includes('--language')),
+                `--languages=${languages[0]}`,
+            ]);
 
             expect(mockWrite).toHaveBeenCalledTimes(2);
             expect(mockOraInstance.succeed).toHaveBeenCalledTimes(1);
@@ -809,22 +832,22 @@ describe('update command', async () => {
         });
 
         it('should split correctly when domain name is part of other domain', async () => {
-            mockRead.mockReturnValue(
-                Promise.resolve({
-                    'sheet1 Title': [
-                        { key: 'sheet1.line' },
-                        { key: 'sheet1.line' },
-                        { key: 'sheet12.line' },
-                        { key: 'sheet12.line' },
-                    ],
-                } as unknown as WorksheetLinesByTitle),
-            );
-            getConfigMock.mockReturnValue({
-                config: { splitTranslations: ['sheet1', 'sheet12'] },
-            } satisfies Partial<CosmiconfigResult> as any);
+            mockRead.mockResolvedValue({
+                'sheet1 Title': [
+                    { key: 'sheet1.line' },
+                    { key: 'sheet1.line' },
+                    { key: 'sheet12.line' },
+                    { key: 'sheet12.line' },
+                ],
+            } as unknown as WorksheetLinesByTitle);
+            getConfigMock.mockResolvedValue({ splitTranslations: ['sheet1', 'sheet12'] });
+            cwdMock = vi.spyOn(process, 'cwd').mockReturnValue('/ROOT_PKG_PATH');
 
-            vi.spyOn(process, 'cwd').mockReturnValueOnce('/ROOT_PKG_PATH');
-            await runCommand(['update', ...Object.values(params), `--languages=${languages[0]}`]);
+            await runCommand([
+                'update',
+                ...Object.values(params).filter(v => !v.includes('--languages')),
+                `--languages=${languages[0]}`,
+            ]);
 
             expect(mockWrite).toHaveBeenCalledTimes(2);
             expect(mockOraInstance.succeed).toHaveBeenCalledTimes(1);

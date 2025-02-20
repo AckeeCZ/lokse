@@ -1,17 +1,30 @@
 import { runCommand } from './utils.js';
-import dedent from 'dedent';
-import { describe, vi, expect, it, beforeEach, MockedFunction, MockInstance } from 'vitest';
-import inquirer from 'inquirer';
+// @ts-expect-error esInterop
+import { default as dedent } from 'dedent';
+import { describe, vi, expect, it, beforeEach, MockInstance } from 'vitest';
+
 import { getConfig } from '@lokse/core';
-import fs from 'fs/promises';
+import { writeFile } from 'fs/promises';
+import { prompt } from 'inquirer';
 
 vi.mock('@lokse/core', { spy: true });
-const getConfigMock = getConfig as MockedFunction<typeof getConfig>;
+const getConfigMock = vi.mocked(getConfig);
 
-const writeFileMock = vi.spyOn(fs, 'writeFile');
+vi.mock('fs/promises', { spy: true });
+const writeFileMock = vi.mocked(writeFile);
 
 const logger = vi.spyOn(console, 'log');
-const promptMock = vi.spyOn(inquirer, 'prompt');
+
+const promptMock = vi.mocked(prompt);
+vi.mock('inquirer', () => {
+    const prompt = vi.fn();
+    return {
+        prompt,
+        default: {
+            prompt,
+        },
+    };
+});
 let cwdMock: MockInstance | null = null;
 
 describe('init command', () => {

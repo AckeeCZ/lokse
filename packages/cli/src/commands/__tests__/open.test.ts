@@ -1,12 +1,13 @@
 import { vi, describe, expect, it } from 'vitest';
 import { runCommand } from './utils.js';
-import open from 'open';
 
-vi.mock('open', () => ({
-    default: vi.fn(),
-}));
+vi.mock('open', () => {
+    const mock = vi.fn();
+    return { default: mock };
+});
 
-describe('open command', () => {
+describe('open command', async () => {
+    const open = await import('open').then(v => v.default);
     it('opens sheet in browser', async () => {
         await runCommand(['open', '--id=this-is-fake-sheet-id']);
         expect(open).toHaveBeenCalledWith(`https://docs.google.com/spreadsheets/d/this-is-fake-sheet-id`);
