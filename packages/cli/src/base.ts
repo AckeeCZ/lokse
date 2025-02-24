@@ -22,7 +22,7 @@ export default abstract class Base extends Command {
     protected get logger(): Logger {
         return {
             ...console,
-            warn: this.warn,
+            warn: this.warn.bind(this),
         };
     }
 }

@@ -22,7 +22,7 @@ async function loadPlugin(
         };
     } catch (error) {
         if ((error as Error).message.includes('Failed to load')) {
-            options.logger.warn(`🔍 LUnable to load plugin ${pluginName}. Is it installed?`);
+            options.logger.warn(`🔍 Unable to load plugin ${pluginName}. Is it installed?`);
         } else if (error instanceof PluginError) {
             options.logger.warn(`🙅 Plugin ${pluginName} cannot been loaded: ${error.message}`);
         } else {
