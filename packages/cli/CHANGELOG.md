@@ -1,5 +1,16 @@
 # lokse
 
+## 3.1.0
+
+### Minor Changes
+
+-   dc55f1b: Major upgrade of internal dependencies.
+
+### Patch Changes
+
+-   Updated dependencies [dc55f1b]
+    -   @lokse/core@3.1.0
+
 ## 3.0.0
 
 ### Major Changes
