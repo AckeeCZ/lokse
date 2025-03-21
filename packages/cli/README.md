@@ -19,8 +19,8 @@ A tool for efficient usage of translations stored in google spreadsheet
 $ npm install -g lokse
 $ lokse COMMAND
 running command...
-$ lokse (-v|--version|version)
-lokse/3.0.0 darwin-arm64 node-v20.11.1
+$ lokse (--version)
+lokse/3.1.0 darwin-arm64 node-v20.16.0
 $ lokse --help [COMMAND]
 USAGE
   $ lokse COMMAND
@@ -167,20 +167,23 @@ List of plugins to use. Plugin can be either name of plugin, or object containin
 
 ## `lokse help [COMMAND]`
 
-display help for lokse
+Display help for lokse.
 
 ```
 USAGE
-  $ lokse help [COMMAND]
+  $ lokse help [COMMAND...] [-n]
 
 ARGUMENTS
-  COMMAND  command to show help for
+  COMMAND...  Command to show help for.
 
-OPTIONS
-  --all  see all commands in CLI
+FLAGS
+  -n, --nested-commands  Include all nested commands in the output.
+
+DESCRIPTION
+  Display help for lokse.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.3.1/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.27/src/commands/help.ts)_
 
 ## `lokse init`
 
@@ -188,16 +191,19 @@ create a new config file
 
 ```
 USAGE
-  $ lokse init
+  $ lokse init [-h]
 
-OPTIONS
-  -h, --help  show CLI help
+FLAGS
+  -h, --help  Show CLI help.
 
-EXAMPLE
+DESCRIPTION
+  create a new config file
+
+EXAMPLES
   $ lokse init
 ```
 
-_See code: [lib/commands/init.js](https://github.com/AckeeCZ/lokse/blob/v3.0.0/lib/commands/init.js)_
+_See code: [lib/commands/init.js](https://github.com/AckeeCZ/lokse/blob/v3.1.0/lib/commands/init.js)_
 
 ## `lokse open`
 
@@ -205,17 +211,20 @@ open localization spreadsheet in default browser
 
 ```
 USAGE
-  $ lokse open
+  $ lokse open [-h] [-i <value>]
 
-OPTIONS
-  -h, --help   show CLI help
-  -i, --id=id  spreadsheet id
+FLAGS
+  -h, --help        Show CLI help.
+  -i, --id=<value>  spreadsheet id
 
-EXAMPLE
+DESCRIPTION
+  open localization spreadsheet in default browser
+
+EXAMPLES
   $ lokse open -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk
 ```
 
-_See code: [lib/commands/open.js](https://github.com/AckeeCZ/lokse/blob/v3.0.0/lib/commands/open.js)_
+_See code: [lib/commands/open.js](https://github.com/AckeeCZ/lokse/blob/v3.1.0/lib/commands/open.js)_
 
 ## `lokse update`
 
@@ -223,25 +232,27 @@ update translations from localization spreadsheet
 
 ```
 USAGE
-  $ lokse update
+  $ lokse update [-h] [-i <value>] [-d <value>] [-l <value>] [-c <value>] [-f json|android|ios] [-s <value>]
 
-OPTIONS
-  -c, --col=col                    column containing translations keys. For example key_web.
-  -d, --dir=dir                    output folder
-  -f, --format=(json|android|ios)  output format. Default is json.
-  -h, --help                       show CLI help
-  -i, --id=id                      spreadsheet id
+FLAGS
+  -c, --col=<value>        column containing translations keys. For example key_web.
+  -d, --dir=<value>        output folder
+  -f, --format=<option>    output format. Default is json.
+                           <options: json|android|ios>
+  -h, --help               Show CLI help.
+  -i, --id=<value>         spreadsheet id
+  -l, --languages=<value>  translation columns languages. Multiple values are comma separated. For example cs,en,fr
+  -s, --sheets=<value>     sheets to get translations from. Name or list of names, comma separated. For example
+                           Translations1,Translations2
 
-  -l, --languages=languages        translation columns languages. Multiple values are comma separated. For example
-                                   cs,en,fr
-
-  -s, --sheets=sheets              sheets to get translations from. Name or list of names, comma separated. For example
-                                   Translations1,Translations2
+DESCRIPTION
+  update translations from localization spreadsheet
 
 EXAMPLES
   $ lokse update
+
   $ lokse update -i 1HKjvejcuHIY73WvEkipD7_dmF9dFeNLji3nS2RXcIzk -d locales -l cz,en,fr -t key_web
 ```
 
-_See code: [lib/commands/update.js](https://github.com/AckeeCZ/lokse/blob/v3.0.0/lib/commands/update.js)_
+_See code: [lib/commands/update.js](https://github.com/AckeeCZ/lokse/blob/v3.1.0/lib/commands/update.js)_
 <!-- commandsstop -->
