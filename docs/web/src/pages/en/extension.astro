@@ -10,7 +10,7 @@ const contentHeadings = headings.filter((h, i) => {
   return i > 0 && /features|requirements|settings/i.test(h.text);
 });
 
-const contentFragments = compiledContent().split("\n");
+const contentFragments = (await compiledContent()).split("\n");
 const featuresSection = getSection(contentFragments, "features").join("\n");
 const requirementsSection = getSection(contentFragments, "requirements").join(
   "\n"

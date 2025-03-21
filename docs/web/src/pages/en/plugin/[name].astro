@@ -31,7 +31,7 @@ const { compiledContent, getHeadings } = Astro.props.plugin;
 const [mainHeading, ...headings] = getHeadings();
 const contentHeadings = headings.filter((h) => h.slug !== "license");
 
-const contentFragments = compiledContent().split("\n");
+const contentFragments = (await compiledContent()).split("\n");
 const licenseBlockIndex = contentFragments.findIndex((fragment) =>
   fragment.includes("License</h")
 );

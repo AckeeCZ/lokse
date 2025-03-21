@@ -21,7 +21,7 @@ const contentHeadings = [
   ...nameMeaningHeading,
 ];
 
-const contentFragments = compiledContent().split("\n");
+const contentFragments = (await compiledContent()).split("\n");
 const historySection = getSection(contentFragments, "Brief history").join("\n");
 const nameMeaningSection = getSection(contentFragments, "name meaning").join(
   "\n"
