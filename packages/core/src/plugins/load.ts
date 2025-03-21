@@ -1,6 +1,6 @@
-import { getErrorMessage } from '../errors';
-import type { NamedLoksePlugin, PluginFactory, GeneralPluginOptions, GeneralPluginMeta } from './create';
-import { PluginsRunner } from './runner';
+import { getErrorMessage } from '../errors.js';
+import type { NamedLoksePlugin, PluginFactory, GeneralPluginOptions, GeneralPluginMeta } from './create.js';
+import { PluginsRunner } from './runner.js';
 
 export class PluginError extends Error {}
 
@@ -22,7 +22,7 @@ async function loadPlugin(
         };
     } catch (error) {
         if ((error as Error).message.includes('Failed to load')) {
-            options.logger.warn(`🔍 LUnable to load plugin ${pluginName}. Is it installed?`);
+            options.logger.warn(`🔍 Unable to load plugin ${pluginName}. Is it installed?`);
         } else if (error instanceof PluginError) {
             options.logger.warn(`🙅 Plugin ${pluginName} cannot been loaded: ${error.message}`);
         } else {
