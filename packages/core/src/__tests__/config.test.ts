@@ -1,26 +1,24 @@
-import { cosmiconfigSync } from 'cosmiconfig';
-import { getConfig } from '../config';
+import { vi, describe, it, beforeEach, afterAll, expect } from 'vitest';
 
-jest.mock('cosmiconfig', () => {
-    const mockExplorer = {
-        search: jest.fn(),
-    };
+const mockExplorer = {
+    search: vi.fn(),
+};
 
+vi.mock('cosmiconfig', () => {
     return {
-        cosmiconfigSync: jest.fn().mockReturnValue(mockExplorer),
+        cosmiconfig: vi.fn().mockReturnValue(mockExplorer),
     };
 });
 
-jest.mock('cosmiconfig-ts-loader');
-
-describe('getConfig', () => {
+describe('getConfig', async () => {
     const OLD_ENV = process.env;
-    const searchMock = cosmiconfigSync('foo').search as jest.Mock;
+    const searchMock = mockExplorer.search;
+    const { getConfig } = await import('../config.js');
 
     beforeEach(() => {
         searchMock.mockReset();
         // https://stackoverflow.com/a/48042799/7051731
-        jest.resetModules();
+        vi.resetModules();
         process.env = { ...OLD_ENV }; // Make a copy
     });
 
@@ -28,17 +26,17 @@ describe('getConfig', () => {
         process.env = OLD_ENV; // Restore old environment
     });
 
-    it('should return config loaded from cwd', () => {
-        getConfig();
+    it('should return config loaded from cwd', async () => {
+        await getConfig();
 
         expect(searchMock).toHaveBeenCalledTimes(1);
         expect(searchMock).toHaveBeenCalledWith(undefined);
     });
 
-    it('should return config loaded from custom path provided via env variable', () => {
+    it('should return config loaded from custom path provided via env variable', async () => {
         process.env.LOKSE_CONFIG_PATH = '/path/from/variable';
 
-        getConfig();
+        await getConfig();
 
         expect(searchMock).toHaveBeenCalledTimes(1);
         expect(searchMock).toHaveBeenCalledWith('/path/from/variable');

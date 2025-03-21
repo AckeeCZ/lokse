@@ -1,7 +1,8 @@
 import { GoogleSpreadsheetRow } from 'google-spreadsheet';
-import { KeyColumnNotFound, LangColumnNotFound } from '../../errors';
-import { PluginsRunner } from '../../plugins';
-import Worksheet from '../worksheet';
+import { KeyColumnNotFound, LangColumnNotFound } from '../../errors.js';
+import { PluginsRunner } from '../../plugins/index.js';
+import Worksheet from '../worksheet.js';
+import { describe, vi, it, expect } from 'vitest';
 
 export const createRow = (rowIndex: number, values: { [key: string]: any }) =>
     ({
@@ -13,7 +14,7 @@ export const createRow = (rowIndex: number, values: { [key: string]: any }) =>
     }) as unknown as GoogleSpreadsheetRow;
 
 describe('Worksheet', () => {
-    const logger = { warn: jest.fn(), log: jest.fn() };
+    const logger = { warn: vi.fn(), log: vi.fn() };
     const noPlugins = new PluginsRunner([], { logger });
 
     it('should extract lines', async () => {

@@ -19,7 +19,7 @@ const contentHeadings = headings
     text: removeEmojis(h.text).trim(),
   }));
 
-const contentFragments = compiledContent().split("\n");
+const contentFragments = (await compiledContent()).split("\n");
 const content = contentFragments.filter(filterRedundantBlocksOut).join("\n");
 
 const frontmatter = {
