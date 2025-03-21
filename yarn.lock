@@ -2976,7 +2976,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oclif/plugin-help@npm:^6.2.25":
+"@oclif/plugin-help@npm:6.2.27, @oclif/plugin-help@npm:^6.2.25":
   version: 6.2.27
   resolution: "@oclif/plugin-help@npm:6.2.27"
   dependencies:
@@ -9319,6 +9319,7 @@ __metadata:
   dependencies:
     "@lokse/core": "npm:^3.1.0"
     "@oclif/core": "npm:4.2.2"
+    "@oclif/plugin-help": "npm:6.2.27"
     "@oclif/test": "npm:4.1.6"
     "@sindresorhus/slugify": "npm:^1.1.0"
     "@types/array.prototype.flat": "npm:^1.2.1"
