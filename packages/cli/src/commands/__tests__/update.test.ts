@@ -165,7 +165,7 @@ describe('update command', async () => {
 
     describe('Sheets filter', () => {
         it('uses filter when only one name supplied', async () => {
-            await runCommand(['update', ...Object.values(params), '--sheets="Main translations"']);
+            await runCommand(['update', ...Object.values(params), `--sheets=Main translations`]);
             expect(WorksheetReaderMock.mock.instances).toHaveLength(1);
             expect(WorksheetReaderMock.mock.calls[0][0]).toEqual(['Main translations']);
             expect(ReaderMock).toHaveBeenCalled();
