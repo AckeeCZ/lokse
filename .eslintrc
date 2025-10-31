@@ -29,6 +29,12 @@
       }
     ],
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "node/no-missing-import": "off"
+    "node/no-missing-import": "off",
+    "node/no-unsupported-features/node-builtins": [
+      "error",
+      {
+        "version": ">=20.0.0"
+      }
+    ]
   }
 }
