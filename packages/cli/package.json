@@ -10,7 +10,7 @@
     "bin": "./bin/run",
     "bugs": "https://github.com/AckeeCZ/lokse/issues",
     "dependencies": {
-        "@lokse/core": "^3.2.0",
+        "@lokse/core": "^3.1.0",
         "@oclif/core": "4.2.2",
         "@oclif/plugin-help": "6.2.27",
         "@sindresorhus/slugify": "^1.1.0",
