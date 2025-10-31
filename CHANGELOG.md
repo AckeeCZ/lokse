@@ -1,5 +1,127 @@
 # Changelog
 
+<a name="3.2.0"></a>
+
+## 3.2.0 (2025-10-31)
+
+### Changed
+
+- ♻️ Update import for newer nodes [[c4667df](https://github.com/AckeeCZ/lokse/commit/c4667df)]
+
+### Removed
+
+- 🔥 Remove legacy samples [[d8f2332](https://github.com/AckeeCZ/lokse/commit/d8f2332)]
+
+<a name="3.1.0"></a>
+
+## 3.1.0 (2024-10-31)
+
+### Changed
+
+- ⬆️ Major upgrade of internal dependencies [[dc55f1b](https://github.com/AckeeCZ/lokse/commit/dc55f1b)]
+- 📝 Update gcloud auth command to work on Windows [[ed57ca7](https://github.com/AckeeCZ/lokse/commit/ed57ca7)]
+- 📝 Update readme [[b72cb8f](https://github.com/AckeeCZ/lokse/commit/b72cb8f)]
+- ⬆️ Update yarn.lock [[5b280d7](https://github.com/AckeeCZ/lokse/commit/5b280d7)]
+- ⬆️ Upgrade astro [[32dfa18](https://github.com/AckeeCZ/lokse/commit/32dfa18)]
+- ♻️ Refactor ts to nodenext module [[214cfee](https://github.com/AckeeCZ/lokse/commit/214cfee)]
+- ⬆️ Upgrade oclif libraries [[63e46ff](https://github.com/AckeeCZ/lokse/commit/63e46ff)]
+- ⬆️ Upgrade oclif dependencies [[46f8893](https://github.com/AckeeCZ/lokse/commit/46f8893)]
+- ♻️ Migrate oclif/command to oclif/core and configure ts [[82d6bec](https://github.com/AckeeCZ/lokse/commit/82d6bec)]
+- ♻️ Move tests to vitest [[0042e6c](https://github.com/AckeeCZ/lokse/commit/0042e6c)]
+
+### Fixed
+
+- 🐛 Fix missing help command [[393a497](https://github.com/AckeeCZ/lokse/commit/393a497)]
+- 🐛 Fix logging [[d259931](https://github.com/AckeeCZ/lokse/commit/d259931)]
+
+### Miscellaneous
+
+- 👷 Fix release preparation script [[a107e6a](https://github.com/AckeeCZ/lokse/commit/a107e6a)]
+- 🔧 Remove coverage thresholds [[74dd888](https://github.com/AckeeCZ/lokse/commit/74dd888)]
+- 🔧 Turn off watch mode [[af39183](https://github.com/AckeeCZ/lokse/commit/af39183)]
+- 🔧 Add templates to build result [[072b81f](https://github.com/AckeeCZ/lokse/commit/072b81f)]
+- ✅ Fix tests [[21912aa](https://github.com/AckeeCZ/lokse/commit/21912aa)]
+- 🔧 Remove vitest globals [[18ef88d](https://github.com/AckeeCZ/lokse/commit/18ef88d)]
+- ✅ Fix import [[63f6995](https://github.com/AckeeCZ/lokse/commit/63f6995)]
+
+<a name="3.0.2"></a>
+
+## 3.0.2 (2024-09-20)
+
+### Miscellaneous
+
+- 🔧 Run build before release:prepare [[73a93b0](https://github.com/AckeeCZ/lokse/commit/73a93b0)]
+
+<a name="3.0.1"></a>
+
+## 3.0.1 (2024-09-20)
+
+### Fixed
+
+- 🐛 Fix finding default language column [[9519d46](https://github.com/AckeeCZ/lokse/commit/9519d46)]
+
+### Miscellaneous
+
+- ✅ Update test mock to reflect real structure [[7a5e9f3](https://github.com/AckeeCZ/lokse/commit/7a5e9f3)]
+- 📝 Update readme [[0a0b08c](https://github.com/AckeeCZ/lokse/commit/0a0b08c)]
+- ⬆️ Update yarn.lock [[f68fd3f](https://github.com/AckeeCZ/lokse/commit/f68fd3f)]
+
+<a name="3.0.0"></a>
+
+## 3.0.0 (2024-09-19)
+
+### Added
+
+- ✨ Add support for application default credentials [[db36e47](https://github.com/AckeeCZ/lokse/commit/db36e47)]
+
+### Changed
+
+- 💥 Use application default credentials as only authentication method [[a1a8d6f](https://github.com/AckeeCZ/lokse/commit/a1a8d6f)]
+- 💥 Require Node >=20 & upgrade to yarn@4.5.1 [[ef1b926](https://github.com/AckeeCZ/lokse/commit/ef1b926)]
+- ⬆️ @types/node@20.x [[4ee1a63](https://github.com/AckeeCZ/lokse/commit/4ee1a63)]
+- ⬆️ upgrade jest@29.x [[5a977ff](https://github.com/AckeeCZ/lokse/commit/5a977ff)]
+- ⬆️ typescript@5.x [[79475bc](https://github.com/AckeeCZ/lokse/commit/79475bc)]
+- ⬆️ Upgrade prettier [[c9d6048](https://github.com/AckeeCZ/lokse/commit/c9d6048)]
+- ♻️ Update prettier config [[47b9108](https://github.com/AckeeCZ/lokse/commit/47b9108)]
+- 💚 Update CI configs [[063327c](https://github.com/AckeeCZ/lokse/commit/063327c)]
+
+### Fixed
+
+- 🐛 Fix log formatting [[de2022d](https://github.com/AckeeCZ/lokse/commit/de2022d)]
+- 🐛 Fix imports across monorepo [[2315fe9](https://github.com/AckeeCZ/lokse/commit/2315fe9)]
+- 🐛 Update package.json type [[843cbe3](https://github.com/AckeeCZ/lokse/commit/843cbe3)]
+
+### Removed
+
+- ➖ Remove lerna [[2b2c90f](https://github.com/AckeeCZ/lokse/commit/2b2c90f)]
+
+### Miscellaneous
+
+- ➕ Add turbo [[dcbb5ee](https://github.com/AckeeCZ/lokse/commit/dcbb5ee)]
+- ✅ Fix tests [[791d7ab](https://github.com/AckeeCZ/lokse/commit/791d7ab)]
+- 🔧 Increase test timeout [[348ba82](https://github.com/AckeeCZ/lokse/commit/348ba82)]
+- ➕ Add changesets [[e961b87](https://github.com/AckeeCZ/lokse/commit/e961b87)]
+
+<a name="2.4.1"></a>
+
+## 2.4.1 (2024-08-30)
+
+### Fixed
+
+- 🐛 Fix internal imports [[c518182](https://github.com/AckeeCZ/lokse/commit/c518182)]
+
+<a name="2.4.0"></a>
+
+## 2.4.0 (2024-08-30)
+
+### Added
+
+- ✨ Add support for Application Default Credentials authentication [[b098579](https://github.com/AckeeCZ/lokse/commit/b098579)]
+
+### Changed
+
+- ⬆️ Major upgrade of tooling & dependencies [[b098579](https://github.com/AckeeCZ/lokse/commit/b098579)]
+
 <a name="2.3.1"></a>
 
 ## 2.3.1 (2023-02-09)
