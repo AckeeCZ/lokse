@@ -3,7 +3,10 @@ import updateNotifier from 'update-notifier';
 
 import { getConfig, type Logger, type LokseConfig } from '@lokse/core';
 
-import pkg from '../package.json' assert { type: 'json' };
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+const pkg = require('../package.json');
 
 export default abstract class Base extends Command {
     protected conf: undefined | null | LokseConfig;
