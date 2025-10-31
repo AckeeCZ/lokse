@@ -1,5 +1,12 @@
 # @lokse/core
 
+## 3.2.0
+
+### Patch Changes
+
+-   c4667df: Update import for newer nodes
+-   d8f2332: Remove legacy samples
+
 ## 3.1.0
 
 ### Minor Changes

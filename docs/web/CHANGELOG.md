@@ -1,5 +1,23 @@
 # lokse-doc-site
 
+## 3.2.0
+
+### Patch Changes
+
+-   c4667df: Update import for newer nodes
+-   d8f2332: Remove legacy samples
+
+## 3.1.0
+
+### Minor Changes
+
+-   dc55f1b: Major upgrade of internal dependencies.
+-   a107e6a: Fix release preparation script
+-   5b280d7: Update yarn.lock
+-   ed57ca7: Update gcloud auth command to work on Windows
+-   b72cb8f: Update readme
+-   393a497: Fix missing help command
+
 ## 3.0.0
 
 ### Major Changes

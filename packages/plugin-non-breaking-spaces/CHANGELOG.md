@@ -1,5 +1,12 @@
 # @lokse/plugin-non-breaking-spaces
 
+## 3.2.0
+
+### Patch Changes
+
+-   Updated dependencies [c4667df, ed57ca7, b72cb8f, 393a497, d8f2332, a107e6a, 5b280d7]
+    -   @lokse/core@3.2.0
+
 ## 3.1.0
 
 ### Minor Changes
